@@ -2,1217 +2,1740 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>STU-BRAIN – Future Learning Platform</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>STU-BRAIN – Future Learning</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet"/>
 <style>
-:root{--p:#6C63FF;--s:#FF6584;--a:#43E97B;--y:#FFD166;--o:#FF9F43;--bg:#0D0D2B;--card:#16183A;--card2:#1E2050;--text:#F0F0FF;--muted:#9090BB;--border:rgba(108,99,255,0.25);--r:20px}
+:root{
+  --p:#7C3AED;--p2:#A855F7;--s:#EC4899;--a:#10B981;--y:#F59E0B;--o:#F97316;
+  --sky:#06B6D4;--bg:#07071A;--card:#0F1035;--card2:#161845;--card3:#1E2157;
+  --text:#F1F0FF;--muted:#8B8DB8;--border:rgba(124,58,237,0.2);
+  --glow:rgba(124,58,237,0.4);--r:18px
+}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:999;display:flex;align-items:center;justify-content:space-between;padding:14px 32px;background:rgba(13,13,43,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
-.logo{display:flex;align-items:center;gap:10px;cursor:pointer}
-.logo-icon{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--p),var(--s));display:flex;align-items:center;justify-content:center;font-size:20px;animation:pulse 2.5s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(108,99,255,0.4)}50%{box-shadow:0 0 0 10px rgba(108,99,255,0)}}
-.logo-text{font-family:'Fredoka One',cursive;font-size:22px;background:linear-gradient(90deg,var(--p),var(--s));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.nav-classes{display:flex;gap:6px;list-style:none}
-.nav-classes button{background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:50px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
-.nav-classes button:hover,.nav-classes button.active{background:var(--p);color:#fff;border-color:var(--p)}
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--card)}
+::-webkit-scrollbar-thumb{background:var(--p);border-radius:3px}
 
-/* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 32px 60px;position:relative;overflow:hidden;text-align:center}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 50% at 50% 20%,rgba(108,99,255,0.18) 0%,transparent 70%)}
-.particles{position:absolute;inset:0;pointer-events:none}
-.particle{position:absolute;border-radius:50%;animation:floatUp linear infinite}
-@keyframes floatUp{0%{transform:translateY(100vh) scale(0);opacity:0}10%{opacity:.6}90%{opacity:.3}100%{transform:translateY(-100px) scale(1);opacity:0}}
-.hero-content{position:relative;z-index:1;max-width:820px}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(108,99,255,0.15);border:1px solid var(--border);padding:7px 18px;border-radius:50px;font-size:13px;font-weight:700;color:var(--p);margin-bottom:24px;animation:fadeUp .6s ease both}
-.hero-title{font-family:'Fredoka One',cursive;font-size:clamp(42px,7vw,80px);line-height:1.05;margin-bottom:20px;animation:fadeUp .7s ease .1s both}
-.grad{background:linear-gradient(90deg,#6C63FF,#FF6584,#43E97B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:gradShift 4s ease infinite}
-@keyframes gradShift{0%,100%{background-position:0%}50%{background-position:100%}}
-.hero-sub{font-size:17px;color:var(--muted);max-width:580px;margin:0 auto 36px;line-height:1.7;animation:fadeUp .7s ease .2s both;font-weight:600}
-.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .7s ease .3s both}
-.btn-primary{background:linear-gradient(135deg,var(--p),var(--s));color:#fff;padding:14px 32px;border-radius:50px;font-weight:800;font-size:15px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;transition:transform .2s,box-shadow .2s}
-.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(108,99,255,0.5)}
-.btn-secondary{background:transparent;color:var(--text);padding:14px 32px;border-radius:50px;font-weight:800;font-size:15px;border:2px solid var(--border);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .2s}
-.btn-secondary:hover{border-color:var(--p);background:rgba(108,99,255,0.08)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-.class-pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:48px;animation:fadeUp .7s ease .4s both}
-.pill{padding:10px 22px;border-radius:50px;font-weight:800;font-size:14px;cursor:pointer;border:none;font-family:'Nunito',sans-serif;transition:transform .2s,box-shadow .2s}
-.pill:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,0.3)}
-.pill-1{background:linear-gradient(135deg,#43E97B,#38F9D7);color:#0D0D2B}
-.pill-2{background:linear-gradient(135deg,#6C63FF,#43E97B);color:#fff}
-.pill-3{background:linear-gradient(135deg,#FF6584,#6C63FF);color:#fff}
-.pill-4{background:linear-gradient(135deg,#FFD166,#FF6584);color:#0D0D2B}
-.pill-5{background:linear-gradient(135deg,#FF9F43,#FF6584);color:#fff}
+/* ── NAV ── */
+#mainNav{position:fixed;top:0;left:0;right:0;z-index:9999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 28px;background:rgba(7,7,26,0.9);
+  backdrop-filter:blur(24px);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.logo-orb{width:42px;height:42px;border-radius:14px;
+  background:linear-gradient(135deg,var(--p),var(--s));
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  animation:orb-pulse 3s ease-in-out infinite;box-shadow:0 0 20px var(--glow)}
+@keyframes orb-pulse{0%,100%{box-shadow:0 0 20px var(--glow)}50%{box-shadow:0 0 40px var(--glow),0 0 60px rgba(236,72,153,0.3)}}
+.logo-name{font-family:'Fredoka One';font-size:24px;
+  background:linear-gradient(90deg,var(--p2),var(--s),var(--sky));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-size:200%;animation:shimmer 3s linear infinite}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-class-btn{background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  color:var(--muted);padding:7px 16px;border-radius:50px;
+  font-family:'Nunito';font-size:13px;font-weight:700;cursor:pointer;
+  transition:all .25s;white-space:nowrap}
+.nav-class-btn:hover,.nav-class-btn.active{background:linear-gradient(135deg,var(--p),var(--s));
+  color:#fff;border-color:transparent;box-shadow:0 4px 16px var(--glow)}
+.xp-display{background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(249,115,22,0.2));
+  border:1px solid rgba(245,158,11,0.3);padding:6px 14px;border-radius:50px;
+  font-size:13px;font-weight:800;color:var(--y);display:flex;align-items:center;gap:5px}
 
-/* LEARNING APP */
-#app{display:none;min-height:100vh;padding:80px 0 0}
-.app-header{background:rgba(13,13,43,0.95);border-bottom:1px solid var(--border);padding:16px 32px;display:flex;align-items:center;gap:16px;position:sticky;top:64px;z-index:100}
-.back-btn{background:rgba(255,255,255,0.08);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:50px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s}
-.back-btn:hover{background:rgba(108,99,255,0.2)}
-.app-title{font-family:'Fredoka One',cursive;font-size:20px}
-.app-badge{padding:4px 14px;border-radius:50px;font-size:12px;font-weight:800;margin-left:auto}
+/* ── HOME PAGE ── */
+#homePage{padding-top:80px;min-height:100vh}
+.home-hero{
+  min-height:calc(100vh - 80px);display:flex;align-items:center;
+  justify-content:center;text-align:center;padding:40px 24px;
+  position:relative;overflow:hidden}
+.hero-glow-1{position:absolute;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(124,58,237,0.15),transparent 70%);
+  top:-100px;left:-100px;pointer-events:none;animation:glow-drift 8s ease-in-out infinite}
+.hero-glow-2{position:absolute;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(236,72,153,0.12),transparent 70%);
+  bottom:-100px;right:-100px;pointer-events:none;animation:glow-drift 10s ease-in-out infinite reverse}
+@keyframes glow-drift{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,30px)}}
+.hero-inner{position:relative;z-index:1;max-width:900px}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);
+  padding:8px 20px;border-radius:50px;font-size:13px;font-weight:700;
+  color:var(--p2);margin-bottom:28px;animation:fade-up .6s ease both}
+.hero-h1{font-family:'Fredoka One';font-size:clamp(44px,8vw,88px);
+  line-height:1.05;margin-bottom:22px;animation:fade-up .7s ease .1s both}
+.grad-text{background:linear-gradient(135deg,var(--p2) 0%,var(--s) 50%,var(--sky) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-size:200%;animation:shimmer 4s linear infinite}
+.hero-sub{font-size:18px;color:var(--muted);max-width:620px;margin:0 auto 40px;
+  line-height:1.8;font-weight:600;animation:fade-up .7s ease .2s both}
+@keyframes fade-up{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
 
-.app-body{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 130px)}
+/* ── CLASS CARDS ── */
+.class-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:20px;padding:0 24px 60px;max-width:1400px;margin:0 auto}
+.class-card{border-radius:24px;padding:28px;cursor:pointer;
+  position:relative;overflow:hidden;border:1px solid transparent;
+  transition:transform .3s,box-shadow .3s;animation:fade-up .6s ease both}
+.class-card:hover{transform:translateY(-8px)}
+.class-card::before{content:'';position:absolute;inset:0;border-radius:24px;
+  opacity:0;transition:opacity .3s;background:rgba(255,255,255,0.04)}
+.class-card:hover::before{opacity:1}
+.cc-1{background:linear-gradient(135deg,#0F2027,#1a3a2a);border-color:rgba(16,185,129,0.3);box-shadow:0 8px 40px rgba(16,185,129,0.1)}
+.cc-1:hover{box-shadow:0 20px 60px rgba(16,185,129,0.25)}
+.cc-2{background:linear-gradient(135deg,#1a0f27,#2a1a3a);border-color:rgba(168,85,247,0.3);box-shadow:0 8px 40px rgba(168,85,247,0.1)}
+.cc-2:hover{box-shadow:0 20px 60px rgba(168,85,247,0.25)}
+.cc-3{background:linear-gradient(135deg,#07111f,#0f1e33);border-color:rgba(6,182,212,0.3);box-shadow:0 8px 40px rgba(6,182,212,0.1)}
+.cc-3:hover{box-shadow:0 20px 60px rgba(6,182,212,0.25)}
+.cc-4{background:linear-gradient(135deg,#1f1207,#33200f);border-color:rgba(245,158,11,0.3);box-shadow:0 8px 40px rgba(245,158,11,0.1)}
+.cc-4:hover{box-shadow:0 20px 60px rgba(245,158,11,0.25)}
+.cc-5{background:linear-gradient(135deg,#1f0710,#33101e);border-color:rgba(236,72,153,0.3);box-shadow:0 8px 40px rgba(236,72,153,0.1)}
+.cc-5:hover{box-shadow:0 20px 60px rgba(236,72,153,0.25)}
+.card-tier{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.card-emoji{font-size:52px;margin-bottom:12px;display:block;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+  animation:emoji-bob 3s ease-in-out infinite}
+@keyframes emoji-bob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+.card-title{font-family:'Fredoka One';font-size:26px;margin-bottom:8px}
+.card-sub{font-size:14px;color:var(--muted);font-weight:600;line-height:1.6;margin-bottom:16px}
+.card-topics{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.topic-chip{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;
+  background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.7)}
+.card-start-btn{width:100%;padding:12px;border-radius:14px;font-family:'Nunito';
+  font-size:14px;font-weight:800;border:none;cursor:pointer;transition:all .2s}
 
-/* SIDEBAR */
-.sidebar{background:var(--card);border-right:1px solid var(--border);padding:20px;overflow-y:auto;max-height:calc(100vh - 130px);position:sticky;top:130px}
-.sidebar-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:800;margin-bottom:14px}
-.subject-list{list-style:none;display:flex;flex-direction:column;gap:3px}
-.subject-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;width:100%;text-align:left;transition:all .2s}
-.subject-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
-.subject-btn.active{background:rgba(108,99,255,0.15);color:var(--p)}
-.subject-icon{font-size:16px;width:24px;text-align:center}
-.chapter-list{list-style:none;padding-left:20px;margin-top:4px;display:none;flex-direction:column;gap:2px}
-.chapter-list.open{display:flex}
-.chapter-btn{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);font-family:'Nunito',sans-serif;width:100%;text-align:left;transition:all .2s}
-.chapter-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
-.chapter-btn.active{background:rgba(67,233,123,0.12);color:var(--a)}
-.chapter-btn .done{color:var(--a);margin-left:auto;font-size:12px}
-.progress-section{margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
-.progress-label{font-size:12px;color:var(--muted);font-weight:700;margin-bottom:8px;display:flex;justify-content:space-between}
-.progress-bar{height:8px;background:rgba(255,255,255,0.08);border-radius:50px;overflow:hidden}
-.progress-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--p),var(--a));transition:width .5s ease}
+/* ── LEARNING APP ── */
+#learningApp{display:none;padding-top:68px;min-height:100vh}
+.app-topbar{position:sticky;top:68px;z-index:998;
+  background:rgba(7,7,26,0.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);padding:12px 24px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.back-home{background:rgba(255,255,255,0.07);border:1px solid var(--border);
+  color:var(--text);padding:8px 16px;border-radius:50px;font-family:'Nunito';
+  font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px}
+.back-home:hover{background:rgba(124,58,237,0.2);border-color:var(--p)}
+.topbar-class-name{font-family:'Fredoka One';font-size:18px;color:var(--text)}
+.topbar-badge{padding:5px 14px;border-radius:50px;font-size:12px;font-weight:800;margin-left:4px}
+.topbar-progress{margin-left:auto;display:flex;align-items:center;gap:10px}
+.prog-bar-wrap{width:120px;height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden}
+.prog-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--p),var(--a));transition:width .6s ease}
+.prog-label{font-size:12px;font-weight:800;color:var(--a)}
 
-/* MAIN CONTENT */
-.main-content{padding:32px;overflow-y:auto}
-.lesson-area{display:none;animation:fadeIn .4s ease}
-.lesson-area.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+/* ── APP LAYOUT ── */
+.app-layout{display:grid;grid-template-columns:290px 1fr;min-height:calc(100vh - 132px)}
 
-.lesson-header{margin-bottom:28px}
-.lesson-class{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--a);margin-bottom:6px}
-.lesson-title{font-family:'Fredoka One',cursive;font-size:32px;margin-bottom:8px}
-.lesson-desc{color:var(--muted);font-size:15px;line-height:1.6;font-weight:600;max-width:700px}
+/* ── SIDEBAR ── */
+.sidebar{background:var(--card);border-right:1px solid var(--border);
+  overflow-y:auto;position:sticky;top:132px;height:calc(100vh - 132px)}
+.sb-inner{padding:16px}
+.sb-section-title{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--muted);font-weight:800;padding:8px 4px 6px;margin-top:8px}
+.sb-subject{margin-bottom:4px}
+.sb-subject-btn{display:flex;align-items:center;gap:10px;padding:11px 12px;
+  border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;
+  border:none;background:transparent;color:var(--muted);
+  font-family:'Nunito';width:100%;text-align:left;transition:all .2s;
+  justify-content:space-between}
+.sb-subject-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.sb-subject-btn.open{background:rgba(124,58,237,0.12);color:var(--p2)}
+.sb-subject-left{display:flex;align-items:center;gap:10px}
+.sb-chevron{transition:transform .2s;font-size:12px}
+.sb-subject-btn.open .sb-chevron{transform:rotate(180deg)}
+.sb-chapters{display:none;flex-direction:column;gap:2px;
+  padding:4px 0 4px 20px}
+.sb-chapters.open{display:flex}
+.sb-chap-btn{display:flex;align-items:center;gap:8px;padding:9px 12px;
+  border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;
+  border:none;background:transparent;color:var(--muted);
+  font-family:'Nunito';width:100%;text-align:left;transition:all .2s}
+.sb-chap-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.sb-chap-btn.active{background:rgba(16,185,129,0.12);color:var(--a)}
+.sb-chap-btn.done{color:rgba(16,185,129,0.6)}
+.sb-chap-btn.done .chap-icon::after{content:' ✓';font-size:10px}
+.sb-stats{margin-top:16px;padding:14px;background:var(--card2);
+  border-radius:14px;border:1px solid var(--border)}
+.sb-stat-row{display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:8px;font-size:13px;font-weight:700}
+.sb-stat-val{color:var(--y);font-size:15px;font-weight:800}
 
-/* ANIMATION BOX */
-.anim-box{background:linear-gradient(135deg,rgba(108,99,255,0.1),rgba(67,233,123,0.06));border:1px solid var(--border);border-radius:20px;padding:32px;margin-bottom:24px;min-height:220px;position:relative;overflow:hidden}
-.anim-stage{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;min-height:160px}
-.bot{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;animation:botFloat 2s ease-in-out infinite;position:relative}
-.bot-primary{background:linear-gradient(135deg,var(--p),var(--s));box-shadow:0 0 32px rgba(108,99,255,0.4)}
-.bot-happy{background:linear-gradient(135deg,var(--a),#38F9D7);box-shadow:0 0 32px rgba(67,233,123,0.4)}
-.bot-fire{background:linear-gradient(135deg,var(--y),var(--o));box-shadow:0 0 32px rgba(255,209,102,0.4)}
-@keyframes botFloat{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-12px) rotate(3deg)}}
-.speech{background:var(--card2);border:1px solid var(--border);border-radius:16px 16px 16px 4px;padding:16px 20px;max-width:320px;font-size:14px;font-weight:700;line-height:1.6;animation:popIn .5s cubic-bezier(.34,1.56,.64,1)}
-@keyframes popIn{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
-.hi{color:var(--a)}
-.em{color:var(--y)}
+/* ── MAIN LEARNING PANEL ── */
+.learn-panel{overflow-y:auto;background:var(--bg)}
 
-/* VISUAL ANIMATIONS */
-.visual-row{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0}
-.visual-card{background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:20px;flex:1;min-width:140px;text-align:center;animation:slideUp .4s ease}
-@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.visual-icon{font-size:36px;margin-bottom:8px;display:block;animation:bounce 1.5s ease-in-out infinite}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-.visual-label{font-size:13px;font-weight:800;color:var(--text)}
-.visual-desc{font-size:12px;color:var(--muted);margin-top:4px;font-weight:600}
+/* ── WELCOME SCREEN ── */
+.welcome-screen{padding:40px 32px;max-width:900px}
+.ws-title{font-family:'Fredoka One';font-size:36px;margin-bottom:10px}
+.ws-sub{color:var(--muted);font-size:16px;font-weight:600;margin-bottom:32px;line-height:1.6}
+.ws-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+.ws-card{background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:20px;text-align:center;transition:transform .2s}
+.ws-card:hover{transform:translateY(-4px)}
+.ws-card-icon{font-size:36px;margin-bottom:10px;display:block}
+.ws-card-label{font-size:14px;font-weight:800;margin-bottom:4px}
+.ws-card-desc{font-size:12px;color:var(--muted);font-weight:600;line-height:1.5}
 
-/* FLOW DIAGRAM */
-.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:20px 0;padding:20px;background:var(--card2);border-radius:16px;border:1px solid var(--border)}
-.flow-step{text-align:center;flex:1;min-width:80px}
-.flow-icon{font-size:28px;margin-bottom:6px;display:block}
-.flow-label{font-size:12px;font-weight:800;color:var(--text)}
-.flow-arrow{color:var(--p);font-size:20px;font-weight:900}
-.flow-step.highlight .flow-icon{animation:pulse2 1s ease-in-out infinite}
-@keyframes pulse2{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+/* ── LESSON WRAPPER ── */
+.lesson-wrap{padding:32px;max-width:960px;animation:lesson-in .4s ease}
+@keyframes lesson-in{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
 
-/* CONCEPT CHIPS */
-.concepts{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
-.chip{padding:8px 16px;border-radius:50px;font-size:13px;font-weight:800;cursor:pointer;transition:transform .2s,box-shadow .2s;border:none;font-family:'Nunito',sans-serif}
-.chip:hover{transform:translateY(-2px)}
-.chip-blue{background:rgba(108,99,255,0.15);color:var(--p);border:1px solid rgba(108,99,255,0.3)}
-.chip-green{background:rgba(67,233,123,0.12);color:var(--a);border:1px solid rgba(67,233,123,0.3)}
-.chip-pink{background:rgba(255,101,132,0.12);color:var(--s);border:1px solid rgba(255,101,132,0.3)}
-.chip-yellow{background:rgba(255,209,102,0.12);color:var(--y);border:1px solid rgba(255,209,102,0.3)}
+/* ── LESSON SLIDES SYSTEM ── */
+.slide-progress{display:flex;gap:6px;margin-bottom:28px;align-items:center}
+.slide-dot{height:6px;border-radius:3px;background:rgba(255,255,255,0.12);
+  transition:all .3s;cursor:pointer;flex:1}
+.slide-dot.done{background:var(--a)}
+.slide-dot.active{background:var(--p2);flex:2}
+.slide-label{font-size:12px;color:var(--muted);font-weight:700;margin-left:8px;white-space:nowrap}
 
-/* REAL LIFE EXAMPLES */
-.examples{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:20px 0}
-.example-card{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:16px;transition:transform .2s}
-.example-card:hover{transform:translateY(-4px)}
-.example-icon{font-size:28px;margin-bottom:8px}
-.example-title{font-size:13px;font-weight:800;margin-bottom:4px}
-.example-desc{font-size:12px;color:var(--muted);font-weight:600;line-height:1.5}
+.lesson-slide{display:none}
+.lesson-slide.active{display:block;animation:slide-in .4s ease}
+@keyframes slide-in{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 
-/* QUIZ */
-.quiz-section{background:linear-gradient(135deg,rgba(108,99,255,0.1),rgba(255,101,132,0.06));border:1px solid var(--border);border-radius:20px;padding:28px;margin:20px 0}
-.quiz-title{font-family:'Fredoka One',cursive;font-size:20px;margin-bottom:16px}
-.quiz-q{font-size:15px;font-weight:700;margin-bottom:16px;line-height:1.5}
-.quiz-options{display:flex;flex-direction:column;gap:10px}
-.quiz-opt{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-size:14px;font-weight:700;cursor:pointer;text-align:left;font-family:'Nunito',sans-serif;color:var(--text);transition:all .2s}
-.quiz-opt:hover{background:rgba(108,99,255,0.12);border-color:var(--p)}
-.quiz-opt.correct{background:rgba(67,233,123,0.15);border-color:var(--a);color:var(--a)}
-.quiz-opt.wrong{background:rgba(255,101,132,0.12);border-color:var(--s);color:var(--s)}
-.quiz-feedback{padding:14px 18px;border-radius:12px;margin-top:14px;font-weight:700;font-size:14px;display:none}
+/* slide header */
+.slide-class-tag{font-size:11px;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;color:var(--sky);margin-bottom:8px}
+.slide-title{font-family:'Fredoka One';font-size:30px;margin-bottom:10px;line-height:1.2}
+.slide-intro{font-size:16px;color:var(--muted);font-weight:600;
+  line-height:1.7;margin-bottom:24px;max-width:720px}
+
+/* ── BOT TEACH BLOCK ── */
+.bot-teach{display:flex;gap:20px;align-items:flex-start;
+  background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(236,72,153,0.05));
+  border:1px solid var(--border);border-radius:20px;
+  padding:24px;margin-bottom:24px;position:relative;overflow:hidden}
+.bot-teach::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--p),var(--s),var(--sky));
+  animation:line-scan 3s linear infinite}
+@keyframes line-scan{0%{opacity:0}20%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translateX(100%)}}
+.bot-avatar{width:64px;height:64px;min-width:64px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;animation:bot-float 2.5s ease-in-out infinite;
+  box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+@keyframes bot-float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-10px) rotate(4deg)}}
+.bot-a{background:linear-gradient(135deg,var(--p),var(--s))}
+.bot-b{background:linear-gradient(135deg,var(--a),var(--sky))}
+.bot-c{background:linear-gradient(135deg,var(--y),var(--o))}
+.bot-d{background:linear-gradient(135deg,var(--sky),var(--p))}
+.bot-speech{flex:1}
+.bot-name{font-size:11px;font-weight:800;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--p2);margin-bottom:8px}
+.bot-text{font-size:15px;font-weight:600;line-height:1.8;color:var(--text)}
+.bot-text .hi{color:var(--a);font-weight:800}
+.bot-text .em{color:var(--y);font-weight:800}
+.bot-text .hot{color:var(--s);font-weight:800}
+.bot-text .cool{color:var(--sky);font-weight:800}
+.typing-dots{display:inline-flex;gap:4px;align-items:center;margin-left:6px}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--p2);
+  animation:dot-bounce .8s ease-in-out infinite}
+.typing-dots span:nth-child(2){animation-delay:.15s}
+.typing-dots span:nth-child(3){animation-delay:.3s}
+@keyframes dot-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* ── ANIMATED DIAGRAMS ── */
+.diagram-box{background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:24px;margin-bottom:24px;overflow:hidden}
+.diagram-title{font-family:'Fredoka One';font-size:17px;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px}
+
+/* flow diagram */
+.flow-diagram{display:flex;align-items:center;gap:6px;
+  flex-wrap:wrap;justify-content:center;padding:12px 0}
+.flow-node{text-align:center;padding:14px 18px;border-radius:14px;
+  min-width:90px;animation:node-pop .4s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes node-pop{from{opacity:0;transform:scale(0.6)}to{opacity:1;transform:scale(1)}}
+.flow-node.active-node{animation:node-pop .4s cubic-bezier(.34,1.56,.64,1) both,
+  node-glow 2s ease-in-out infinite}
+@keyframes node-glow{0%,100%{box-shadow:0 0 0 0 var(--glow)}50%{box-shadow:0 0 0 8px transparent}}
+.fn-icon{font-size:26px;margin-bottom:6px;display:block}
+.fn-label{font-size:11px;font-weight:800;line-height:1.3}
+.fn-sub{font-size:10px;color:var(--muted);margin-top:2px;font-weight:600}
+.fn-blue{background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3)}
+.fn-green{background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3)}
+.fn-pink{background:rgba(236,72,153,0.12);border:1px solid rgba(236,72,153,0.3)}
+.fn-yellow{background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3)}
+.fn-sky{background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.3)}
+.flow-arrow{color:var(--p2);font-size:22px;font-weight:900;flex-shrink:0;
+  animation:arrow-pulse 1.5s ease-in-out infinite}
+@keyframes arrow-pulse{0%,100%{opacity:.4;transform:translateX(-3px)}50%{opacity:1;transform:translateX(3px)}}
+
+/* concept grid */
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.concept-card{background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:16px;text-align:center;transition:all .25s;cursor:default;
+  animation:card-rise .4s ease both}
+@keyframes card-rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.concept-card:hover{transform:translateY(-4px);border-color:var(--p2)}
+.cc-emoji{font-size:32px;display:block;margin-bottom:8px;
+  animation:cc-float 3s ease-in-out infinite}
+@keyframes cc-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.cc-label{font-size:13px;font-weight:800;margin-bottom:4px}
+.cc-desc{font-size:11px;color:var(--muted);font-weight:600;line-height:1.5}
+
+/* real life examples */
+.rl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.rl-card{background:var(--card2);border:1px solid var(--border);border-radius:16px;
+  padding:18px;transition:transform .25s;cursor:default;
+  animation:card-rise .4s ease both}
+.rl-card:hover{transform:translateY(-4px)}
+.rl-app-icon{font-size:32px;margin-bottom:10px;display:block}
+.rl-app-name{font-size:14px;font-weight:800;margin-bottom:4px}
+.rl-app-desc{font-size:12px;color:var(--muted);font-weight:600;line-height:1.55}
+.rl-section-title{font-family:'Fredoka One';font-size:18px;margin-bottom:14px;
+  display:flex;align-items:center;gap:8px;color:var(--sky)}
+
+/* code block */
+.code-block{background:#060614;border:1px solid rgba(124,58,237,0.3);
+  border-radius:16px;overflow:hidden;margin-bottom:24px}
+.code-header{display:flex;align-items:center;gap:6px;padding:12px 16px;
+  background:rgba(124,58,237,0.08);border-bottom:1px solid rgba(124,58,237,0.2)}
+.code-dot{width:10px;height:10px;border-radius:50%}
+.code-filename{font-size:12px;color:var(--muted);font-weight:700;margin-left:auto}
+.code-body{padding:20px;font-family:'Courier New',monospace;font-size:14px;
+  line-height:1.8;overflow-x:auto}
+.c-comment{color:#6B7280}.c-keyword{color:#A855F7}.c-string{color:#10B981}
+.c-func{color:#F59E0B}.c-var{color:#06B6D4}.c-num{color:#F97316}
+.c-output{color:#F1F0FF;font-style:italic}
+
+/* comparison table */
+.compare-table{background:var(--card);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;margin-bottom:24px;width:100%}
+.ct-head{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;
+  background:rgba(124,58,237,0.1);padding:12px 16px;
+  font-size:12px;font-weight:800;letter-spacing:1px;color:var(--muted);text-transform:uppercase}
+.ct-row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;
+  padding:12px 16px;border-top:1px solid var(--border);font-size:13px;
+  font-weight:600;transition:background .2s}
+.ct-row:hover{background:rgba(255,255,255,0.02)}
+.ct-label{font-weight:700;color:var(--text)}
+.ct-yes{color:var(--a)}
+.ct-no{color:var(--s)}
+.ct-part{color:var(--y)}
+
+/* neural net visual */
+.neural-vis{display:flex;align-items:center;justify-content:center;
+  gap:16px;padding:20px;flex-wrap:wrap}
+.nn-col{display:flex;flex-direction:column;gap:10px;align-items:center}
+.nn-node{width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;position:relative}
+.nn-node::after{content:'';position:absolute;inset:-4px;border-radius:50%;
+  border:2px solid currentColor;opacity:0;animation:ring-out 2s ease-in-out infinite}
+@keyframes ring-out{0%{opacity:0.5;transform:scale(0.8)}100%{opacity:0;transform:scale(1.6)}}
+.nn-in{background:rgba(16,185,129,0.2);border:2px solid var(--a);color:var(--a)}
+.nn-h1{background:rgba(124,58,237,0.2);border:2px solid var(--p2);color:var(--p2)}
+.nn-h2{background:rgba(6,182,212,0.2);border:2px solid var(--sky);color:var(--sky)}
+.nn-out{background:rgba(236,72,153,0.2);border:2px solid var(--s);color:var(--s)}
+.nn-col-label{font-size:11px;font-weight:800;color:var(--muted);
+  margin-top:6px;text-align:center;line-height:1.3}
+.nn-arrows{display:flex;flex-direction:column;justify-content:space-around;
+  gap:8px;padding:0 4px}
+.nn-arrow-line{width:30px;height:2px;background:linear-gradient(90deg,var(--p),transparent);
+  border-radius:1px;animation:data-flow 1.5s linear infinite;opacity:0.6}
+@keyframes data-flow{0%{background-position:0%}100%{background-position:200%}}
+
+/* ── QUIZ SECTION ── */
+.quiz-wrap{background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(236,72,153,0.05));
+  border:1px solid rgba(124,58,237,0.25);border-radius:20px;
+  padding:28px;margin-bottom:24px}
+.quiz-header{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.quiz-icon{font-size:28px}
+.quiz-title{font-family:'Fredoka One';font-size:22px}
+.quiz-num{font-size:12px;color:var(--muted);font-weight:700;
+  background:rgba(255,255,255,0.06);padding:4px 10px;border-radius:20px}
+.quiz-q{font-size:16px;font-weight:700;line-height:1.6;
+  margin-bottom:18px;color:var(--text)}
+.quiz-opts{display:flex;flex-direction:column;gap:10px}
+.quiz-opt-btn{background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);border-radius:14px;
+  padding:14px 18px;font-size:14px;font-weight:700;
+  cursor:pointer;text-align:left;font-family:'Nunito';
+  color:var(--text);transition:all .2s;display:flex;align-items:center;gap:12px}
+.quiz-opt-btn:hover{background:rgba(124,58,237,0.12);border-color:var(--p)}
+.quiz-opt-btn.correct{background:rgba(16,185,129,0.15);border-color:var(--a);color:var(--a)}
+.quiz-opt-btn.wrong{background:rgba(236,72,153,0.12);border-color:var(--s);color:var(--s)}
+.quiz-opt-btn:disabled{cursor:default}
+.opt-letter{width:28px;height:28px;border-radius:8px;
+  background:rgba(255,255,255,0.08);display:flex;align-items:center;
+  justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.quiz-feedback{padding:14px 18px;border-radius:14px;margin-top:14px;
+  font-weight:700;font-size:14px;line-height:1.6;display:none;animation:pop-in .3s ease}
+@keyframes pop-in{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
 .quiz-feedback.show{display:block}
-.feedback-correct{background:rgba(67,233,123,0.15);border:1px solid var(--a);color:var(--a)}
-.feedback-wrong{background:rgba(255,101,132,0.12);border:1px solid var(--s);color:var(--s)}
+.qf-correct{background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:var(--a)}
+.qf-wrong{background:rgba(236,72,153,0.1);border:1px solid rgba(236,72,153,0.3);color:var(--s)}
 
-/* LESSON BUTTONS */
-.lesson-btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
-.lbtn{padding:12px 24px;border-radius:50px;font-weight:800;font-size:14px;font-family:'Nunito',sans-serif;cursor:pointer;border:none;transition:transform .2s}
-.lbtn:hover{transform:translateY(-2px)}
-.lbtn-primary{background:linear-gradient(135deg,var(--p),var(--s));color:#fff}
-.lbtn-green{background:linear-gradient(135deg,var(--a),#38F9D7);color:#0D0D2B}
-.lbtn-outline{background:rgba(255,255,255,0.06);color:var(--muted);border:1px solid var(--border) !important}
+/* ── SLIDE NAV BUTTONS ── */
+.slide-nav{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.snav-btn{padding:12px 28px;border-radius:50px;font-family:'Nunito';
+  font-size:14px;font-weight:800;cursor:pointer;border:none;transition:all .25s;
+  display:flex;align-items:center;gap:7px}
+.snav-next{background:linear-gradient(135deg,var(--p),var(--s));color:#fff}
+.snav-next:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--glow)}
+.snav-prev{background:rgba(255,255,255,0.07);border:1px solid var(--border);color:var(--muted)}
+.snav-prev:hover{border-color:var(--p);color:var(--text)}
+.snav-complete{background:linear-gradient(135deg,var(--a),var(--sky));color:#0a0a1a}
+.snav-complete:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(16,185,129,0.4)}
 
-/* COMPLETE BADGE */
-.complete-banner{background:linear-gradient(135deg,rgba(67,233,123,0.15),rgba(56,249,215,0.08));border:1px solid var(--a);border-radius:16px;padding:20px 24px;display:flex;align-items:center;gap:16px;margin-top:20px}
-.complete-icon{font-size:40px}
-.complete-title{font-family:'Fredoka One',cursive;font-size:20px;color:var(--a)}
-.complete-desc{color:var(--muted);font-size:13px;font-weight:600;margin-top:2px}
-.xp-badge{background:linear-gradient(135deg,var(--y),var(--o));color:#0D0D2B;padding:6px 16px;border-radius:50px;font-size:13px;font-weight:800;margin-left:auto}
+/* ── COMPLETION SCREEN ── */
+.completion-screen{text-align:center;padding:40px 24px;animation:fade-up .5s ease}
+.comp-trophy{font-size:80px;margin-bottom:16px;display:block;
+  animation:trophy-bounce .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes trophy-bounce{from{transform:scale(0) rotate(-20deg)}to{transform:scale(1) rotate(0)}}
+.comp-title{font-family:'Fredoka One';font-size:36px;
+  background:linear-gradient(135deg,var(--y),var(--o));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px}
+.comp-sub{font-size:16px;color:var(--muted);font-weight:600;margin-bottom:28px;line-height:1.7}
+.comp-xp{display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(249,115,22,0.15));
+  border:1px solid rgba(245,158,11,0.4);padding:14px 28px;
+  border-radius:50px;font-size:22px;font-weight:800;color:var(--y);margin-bottom:28px}
+.comp-stars{display:flex;gap:8px;justify-content:center;margin-bottom:28px}
+.comp-star{font-size:32px;animation:star-pop .4s cubic-bezier(.34,1.56,.64,1) both}
+.comp-star:nth-child(2){animation-delay:.15s}
+.comp-star:nth-child(3){animation-delay:.3s}
+@keyframes star-pop{from{opacity:0;transform:scale(0) rotate(-30deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+.comp-next-btn{background:linear-gradient(135deg,var(--p),var(--s));
+  color:#fff;padding:14px 36px;border-radius:50px;font-family:'Nunito';
+  font-size:15px;font-weight:800;border:none;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;margin:6px}
+.comp-next-btn:hover{transform:translateY(-3px);box-shadow:0 12px 32px var(--glow)}
+.comp-back-btn{background:rgba(255,255,255,0.07);border:1px solid var(--border);
+  color:var(--muted);padding:14px 36px;border-radius:50px;font-family:'Nunito';
+  font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;margin:6px}
+.comp-back-btn:hover{border-color:var(--p);color:var(--text)}
 
-/* COUNTER ANIMATION */
-.counter{font-family:'Fredoka One',cursive;font-size:48px;background:linear-gradient(135deg,var(--p),var(--a));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;text-align:center}
+/* ── XP POPUP ── */
+#xpPopup{position:fixed;top:90px;right:24px;z-index:9999;
+  background:linear-gradient(135deg,var(--y),var(--o));
+  color:#0a0a1a;padding:12px 24px;border-radius:50px;
+  font-size:18px;font-weight:800;
+  animation:xp-fly .4s cubic-bezier(.34,1.56,.64,1);
+  display:none;box-shadow:0 8px 32px rgba(245,158,11,0.5)}
+@keyframes xp-fly{from{opacity:0;transform:translateY(-20px) scale(0.8)}to{opacity:1;transform:translateY(0) scale(1)}}
 
-/* MOBILE */
+/* ── FLOATING PARTICLES ── */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.ptcl{position:absolute;border-radius:50%;animation:ptcl-up linear infinite;opacity:0}
+@keyframes ptcl-up{0%{transform:translateY(100vh);opacity:0}10%{opacity:0.5}90%{opacity:0.2}100%{transform:translateY(-80px);opacity:0}}
+
+/* ── PROGRESS TRACKER BAR AT TOP ── */
+.lesson-prog-bar{height:3px;background:rgba(255,255,255,0.06);
+  border-radius:2px;margin-bottom:24px;overflow:hidden}
+.lesson-prog-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--a));
+  transition:width .5s ease}
+
+/* info callout */
+.callout{display:flex;gap:14px;padding:16px 18px;border-radius:14px;
+  margin:16px 0;font-size:14px;font-weight:600;line-height:1.6;align-items:flex-start}
+.callout-tip{background:rgba(245,158,11,0.1);border-left:3px solid var(--y);color:var(--text)}
+.callout-info{background:rgba(6,182,212,0.08);border-left:3px solid var(--sky);color:var(--text)}
+.callout-warn{background:rgba(236,72,153,0.08);border-left:3px solid var(--s);color:var(--text)}
+.callout-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.callout-text strong{color:var(--y)}
+
+/* section divider */
+.sec-div{display:flex;align-items:center;gap:12px;margin:24px 0 16px;
+  font-family:'Fredoka One';font-size:17px;color:var(--text)}
+.sec-div::before,.sec-div::after{content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,transparent,var(--border))}
+.sec-div::before{background:linear-gradient(90deg,transparent,var(--border))}
+.sec-div::after{background:linear-gradient(90deg,var(--border),transparent)}
+
+/* responsive */
 @media(max-width:768px){
-  nav{padding:12px 16px}
-  .nav-classes{display:none}
-  .app-body{grid-template-columns:1fr}
+  #mainNav{padding:10px 14px}
+  .nav-right{gap:4px}
+  .nav-class-btn{padding:5px 10px;font-size:11px}
+  .app-layout{grid-template-columns:1fr}
   .sidebar{display:none}
-  .main-content{padding:20px}
-  .hero-title{font-size:36px}
-  .class-pills{gap:8px}
-  .pill{font-size:12px;padding:8px 16px}
+  .lesson-wrap{padding:16px}
+  .hero-h1{font-size:36px}
+  .class-grid{padding:0 12px 40px}
 }
-
-/* SCROLL REVEAL */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .5s,transform .5s}
-.reveal.visible{opacity:1;transform:translateY(0)}
-
-/* STARS */
-.stars{display:flex;gap:4px;margin:8px 0}
-.star{color:var(--y);font-size:18px;animation:starPop .3s ease both}
-@keyframes starPop{from{transform:scale(0) rotate(-30deg)}to{transform:scale(1) rotate(0)}}
-
-/* NEURAL NET ANIMATION */
-.neural-net{display:flex;gap:20px;align-items:center;justify-content:center;padding:20px;flex-wrap:wrap}
-.nn-layer{display:flex;flex-direction:column;gap:10px;align-items:center}
-.nn-node{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;animation:nodePulse 2s ease-in-out infinite}
-.nn-node:nth-child(2){animation-delay:.3s}
-.nn-node:nth-child(3){animation-delay:.6s}
-.nn-node:nth-child(4){animation-delay:.9s}
-@keyframes nodePulse{0%,100%{box-shadow:0 0 0 0 rgba(108,99,255,0.4)}50%{box-shadow:0 0 0 8px rgba(108,99,255,0)}}
-.nn-input .nn-node{background:rgba(67,233,123,0.2);border:2px solid var(--a);color:var(--a)}
-.nn-hidden .nn-node{background:rgba(108,99,255,0.2);border:2px solid var(--p);color:var(--p)}
-.nn-output .nn-node{background:rgba(255,101,132,0.2);border:2px solid var(--s);color:var(--s)}
-.nn-label{font-size:11px;color:var(--muted);font-weight:800;margin-top:8px;text-align:center}
-.nn-arrow{font-size:24px;color:var(--p);animation:arrowFlow 1s ease-in-out infinite}
-@keyframes arrowFlow{0%,100%{opacity:.4;transform:translateX(-4px)}50%{opacity:1;transform:translateX(4px)}}
 </style>
 </head>
 <body>
 
-<!-- PARTICLES -->
-<div class="particles" id="particles"></div>
+<!-- FLOATING PARTICLES -->
+<div id="particles"></div>
 
-<!-- NAV -->
-<nav>
-  <div class="logo" onclick="showHome()">
-    <div class="logo-icon">🧠</div>
-    <div>
-      <div class="logo-text">STU-BRAIN</div>
-    </div>
+<!-- XP POPUP -->
+<div id="xpPopup">🌟 +<span id="xpAmt">0</span> XP!</div>
+
+<!-- ════════════════════════════════
+     NAVIGATION
+════════════════════════════════ -->
+<nav id="mainNav">
+  <div class="logo" onclick="goHome()">
+    <div class="logo-orb">🧠</div>
+    <span class="logo-name">STU-BRAIN</span>
   </div>
-  <ul class="nav-classes" id="navClasses">
-    <li><button onclick="openClass(3)" class="active">Class 3–4</button></li>
-    <li><button onclick="openClass(5)">Class 5–6</button></li>
-    <li><button onclick="openClass(7)">Class 7–8</button></li>
-    <li><button onclick="openClass(9)">Class 9–10</button></li>
-    <li><button onclick="openClass(11)">Class 11–12</button></li>
-  </ul>
+  <div class="nav-right">
+    <button class="nav-class-btn" onclick="openClass(3)">🌱 Cl 3–4</button>
+    <button class="nav-class-btn" onclick="openClass(5)">🔬 Cl 5–6</button>
+    <button class="nav-class-btn" onclick="openClass(7)">🚀 Cl 7–8</button>
+    <button class="nav-class-btn" onclick="openClass(9)">⚡ Cl 9–10</button>
+    <button class="nav-class-btn" onclick="openClass(11)">🏆 Cl 11–12</button>
+    <div class="xp-display">⭐ <span id="totalXPDisp">0</span> XP</div>
+  </div>
 </nav>
 
-<!-- HOME -->
-<section class="hero" id="home">
-  <div class="hero-bg"></div>
-  <div class="hero-content">
-    <div class="hero-badge">✨ India's #1 Future-Tech Learning Platform for Students</div>
-    <h1 class="hero-title">Learn <span class="grad">AI & Robotics</span><br/>from Class 3 itself!</h1>
-    <p class="hero-sub">Full chapter-wise learning with animations, real-life examples & interactive quizzes — for Classes 3 to 12!</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="openClass(3)">🎮 Start Learning Now</button>
-      <button class="btn-secondary" onclick="document.getElementById('app').scrollIntoView()">📚 View All Classes</button>
+<!-- ════════════════════════════════
+     HOME PAGE
+════════════════════════════════ -->
+<div id="homePage">
+  <section class="home-hero">
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-inner">
+      <div class="hero-tag">🚀 India's #1 AI & Future-Tech Learning Platform</div>
+      <h1 class="hero-h1">
+        Learn <span class="grad-text">AI, Robotics</span><br>& The Future — Now!
+      </h1>
+      <p class="hero-sub">
+        Full chapter-wise learning with <strong>animated lessons</strong>, real-life examples, interactive quizzes & XP rewards — for Classes <strong>3 to 12</strong>!
+      </p>
     </div>
-    <div class="class-pills">
-      <button class="pill pill-1" onclick="openClass(3)">🌱 Class 3–4</button>
-      <button class="pill pill-2" onclick="openClass(5)">🔬 Class 5–6</button>
-      <button class="pill pill-2" onclick="openClass(7)">🚀 Class 7–8</button>
-      <button class="pill pill-3" onclick="openClass(9)">⚡ Class 9–10</button>
-      <button class="pill pill-4" onclick="openClass(11)">🏆 Class 11–12</button>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- LEARNING APP -->
-<div id="app">
-  <div class="app-header">
-    <button class="back-btn" onclick="showHome()">← Back</button>
-    <div class="app-title" id="appTitle">🌱 Class 3–4 · AI & Robotics</div>
-    <div class="app-badge" id="appBadge" style="background:rgba(67,233,123,0.15);color:#43E97B;border:1px solid rgba(67,233,123,0.3)">Tier 1</div>
-  </div>
-
-  <div class="app-body">
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-      <div class="sidebar-title">📚 Subjects & Chapters</div>
-      <ul class="subject-list" id="subjectList"></ul>
-      <div class="progress-section">
-        <div class="progress-label"><span>Progress</span><span id="progressPct">0%</span></div>
-        <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="class-grid">
+    <!-- Class 3–4 -->
+    <div class="class-card cc-1" style="animation-delay:.1s" onclick="openClass(3)">
+      <div class="card-tier" style="color:#10B981">🟢 Starter Level</div>
+      <span class="card-emoji">🌱</span>
+      <div class="card-title">Class 3 – 4</div>
+      <div class="card-sub">Begin your AI journey! Learn what AI is, how robots work, and see how tech helps us every day.</div>
+      <div class="card-topics">
+        <span class="topic-chip">🤖 What is AI?</span>
+        <span class="topic-chip">🦾 Robotics</span>
+        <span class="topic-chip">🧠 How Computers Think</span>
+        <span class="topic-chip">🎮 AI in Games</span>
       </div>
+      <button class="card-start-btn" style="background:linear-gradient(135deg,#10B981,#059669);color:#fff">
+        🚀 Start Learning → 4 Chapters
+      </button>
     </div>
 
-    <!-- MAIN -->
-    <div class="main-content" id="mainContent">
-      <div class="lesson-area active" id="welcomeLesson">
-        <div class="lesson-header">
-          <div class="lesson-class">WELCOME TO STU-BRAIN</div>
-          <div class="lesson-title">Choose a chapter to start! 🚀</div>
-          <div class="lesson-desc">Click any chapter in the sidebar to begin your learning journey. Each chapter has animations, real-life examples and a quiz!</div>
-        </div>
-        <div class="visual-row">
-          <div class="visual-card"><span class="visual-icon">🎬</span><div class="visual-label">Animations</div><div class="visual-desc">See concepts come alive</div></div>
-          <div class="visual-card"><span class="visual-icon">🌍</span><div class="visual-label">Real Examples</div><div class="visual-desc">Connect to your world</div></div>
-          <div class="visual-card"><span class="visual-icon">🧩</span><div class="visual-label">Quizzes</div><div class="visual-desc">Test your knowledge</div></div>
-          <div class="visual-card"><span class="visual-icon">🏆</span><div class="visual-label">XP Points</div><div class="visual-desc">Earn as you learn</div></div>
-        </div>
+    <!-- Class 5–6 -->
+    <div class="class-card cc-2" style="animation-delay:.2s" onclick="openClass(5)">
+      <div class="card-tier" style="color:#A855F7">🟣 Explorer Level</div>
+      <span class="card-emoji">🔬</span>
+      <div class="card-title">Class 5 – 6</div>
+      <div class="card-sub">Discover how AI sees, hears and speaks. Understand Computer Vision and how robots sense the world.</div>
+      <div class="card-topics">
+        <span class="topic-chip">👁️ Computer Vision</span>
+        <span class="topic-chip">📡 Sensors & Lidar</span>
+        <span class="topic-chip">🎤 Speech AI</span>
+        <span class="topic-chip">🚗 Self-Driving Cars</span>
       </div>
+      <button class="card-start-btn" style="background:linear-gradient(135deg,#7C3AED,#A855F7);color:#fff">
+        🚀 Start Learning → 4 Chapters
+      </button>
+    </div>
+
+    <!-- Class 7–8 -->
+    <div class="class-card cc-3" style="animation-delay:.3s" onclick="openClass(7)">
+      <div class="card-tier" style="color:#06B6D4">🔵 Builder Level</div>
+      <span class="card-emoji">🚀</span>
+      <div class="card-title">Class 7 – 8</div>
+      <div class="card-sub">Dive into Machine Learning and start coding in Python. Learn how computers learn from data!</div>
+      <div class="card-topics">
+        <span class="topic-chip">📊 Machine Learning</span>
+        <span class="topic-chip">🐍 Python Coding</span>
+        <span class="topic-chip">🌳 Decision Trees</span>
+        <span class="topic-chip">📈 Data & Patterns</span>
+      </div>
+      <button class="card-start-btn" style="background:linear-gradient(135deg,#0891B2,#06B6D4);color:#fff">
+        🚀 Start Learning → 4 Chapters
+      </button>
+    </div>
+
+    <!-- Class 9–10 -->
+    <div class="class-card cc-4" style="animation-delay:.4s" onclick="openClass(9)">
+      <div class="card-tier" style="color:#F59E0B">🟡 Advanced Level</div>
+      <span class="card-emoji">⚡</span>
+      <div class="card-title">Class 9 – 10</div>
+      <div class="card-sub">Go deep into Neural Networks and Prompt Engineering. Build your first AI mindset!</div>
+      <div class="card-topics">
+        <span class="topic-chip">🧬 Neural Networks</span>
+        <span class="topic-chip">🔙 Backpropagation</span>
+        <span class="topic-chip">✍️ Prompt Engineering</span>
+        <span class="topic-chip">🖼️ Deep Learning</span>
+      </div>
+      <button class="card-start-btn" style="background:linear-gradient(135deg,#D97706,#F59E0B);color:#0a0a1a">
+        🚀 Start Learning → 5 Chapters
+      </button>
+    </div>
+
+    <!-- Class 11–12 -->
+    <div class="class-card cc-5" style="animation-delay:.5s" onclick="openClass(11)">
+      <div class="card-tier" style="color:#EC4899">🔴 Expert Level</div>
+      <span class="card-emoji">🏆</span>
+      <div class="card-title">Class 11 – 12</div>
+      <div class="card-sub">Master LLMs, Transformers, RAG and build real AI applications. The future belongs to you!</div>
+      <div class="card-topics">
+        <span class="topic-chip">🦙 LLMs & GPT</span>
+        <span class="topic-chip">⚡ Transformers</span>
+        <span class="topic-chip">🔗 RAG Systems</span>
+        <span class="topic-chip">🛠️ Build AI Apps</span>
+      </div>
+      <button class="card-start-btn" style="background:linear-gradient(135deg,#BE185D,#EC4899);color:#fff">
+        🚀 Start Learning → 5 Chapters
+      </button>
     </div>
   </div>
 </div>
 
-<script>
-// ═══════════════════════════════════════════
-// CURRICULUM DATA
-// ═══════════════════════════════════════════
-const curriculum = {
-  3: {
-    label: "Class 3–4", badge: "Tier 1", badgeColor: "rgba(67,233,123,0.15)", badgeText: "#43E97B", icon: "🌱",
-    subjects: [
-      {
-        id: "ai-basics", icon: "🤖", name: "Artificial Intelligence",
-        chapters: [
-          {
-            id: "what-is-ai", title: "What is AI?", icon: "🧠", xp: 20,
-            lesson: () => `
-              <div class="lesson-header">
-                <div class="lesson-class">CLASS 3–4 · ARTIFICIAL INTELLIGENCE · CHAPTER 1</div>
-                <div class="lesson-title">🧠 What is Artificial Intelligence?</div>
-                <div class="lesson-desc">Let's discover what AI means and how it helps us every day!</div>
-              </div>
-              <div class="anim-box">
-                <div class="anim-stage">
-                  <div class="bot bot-primary">🤖</div>
-                  <div class="speech">
-                    Hi! I'm <span class="hi">Brainbot</span>! 👋<br><br>
-                    <strong>AI = Artificial Intelligence</strong><br><br>
-                    <em>Artificial</em> means <span class="em">made by humans</span>.<br>
-                    <em>Intelligence</em> means <span class="em">ability to think</span>.<br><br>
-                    So AI = <span class="hi">computers that can think & learn!</span> 🎉
-                  </div>
-                </div>
-              </div>
-              <div class="visual-row">
-                <div class="visual-card" style="animation-delay:.1s"><span class="visual-icon">👶</span><div class="visual-label">Baby Learns</div><div class="visual-desc">By watching & trying</div></div>
-                <div class="visual-card" style="animation-delay:.2s"><span class="visual-icon">🤖</span><div class="visual-label">AI Learns</div><div class="visual-desc">By reading lots of data</div></div>
-                <div class="visual-card" style="animation-delay:.3s"><span class="visual-icon">🎯</span><div class="visual-label">AI Decides</div><div class="visual-desc">By recognizing patterns</div></div>
-              </div>
-              <div class="concepts">
-                <button class="chip chip-blue">🧠 Intelligence</button>
-                <button class="chip chip-green">📊 Data</button>
-                <button class="chip chip-pink">🎯 Patterns</button>
-                <button class="chip chip-yellow">🤖 Robots</button>
-              </div>
-              <h3 style="font-family:'Fredoka One';font-size:20px;margin:20px 0 12px">🌍 AI in Your Daily Life!</h3>
-              <div class="examples">
-                <div class="example-card"><div class="example-icon">🎵</div><div class="example-title">Spotify</div><div class="example-desc">AI picks songs you'll love based on what you listen to!</div></div>
-                <div class="example-card"><div class="example-icon">📱</div><div class="example-title">Face Unlock</div><div class="example-desc">AI recognizes YOUR face to unlock your phone!</div></div>
-                <div class="example-card"><div class="example-icon">🎮</div><div class="example-title">Game Enemies</div><div class="example-desc">AI controls game characters to make them smart!</div></div>
-                <div class="example-card"><div class="example-icon">🔍</div><div class="example-title">Google Search</div><div class="example-desc">AI understands your question and finds answers!</div></div>
-              </div>
-              <div class="quiz-section">
-                <div class="quiz-title">🎯 Quick Quiz!</div>
-                <div class="quiz-q">What does "Artificial" in Artificial Intelligence mean?</div>
-                <div class="quiz-options">
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">A) Made by nature 🌳</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'correct')">B) Made by humans 👨‍💻</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">C) Made by animals 🐘</button>
-                </div>
-                <div class="quiz-feedback" id="qfeedback"></div>
-              </div>`
-          },
-          {
-            id: "types-ai", title: "Types of AI", icon: "🔢", xp: 20,
-            lesson: () => `
-              <div class="lesson-header">
-                <div class="lesson-class">CLASS 3–4 · ARTIFICIAL INTELLIGENCE · CHAPTER 2</div>
-                <div class="lesson-title">🔢 Types of AI</div>
-                <div class="lesson-desc">AI comes in different shapes and sizes — just like superheroes!</div>
-              </div>
-              <div class="anim-box">
-                <div class="anim-stage">
-                  <div class="bot bot-happy">😊</div>
-                  <div class="speech">
-                    AI has <span class="hi">3 types</span> — like superhero levels! 🦸<br><br>
-                    🐣 <strong>Narrow AI</strong> — does ONE thing super well<br>
-                    🧠 <strong>General AI</strong> — thinks like humans (future!)<br>
-                    🚀 <strong>Super AI</strong> — smarter than everyone (future!)
-                  </div>
-                </div>
-              </div>
-              <div class="flow">
-                <div class="flow-step highlight"><span class="flow-icon">🐣</span><div class="flow-label">Narrow AI</div><div style="font-size:11px;color:var(--muted)">Exists today!</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step"><span class="flow-icon">🧠</span><div class="flow-label">General AI</div><div style="font-size:11px;color:var(--muted)">In progress...</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step"><span class="flow-icon">🚀</span><div class="flow-label">Super AI</div><div style="font-size:11px;color:var(--muted)">Future dream!</div></div>
-              </div>
-              <div class="examples">
-                <div class="example-card"><div class="example-icon">🎵</div><div class="example-title">Narrow AI Example</div><div class="example-desc">Alexa understands your voice but can't paint a picture!</div></div>
-                <div class="example-card"><div class="example-icon">💬</div><div class="example-title">ChatGPT</div><div class="example-desc">Narrow AI — amazing at chat but can't drive a car!</div></div>
-                <div class="example-card"><div class="example-icon">🤖</div><div class="example-title">General AI</div><div class="example-desc">Like a human — can do ANYTHING. Scientists are working on it!</div></div>
-              </div>
-              <div class="quiz-section">
-                <div class="quiz-title">🎯 Quick Quiz!</div>
-                <div class="quiz-q">Which type of AI exists RIGHT NOW in 2025?</div>
-                <div class="quiz-options">
-                  <button class="quiz-opt" onclick="checkQuiz(this,'correct')">A) Narrow AI 🐣</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">B) General AI 🧠</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">C) Super AI 🚀</button>
-                </div>
-                <div class="quiz-feedback" id="qfeedback"></div>
-              </div>`
-          }
-        ]
-      },
-      {
-        id: "robotics-3", icon: "🦾", name: "Robotics Basics",
-        chapters: [
-          {
-            id: "what-is-robot", title: "What is a Robot?", icon: "🦾", xp: 20,
-            lesson: () => `
-              <div class="lesson-header">
-                <div class="lesson-class">CLASS 3–4 · ROBOTICS · CHAPTER 1</div>
-                <div class="lesson-title">🦾 What is a Robot?</div>
-                <div class="lesson-desc">Robots are everywhere — even in your home!</div>
-              </div>
-              <div class="anim-box">
-                <div class="anim-stage">
-                  <div class="bot bot-fire">🦾</div>
-                  <div class="speech">
-                    A robot needs <span class="hi">3 things</span>:<br><br>
-                    👁️ <strong>Sensors</strong> — to SEE the world<br>
-                    🧠 <strong>Brain (computer)</strong> — to THINK<br>
-                    💪 <strong>Actuators</strong> — to MOVE & DO things<br><br>
-                    Just like <span class="em">YOU</span> have eyes, brain & hands! 🙌
-                  </div>
-                </div>
-              </div>
-              <div class="visual-row">
-                <div class="visual-card"><span class="visual-icon">👁️</span><div class="visual-label">Sensors</div><div class="visual-desc">Camera, mic, touch, heat</div></div>
-                <div class="visual-card"><span class="visual-icon">🧠</span><div class="visual-label">Computer Brain</div><div class="visual-desc">Processes the information</div></div>
-                <div class="visual-card"><span class="visual-icon">💪</span><div class="visual-label">Actuators</div><div class="visual-desc">Motors, wheels, arms</div></div>
-              </div>
-              <h3 style="font-family:'Fredoka One';font-size:20px;margin:20px 0 12px">🌍 Robots Around You!</h3>
-              <div class="examples">
-                <div class="example-card"><div class="example-icon">🧹</div><div class="example-title">Roomba</div><div class="example-desc">Robot vacuum that cleans your floor by itself!</div></div>
-                <div class="example-card"><div class="example-icon">🚗</div><div class="example-title">Self-Driving Car</div><div class="example-desc">Tesla uses robot technology to drive on its own!</div></div>
-                <div class="example-card"><div class="example-icon">🏭</div><div class="example-title">Factory Robots</div><div class="example-desc">Build cars and phones faster than any human!</div></div>
-                <div class="example-card"><div class="example-icon">🚀</div><div class="example-title">Mars Rover</div><div class="example-desc">NASA's robot exploring planet Mars right now!</div></div>
-              </div>
-              <div class="quiz-section">
-                <div class="quiz-title">🎯 Quick Quiz!</div>
-                <div class="quiz-q">What do "Sensors" help a robot do?</div>
-                <div class="quiz-options">
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">A) Move its arms 💪</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'correct')">B) See and feel the world 👁️</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">C) Talk to humans 💬</button>
-                </div>
-                <div class="quiz-feedback" id="qfeedback"></div>
-              </div>`
-          }
-        ]
-      }
-    ]
-  },
-  7: {
-    label: "Class 7–8", badge: "Tier 2", badgeColor: "rgba(108,99,255,0.15)", badgeText: "#6C63FF", icon: "🚀",
-    subjects: [
-      {
-        id: "ml-7", icon: "📊", name: "Machine Learning",
-        chapters: [
-          {
-            id: "what-is-ml", title: "What is ML?", icon: "📊", xp: 30,
-            lesson: () => `
-              <div class="lesson-header">
-                <div class="lesson-class">CLASS 7–8 · MACHINE LEARNING · CHAPTER 1</div>
-                <div class="lesson-title">📊 What is Machine Learning?</div>
-                <div class="lesson-desc">The most exciting part of AI — where computers actually LEARN!</div>
-              </div>
-              <div class="anim-box">
-                <div class="anim-stage">
-                  <div class="bot bot-primary">🤖</div>
-                  <div class="speech">
-                    Imagine teaching your <span class="hi">little sibling</span> to recognize a cat 🐱<br><br>
-                    You show them <strong>1000 cat photos</strong> → they learn what a cat looks like!<br><br>
-                    <span class="em">That's exactly Machine Learning!</span><br>
-                    We show computers thousands of examples → they LEARN on their own! 🚀
-                  </div>
-                </div>
-              </div>
-              <div class="flow">
-                <div class="flow-step"><span class="flow-icon">📦</span><div class="flow-label">Input Data</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step highlight"><span class="flow-icon">🤖</span><div class="flow-label">ML Model</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step"><span class="flow-icon">🔄</span><div class="flow-label">Learning</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step"><span class="flow-icon">🎯</span><div class="flow-label">Prediction</div></div>
-              </div>
-              <div class="concepts">
-                <button class="chip chip-blue">📌 Training Data</button>
-                <button class="chip chip-green">✅ Pattern Recognition</button>
-                <button class="chip chip-pink">🎯 Prediction</button>
-                <button class="chip chip-yellow">🔁 Feedback Loop</button>
-              </div>
-              <div class="examples">
-                <div class="example-card"><div class="example-icon">📧</div><div class="example-title">Spam Filter</div><div class="example-desc">Gmail ML learns which emails are spam from millions of examples!</div></div>
-                <div class="example-card"><div class="example-icon">🎬</div><div class="example-title">Netflix</div><div class="example-desc">ML watches what you watch and predicts what you'll like next!</div></div>
-                <div class="example-card"><div class="example-icon">🏦</div><div class="example-title">Bank Fraud</div><div class="example-desc">ML detects suspicious transactions to protect your money!</div></div>
-              </div>
-              <div class="quiz-section">
-                <div class="quiz-title">🎯 Quick Quiz!</div>
-                <div class="quiz-q">In Machine Learning, what do we give the computer to help it learn?</div>
-                <div class="quiz-options">
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">A) Instructions for every situation 📝</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'correct')">B) Lots of examples (training data) 📦</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">C) A textbook to read 📚</button>
-                </div>
-                <div class="quiz-feedback" id="qfeedback"></div>
-              </div>`
-          },
-          {
-            id: "ml-types", title: "Types of ML", icon: "🌳", xp: 30,
-            lesson: () => `
-              <div class="lesson-header">
-                <div class="lesson-class">CLASS 7–8 · MACHINE LEARNING · CHAPTER 2</div>
-                <div class="lesson-title">🌳 Types of Machine Learning</div>
-                <div class="lesson-desc">There are 3 ways machines can learn — each is unique!</div>
-              </div>
-              <div class="anim-box">
-                <div class="anim-stage">
-                  <div class="bot bot-happy">🤔</div>
-                  <div class="speech">
-                    Three ways to teach a machine:<br><br>
-                    👨‍🏫 <strong>Supervised</strong> — Teacher gives answers<br>
-                    🕵️ <strong>Unsupervised</strong> — Find patterns alone<br>
-                    🎮 <strong>Reinforcement</strong> — Learn by trial & reward<br><br>
-                    Like <span class="hi">3 different schools!</span> 🏫
-                  </div>
-                </div>
-              </div>
-              <div class="visual-row">
-                <div class="visual-card" style="animation-delay:.1s">
-                  <span class="visual-icon">👨‍🏫</span>
-                  <div class="visual-label">Supervised</div>
-                  <div class="visual-desc">Teacher gives correct labels. Example: Email spam or not spam</div>
-                </div>
-                <div class="visual-card" style="animation-delay:.2s">
-                  <span class="visual-icon">🕵️</span>
-                  <div class="visual-label">Unsupervised</div>
-                  <div class="visual-desc">No labels! AI groups similar things. Example: Customer groups</div>
-                </div>
-                <div class="visual-card" style="animation-delay:.3s">
-                  <span class="visual-icon">🎮</span>
-                  <div class="visual-label">Reinforcement</div>
-                  <div class="visual-desc">Reward for right moves! Example: AI learning to play chess</div>
-                </div>
-              </div>
-              <div class="examples">
-                <div class="example-card"><div class="example-icon">🐶</div><div class="example-title">Supervised — Dog vs Cat</div><div class="example-desc">Show 10,000 labeled photos → AI learns to tell dogs from cats!</div></div>
-                <div class="example-card"><div class="example-icon">🛍️</div><div class="example-title">Unsupervised — Shopping</div><div class="example-desc">Amazon groups customers by behavior without being told how!</div></div>
-                <div class="example-card"><div class="example-icon">♟️</div><div class="example-title">Reinforcement — Chess</div><div class="example-desc">AlphaGo played millions of games and became world champion!</div></div>
-              </div>
-              <div class="quiz-section">
-                <div class="quiz-title">🎯 Quick Quiz!</div>
-                <div class="quiz-q">Which type of ML does AlphaGo (chess AI) use to become better?</div>
-                <div class="quiz-options">
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">A) Supervised Learning 👨‍🏫</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">B) Unsupervised Learning 🕵️</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'correct')">C) Reinforcement Learning 🎮</button>
-                </div>
-                <div class="quiz-feedback" id="qfeedback"></div>
-              </div>`
-          }
-        ]
-      },
-      {
-        id: "python-7", icon: "🐍", name: "Python Basics",
-        chapters: [
-          {
-            id: "intro-python", title: "Intro to Python", icon: "🐍", xp: 25,
-            lesson: () => `
-              <div class="lesson-header">
-                <div class="lesson-class">CLASS 7–8 · PYTHON · CHAPTER 1</div>
-                <div class="lesson-title">🐍 Introduction to Python</div>
-                <div class="lesson-desc">Python is the most popular language for AI and ML!</div>
-              </div>
-              <div class="anim-box">
-                <div class="anim-stage">
-                  <div class="bot bot-primary">🐍</div>
-                  <div class="speech">
-                    Python is a <span class="hi">programming language</span>!<br><br>
-                    It's like a recipe — you write <strong>instructions</strong> and the computer FOLLOWS them!<br><br>
-                    Why Python? It's <span class="em">simple, powerful</span>, and used by<br>
-                    Google, Netflix, Instagram & NASA! 🚀
-                  </div>
-                </div>
-              </div>
-              <div style="background:#0a0a1a;border:1px solid var(--border);border-radius:16px;padding:20px;margin:20px 0;font-family:monospace">
-                <div style="display:flex;gap:6px;margin-bottom:12px"><span style="width:10px;height:10px;border-radius:50%;background:#FF5F57;display:block"></span><span style="width:10px;height:10px;border-radius:50%;background:#FFBD2E;display:block"></span><span style="width:10px;height:10px;border-radius:50%;background:#27C93F;display:block"></span></div>
-                <div style="color:#43E97B"># Your first Python program! 🎉</div>
-                <div style="color:#FFD166">print<span style="color:#FF6584">(</span><span style="color:#43E97B">"Hello, STU-BRAIN!"</span><span style="color:#FF6584">)</span></div>
-                <div style="color:#6C63FF">name = <span style="color:#43E97B">"Vaibhav"</span></div>
-                <div style="color:#FFD166">print<span style="color:#FF6584">(</span><span style="color:#43E97B">"Welcome, "</span> + name<span style="color:#FF6584">)</span></div>
-                <div style="color:#9090BB;margin-top:8px"># Output:</div>
-                <div style="color:#F0F0FF">Hello, STU-BRAIN!</div>
-                <div style="color:#F0F0FF">Welcome, Vaibhav</div>
-              </div>
-              <div class="concepts">
-                <button class="chip chip-green">🖨️ print()</button>
-                <button class="chip chip-blue">📦 Variables</button>
-                <button class="chip chip-pink">💬 Strings</button>
-                <button class="chip chip-yellow">➕ Operators</button>
-              </div>
-              <div class="examples">
-                <div class="example-card"><div class="example-icon">🌐</div><div class="example-title">Instagram</div><div class="example-desc">Written in Python! 1 billion users served by Python code.</div></div>
-                <div class="example-card"><div class="example-icon">🎬</div><div class="example-title">Netflix</div><div class="example-desc">Uses Python for recommendations and streaming optimization.</div></div>
-                <div class="example-card"><div class="example-icon">🔭</div><div class="example-title">NASA</div><div class="example-desc">Python powers space exploration data analysis!</div></div>
-              </div>
-              <div class="quiz-section">
-                <div class="quiz-title">🎯 Quick Quiz!</div>
-                <div class="quiz-q">Which Python command is used to show text on screen?</div>
-                <div class="quiz-options">
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">A) show("Hello") 💬</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'correct')">B) print("Hello") 🖨️</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">C) display("Hello") 📺</button>
-                </div>
-                <div class="quiz-feedback" id="qfeedback"></div>
-              </div>`
-          }
-        ]
-      }
-    ]
-  },
-  9: {
-    label: "Class 9–10", badge: "Tier 2", badgeColor: "rgba(108,99,255,0.15)", badgeText: "#6C63FF", icon: "⚡",
-    subjects: [
-      {
-        id: "dl-9", icon: "🧬", name: "Deep Learning",
-        chapters: [
-          {
-            id: "neural-networks", title: "Neural Networks", icon: "🧬", xp: 40,
-            lesson: () => `
-              <div class="lesson-header">
-                <div class="lesson-class">CLASS 9–10 · DEEP LEARNING · CHAPTER 1</div>
-                <div class="lesson-title">🧬 Neural Networks</div>
-                <div class="lesson-desc">How AI brains work — inspired by YOUR brain!</div>
-              </div>
-              <div class="anim-box">
-                <div class="anim-stage">
-                  <div class="bot bot-primary">🧬</div>
-                  <div class="speech">
-                    Your brain has <span class="hi">86 billion neurons</span>!<br><br>
-                    Neural Networks copy this idea:<br>
-                    <strong>Artificial neurons</strong> connected together,<br>
-                    passing signals & learning patterns.<br><br>
-                    The DEEPER the network → <span class="em">the smarter it gets!</span> 🚀
-                  </div>
-                </div>
-              </div>
-              <h3 style="font-family:'Fredoka One';font-size:18px;margin:20px 0 12px">🧠 How a Neural Network Looks:</h3>
-              <div class="neural-net">
-                <div class="nn-layer nn-input">
-                  <div class="nn-node">X1</div>
-                  <div class="nn-node">X2</div>
-                  <div class="nn-node">X3</div>
-                  <div class="nn-label">Input Layer<br>📥 Data In</div>
-                </div>
-                <div class="nn-arrow">⇒</div>
-                <div class="nn-layer nn-hidden">
-                  <div class="nn-node">H1</div>
-                  <div class="nn-node">H2</div>
-                  <div class="nn-node">H3</div>
-                  <div class="nn-node">H4</div>
-                  <div class="nn-label">Hidden Layer<br>🤔 Processing</div>
-                </div>
-                <div class="nn-arrow">⇒</div>
-                <div class="nn-layer nn-hidden">
-                  <div class="nn-node">H5</div>
-                  <div class="nn-node">H6</div>
-                  <div class="nn-node">H7</div>
-                  <div class="nn-node">H8</div>
-                  <div class="nn-label">Hidden Layer 2<br>🔍 Deep Analysis</div>
-                </div>
-                <div class="nn-arrow">⇒</div>
-                <div class="nn-layer nn-output">
-                  <div class="nn-node">Y1</div>
-                  <div class="nn-node">Y2</div>
-                  <div class="nn-label">Output Layer<br>🎯 Answer!</div>
-                </div>
-              </div>
-              <div class="concepts">
-                <button class="chip chip-green">🔢 Neurons</button>
-                <button class="chip chip-blue">⚖️ Weights</button>
-                <button class="chip chip-pink">🔥 Activation</button>
-                <button class="chip chip-yellow">🔄 Backpropagation</button>
-              </div>
-              <div class="examples">
-                <div class="example-card"><div class="example-icon">🎨</div><div class="example-title">Image Recognition</div><div class="example-desc">Deep neural nets can identify 1000s of objects in photos!</div></div>
-                <div class="example-card"><div class="example-icon">🎙️</div><div class="example-title">Voice Assistants</div><div class="example-desc">Siri & Alexa use deep learning to understand speech!</div></div>
-                <div class="example-card"><div class="example-icon">🏥</div><div class="example-title">Medical Diagnosis</div><div class="example-desc">AI detects cancer in X-rays better than doctors!</div></div>
-              </div>
-              <div class="quiz-section">
-                <div class="quiz-title">🎯 Quick Quiz!</div>
-                <div class="quiz-q">What is the "Deep" in Deep Learning referring to?</div>
-                <div class="quiz-options">
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">A) Deep ocean research 🌊</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'correct')">B) Many layers in the neural network 🧬</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">C) Deep thinking by scientists 🤔</button>
-                </div>
-                <div class="quiz-feedback" id="qfeedback"></div>
-              </div>`
-          }
-        ]
-      },
-      {
-        id: "prompt-9", icon: "✍️", name: "Prompt Engineering",
-        chapters: [
-          {
-            id: "what-is-prompt", title: "What is Prompting?", icon: "✍️", xp: 35,
-            lesson: () => `
-              <div class="lesson-header">
-                <div class="lesson-class">CLASS 9–10 · PROMPT ENGINEERING · CHAPTER 1</div>
-                <div class="lesson-title">✍️ What is Prompt Engineering?</div>
-                <div class="lesson-desc">The art of talking to AI to get AMAZING results!</div>
-              </div>
-              <div class="anim-box">
-                <div class="anim-stage">
-                  <div class="bot bot-happy">✍️</div>
-                  <div class="speech">
-                    A <span class="hi">prompt</span> is what you type to AI.<br><br>
-                    Bad prompt → <span style="color:var(--s)">boring answer 😴</span><br>
-                    <strong>Great prompt → amazing answer 🤩</strong><br><br>
-                    Prompt Engineering = <span class="em">learning how to ask AI perfectly!</span><br>
-                    It's like being an AI <span class="hi">whisperer!</span> 🧙‍♂️
-                  </div>
-                </div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0">
-                <div style="background:rgba(255,101,132,0.1);border:1px solid rgba(255,101,132,0.3);border-radius:14px;padding:16px">
-                  <div style="font-weight:800;color:var(--s);margin-bottom:8px">❌ Bad Prompt</div>
-                  <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px;font-size:13px;font-family:monospace;color:#ccc">"Write something about space"</div>
-                  <div style="font-size:12px;color:var(--muted);margin-top:8px">Gets a generic, boring answer!</div>
-                </div>
-                <div style="background:rgba(67,233,123,0.1);border:1px solid rgba(67,233,123,0.3);border-radius:14px;padding:16px">
-                  <div style="font-weight:800;color:var(--a);margin-bottom:8px">✅ Great Prompt</div>
-                  <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px;font-size:13px;font-family:monospace;color:#ccc">"Write a fun 5-line poem about Mars for a 10-year-old, using rhymes"</div>
-                  <div style="font-size:12px;color:var(--muted);margin-top:8px">Gets an amazing, specific answer!</div>
-                </div>
-              </div>
-              <h3 style="font-family:'Fredoka One';font-size:18px;margin:16px 0 10px">🎯 The 4 Rules of Great Prompts:</h3>
-              <div class="visual-row">
-                <div class="visual-card"><span class="visual-icon">🎯</span><div class="visual-label">Be Specific</div><div class="visual-desc">Give details about what you want</div></div>
-                <div class="visual-card"><span class="visual-icon">👤</span><div class="visual-label">Set Context</div><div class="visual-desc">Tell AI who you are & why</div></div>
-                <div class="visual-card"><span class="visual-icon">📏</span><div class="visual-label">Set Format</div><div class="visual-desc">Bullet points? Essay? Code?</div></div>
-                <div class="visual-card"><span class="visual-icon">🔄</span><div class="visual-label">Iterate</div><div class="visual-desc">Refine based on the answer</div></div>
-              </div>
-              <div class="quiz-section">
-                <div class="quiz-title">🎯 Quick Quiz!</div>
-                <div class="quiz-q">Which prompt will give you a better answer from ChatGPT?</div>
-                <div class="quiz-options">
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">A) "Tell me about dogs" 🐶</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'correct')">B) "List 5 fun facts about Golden Retrievers for a Class 9 student, in simple English" 📝</button>
-                </div>
-                <div class="quiz-feedback" id="qfeedback"></div>
-              </div>`
-          }
-        ]
-      }
-    ]
-  },
-  11: {
-    label: "Class 11–12", badge: "Expert", badgeColor: "rgba(255,209,102,0.15)", badgeText: "#FFD166", icon: "🏆",
-    subjects: [
-      {
-        id: "llm-11", icon: "🦙", name: "LLMs & ChatGPT",
-        chapters: [
-          {
-            id: "what-is-llm", title: "What is an LLM?", icon: "🦙", xp: 50,
-            lesson: () => `
-              <div class="lesson-header">
-                <div class="lesson-class">CLASS 11–12 · LLMs & CHATGPT · CHAPTER 1</div>
-                <div class="lesson-title">🦙 What is a Large Language Model?</div>
-                <div class="lesson-desc">Understanding how ChatGPT works internally!</div>
-              </div>
-              <div class="anim-box">
-                <div class="anim-stage">
-                  <div class="bot bot-fire">🦙</div>
-                  <div class="speech">
-                    LLM = <span class="hi">Large Language Model</span><br><br>
-                    <strong>"Large"</strong> = Billions of parameters 🔢<br>
-                    <strong>"Language"</strong> = Understands text 📝<br>
-                    <strong>"Model"</strong> = Mathematical brain 🧮<br><br>
-                    Trained on <span class="em">TRILLIONS of words</span> from the internet!<br>
-                    GPT-4 has <span class="hi">1.8 Trillion parameters!</span> 🤯
-                  </div>
-                </div>
-              </div>
-              <div class="flow">
-                <div class="flow-step"><span class="flow-icon">📚</span><div class="flow-label">Trillion Words</div><div style="font-size:11px;color:var(--muted)">Training data</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step highlight"><span class="flow-icon">🔄</span><div class="flow-label">Transformer</div><div style="font-size:11px;color:var(--muted)">Architecture</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step"><span class="flow-icon">🧮</span><div class="flow-label">Parameters</div><div style="font-size:11px;color:var(--muted)">1.8T weights</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step"><span class="flow-icon">💬</span><div class="flow-label">ChatGPT!</div><div style="font-size:11px;color:var(--muted)">Predicts next word</div></div>
-              </div>
-              <h3 style="font-family:'Fredoka One';font-size:18px;margin:20px 0 10px">🎯 How ChatGPT Actually Works:</h3>
-              <div style="background:var(--card2);border:1px solid var(--border);border-radius:16px;padding:20px;margin:10px 0">
-                <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
-                  <span style="font-size:24px">🧠</span>
-                  <div>
-                    <div style="font-weight:800;font-size:14px">Next Token Prediction</div>
-                    <div style="font-size:13px;color:var(--muted)">ChatGPT predicts ONE word at a time!</div>
-                  </div>
-                </div>
-                <div style="background:#0a0a1a;border-radius:10px;padding:14px;font-family:monospace;font-size:13px">
-                  <span style="color:#43E97B">You:</span> <span style="color:#F0F0FF">"The capital of India is ___"</span><br>
-                  <span style="color:#6C63FF">GPT thinks:</span> <span style="color:#FFD166">"New" (90%), "Mumbai" (5%), "Delhi" (4%)...</span><br>
-                  <span style="color:#43E97B">Output:</span> <span style="color:#F0F0FF">"New Delhi" ✅</span>
-                </div>
-              </div>
-              <div class="examples">
-                <div class="example-card"><div class="example-icon">💬</div><div class="example-title">ChatGPT (OpenAI)</div><div class="example-desc">GPT-4 with 1.8T parameters. Most popular LLM globally!</div></div>
-                <div class="example-card"><div class="example-icon">🔵</div><div class="example-title">Gemini (Google)</div><div class="example-desc">Google's LLM trained on search data + YouTube!</div></div>
-                <div class="example-card"><div class="example-icon">🟣</div><div class="example-title">Claude (Anthropic)</div><div class="example-desc">The AI you're talking to RIGHT NOW! 😊</div></div>
-              </div>
-              <div class="quiz-section">
-                <div class="quiz-title">🎯 Quick Quiz!</div>
-                <div class="quiz-q">What does an LLM fundamentally do at each step of generating text?</div>
-                <div class="quiz-options">
-                  <button class="quiz-opt" onclick="checkQuiz(this,'correct')">A) Predicts the most likely next word/token 🎯</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">B) Searches Google for answers 🔍</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">C) Copies text from books 📚</button>
-                </div>
-                <div class="quiz-feedback" id="qfeedback"></div>
-              </div>`
-          }
-        ]
-      },
-      {
-        id: "rag-11", icon: "🔗", name: "RAG Systems",
-        chapters: [
-          {
-            id: "what-is-rag", title: "What is RAG?", icon: "🔗", xp: 50,
-            lesson: () => `
-              <div class="lesson-header">
-                <div class="lesson-class">CLASS 11–12 · RAG SYSTEMS · CHAPTER 1</div>
-                <div class="lesson-title">🔗 Retrieval Augmented Generation</div>
-                <div class="lesson-desc">How to make AI smarter by giving it your own knowledge!</div>
-              </div>
-              <div class="anim-box">
-                <div class="anim-stage">
-                  <div class="bot bot-primary">🔗</div>
-                  <div class="speech">
-                    <span class="hi">RAG</span> = Retrieval Augmented Generation<br><br>
-                    Problem: ChatGPT doesn't know YOUR company's data!<br><br>
-                    Solution: <strong>RAG fetches relevant docs</strong> before answering!<br><br>
-                    Like giving AI a <span class="em">custom textbook</span> before an exam! 📚
-                  </div>
-                </div>
-              </div>
-              <div class="flow">
-                <div class="flow-step"><span class="flow-icon">❓</span><div class="flow-label">User Question</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step"><span class="flow-icon">🔍</span><div class="flow-label">Search Docs</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step highlight"><span class="flow-icon">📄</span><div class="flow-label">Retrieve</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step"><span class="flow-icon">🤖</span><div class="flow-label">LLM + Context</div></div>
-                <div class="flow-arrow">→</div>
-                <div class="flow-step"><span class="flow-icon">✅</span><div class="flow-label">Answer!</div></div>
-              </div>
-              <div class="examples">
-                <div class="example-card"><div class="example-icon">🏢</div><div class="example-title">Company Chatbot</div><div class="example-desc">RAG reads your company docs to answer employee questions!</div></div>
-                <div class="example-card"><div class="example-icon">⚖️</div><div class="example-title">Legal AI</div><div class="example-desc">RAG searches thousands of legal cases to give accurate advice!</div></div>
-                <div class="example-card"><div class="example-icon">🏥</div><div class="example-title">Medical AI</div><div class="example-desc">RAG reads latest research papers to answer doctor queries!</div></div>
-              </div>
-              <div class="quiz-section">
-                <div class="quiz-title">🎯 Quick Quiz!</div>
-                <div class="quiz-q">What problem does RAG solve for LLMs like ChatGPT?</div>
-                <div class="quiz-options">
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">A) Makes them faster ⚡</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'correct')">B) Gives them access to custom/private knowledge 📚</button>
-                  <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">C) Makes them cheaper 💰</button>
-                </div>
-                <div class="quiz-feedback" id="qfeedback"></div>
-              </div>`
-          }
-        ]
-      }
-    ]
-  }
-};
+<!-- ════════════════════════════════
+     LEARNING APP
+════════════════════════════════ -->
+<div id="learningApp">
+  <div class="app-topbar">
+    <button class="back-home" onclick="goHome()">← Home</button>
+    <div class="topbar-class-name" id="topbarTitle">Class 3–4</div>
+    <div class="topbar-badge" id="topbarBadge">Starter</div>
+    <div class="topbar-progress">
+      <div class="prog-bar-wrap"><div class="prog-bar-fill" id="progFill" style="width:0%"></div></div>
+      <div class="prog-label" id="progLabel">0%</div>
+    </div>
+  </div>
 
-// Classes 5-6 reuse Class 3-4 structure but with higher content
-curriculum[5] = {
-  label: "Class 5–6", badge: "Tier 1", badgeColor: "rgba(67,233,123,0.15)", badgeText: "#43E97B", icon: "🔬",
-  subjects: [
-    {
-      id: "ai-5", icon: "🤖", name: "AI Applications",
-      chapters: [
-        {
-          id: "ai-sensors", title: "How AI Sees & Hears", icon: "👁️", xp: 25,
-          lesson: () => `
-            <div class="lesson-header">
-              <div class="lesson-class">CLASS 5–6 · AI APPLICATIONS · CHAPTER 1</div>
-              <div class="lesson-title">👁️ How AI Sees & Hears</div>
-              <div class="lesson-desc">AI has eyes and ears too — but they work very differently!</div>
-            </div>
-            <div class="anim-box">
-              <div class="anim-stage">
-                <div class="bot bot-happy">👁️</div>
-                <div class="speech">
-                  When AI "sees" a photo, it breaks it into<br>
-                  millions of tiny dots called <span class="hi">pixels</span>!<br><br>
-                  Each pixel has a number → AI reads numbers →<br>
-                  <strong>AI understands the image!</strong><br><br>
-                  Your 12MP phone camera = <span class="em">12 million pixels!</span> 📸
-                </div>
-              </div>
-            </div>
-            <div class="flow">
-              <div class="flow-step"><span class="flow-icon">📸</span><div class="flow-label">Photo</div></div>
-              <div class="flow-arrow">→</div>
-              <div class="flow-step"><span class="flow-icon">🔢</span><div class="flow-label">Pixels → Numbers</div></div>
-              <div class="flow-arrow">→</div>
-              <div class="flow-step highlight"><span class="flow-icon">🧠</span><div class="flow-label">AI Processes</div></div>
-              <div class="flow-arrow">→</div>
-              <div class="flow-step"><span class="flow-icon">🎯</span><div class="flow-label">"It's a cat!"</div></div>
-            </div>
-            <div class="examples">
-              <div class="example-card"><div class="example-icon">📷</div><div class="example-title">Google Lens</div><div class="example-desc">Point camera at anything — AI tells you what it is!</div></div>
-              <div class="example-card"><div class="example-icon">😊</div><div class="example-title">Face Filter</div><div class="example-desc">Snapchat AI finds your face in 60 frames per second!</div></div>
-              <div class="example-card"><div class="example-icon">🎙️</div><div class="example-title">Voice Recognition</div><div class="example-desc">AI converts sound waves to numbers to understand speech!</div></div>
-            </div>
-            <div class="quiz-section">
-              <div class="quiz-title">🎯 Quick Quiz!</div>
-              <div class="quiz-q">When AI processes an image, what does it actually read?</div>
-              <div class="quiz-options">
-                <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">A) The colors it sees 🎨</button>
-                <button class="quiz-opt" onclick="checkQuiz(this,'correct')">B) Numbers (pixel values) 🔢</button>
-                <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">C) The story in the image 📖</button>
-              </div>
-              <div class="quiz-feedback" id="qfeedback"></div>
-            </div>`
-        }
-      ]
-    },
-    {
-      id: "robotics-5", icon: "⚙️", name: "Robotics Projects",
-      chapters: [
-        {
-          id: "sensors-5", title: "How Robots Sense", icon: "⚙️", xp: 25,
-          lesson: () => `
-            <div class="lesson-header">
-              <div class="lesson-class">CLASS 5–6 · ROBOTICS PROJECTS · CHAPTER 1</div>
-              <div class="lesson-title">⚙️ How Robots Sense the World</div>
-              <div class="lesson-desc">Robots have amazing senses — some better than humans!</div>
-            </div>
-            <div class="anim-box">
-              <div class="anim-stage">
-                <div class="bot bot-fire">⚙️</div>
-                <div class="speech">
-                  Robots use <span class="hi">sensors</span> to feel the world:<br><br>
-                  📷 Camera → Vision<br>
-                  🎤 Microphone → Hearing<br>
-                  🌡️ Temperature sensor → Heat<br>
-                  📡 Lidar → 3D mapping<br><br>
-                  Self-driving cars use <span class="em">ALL of these together!</span> 🚗
-                </div>
-              </div>
-            </div>
-            <div class="visual-row">
-              <div class="visual-card"><span class="visual-icon">📷</span><div class="visual-label">Camera</div><div class="visual-desc">Sees 360° around the car</div></div>
-              <div class="visual-card"><span class="visual-icon">📡</span><div class="visual-label">LiDAR</div><div class="visual-desc">Laser maps 3D world</div></div>
-              <div class="visual-card"><span class="visual-icon">📻</span><div class="visual-label">Radar</div><div class="visual-desc">Detects speed of objects</div></div>
-              <div class="visual-card"><span class="visual-icon">🗺️</span><div class="visual-label">GPS</div><div class="visual-desc">Knows exact position</div></div>
-            </div>
-            <div class="quiz-section">
-              <div class="quiz-title">🎯 Quick Quiz!</div>
-              <div class="quiz-q">Which sensor helps a self-driving car create a 3D map of its surroundings?</div>
-              <div class="quiz-options">
-                <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">A) Camera 📷</button>
-                <button class="quiz-opt" onclick="checkQuiz(this,'correct')">B) LiDAR 📡</button>
-                <button class="quiz-opt" onclick="checkQuiz(this,'wrong')">C) GPS 🗺️</button>
-              </div>
-              <div class="quiz-feedback" id="qfeedback"></div>
-            </div>`
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sb-inner" id="sidebarInner"></div>
+    </div>
+    <!-- MAIN PANEL -->
+    <div class="learn-panel" id="learnPanel"></div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  CURRICULUM  — full chapter-wise with multi-slide lessons
+// ═══════════════════════════════════════════════════════
+const CLASSES = {
+
+// ──────────────── CLASS 3–4 ────────────────
+3:{
+  label:"Class 3–4", badge:"🌱 Starter", badgeStyle:"background:rgba(16,185,129,0.15);color:#10B981;border:1px solid rgba(16,185,129,0.3)",
+  subjects:[
+    { id:"ai3", icon:"🤖", name:"Artificial Intelligence",
+      chapters:[
+        { id:"ai3-c1", icon:"🧠", title:"What is AI?", xp:20,
+          slides:[
+            { type:"teach", bot:"a", botName:"Brainbot 🤖",
+              title:"What is Artificial Intelligence?", tag:"CLASS 3–4 • AI BASICS • LESSON 1 OF 4",
+              intro:"Today we're going to learn about AI — the most exciting technology in the world!",
+              speech:`<span class="hi">AI</span> stands for <span class="em">Artificial Intelligence</span>!<br><br>
+🔹 <strong>Artificial</strong> = Made by humans<br>
+🔹 <strong>Intelligence</strong> = Ability to think & learn<br><br>
+So AI means: <span class="hi">Computers that can THINK and LEARN</span> — just like you do! 🧠✨`,
+              extra:`<div class="callout callout-tip"><span class="callout-icon">💡</span><div class="callout-text">
+<strong>Fun Fact!</strong> AI was invented in 1956 by a scientist named John McCarthy. 
+It took 60+ years of hard work to make AI as smart as it is today!</div></div>`
+            },
+            { type:"concepts", title:"The 3 Big Ideas of AI",
+              tag:"CLASS 3–4 • AI BASICS • LESSON 1 OF 4",
+              intro:"AI has 3 main superpowers. Let's look at each one!",
+              items:[
+                {emoji:"📚",label:"Learning",desc:"AI learns from examples — just like you learn from books and teachers!"},
+                {emoji:"🎯",label:"Pattern Finding",desc:"AI spots patterns in data — like knowing a cat from a dog by its shape!"},
+                {emoji:"🤔",label:"Decision Making",desc:"AI makes choices — like choosing the best route for Google Maps!"},
+                {emoji:"💬",label:"Understanding",desc:"AI understands human language — that's how Siri and Alexa work!"},
+                {emoji:"🎨",label:"Creating",desc:"AI can create art, music and stories — like ChatGPT does!"},
+                {emoji:"🔮",label:"Predicting",desc:"AI predicts what happens next — like Netflix recommending shows!"}
+              ]
+            },
+            { type:"reallife", title:"AI is Everywhere Around You!",
+              tag:"CLASS 3–4 • AI BASICS • LESSON 1 OF 4",
+              intro:"You use AI every single day without even knowing it! Look at these examples:",
+              items:[
+                {icon:"🎵",name:"Spotify",desc:"AI listens to your music taste and suggests new songs you'll love — every day!"},
+                {icon:"📱",name:"Face Unlock",desc:"Your phone's AI recognises YOUR face in under 0.3 seconds — even in the dark!"},
+                {icon:"🎮",name:"Game AI",desc:"In PUBG and Free Fire, enemy bots use AI to hunt you — they learn your moves!"},
+                {icon:"🔍",name:"Google Search",desc:"AI understands your question and searches billions of pages in 0.4 seconds!"},
+                {icon:"📸",name:"Google Photos",desc:"AI automatically groups your photos by people, places and events!"},
+                {icon:"🛒",name:"Amazon",desc:"AI predicts what you want to buy BEFORE you even search for it!"}
+              ]
+            },
+            { type:"quiz", title:"Test Your Knowledge! 🎯",
+              tag:"CLASS 3–4 • AI BASICS • LESSON 1 OF 4",
+              questions:[
+                { q:"What does 'AI' stand for?",
+                  opts:["Automatic Internet","Artificial Intelligence","Amazing Invention","Advanced Input"],
+                  correct:1, explain:"AI = Artificial Intelligence — computers built by humans that can think and learn! 🧠" },
+                { q:"Which of these is an example of AI in your daily life?",
+                  opts:["A normal calculator","Spotify suggesting songs","A light bulb","A bicycle"],
+                  correct:1, explain:"Spotify uses AI to learn your music taste and recommend new songs you'll enjoy! 🎵" }
+              ]
+            }
+          ]
+        },
+        { id:"ai3-c2", icon:"🔢", title:"Types of AI", xp:20,
+          slides:[
+            { type:"teach", bot:"b", botName:"Zara 🌟",
+              title:"3 Types of AI — Like Superhero Levels!", tag:"CLASS 3–4 • AI BASICS • LESSON 2 OF 4",
+              intro:"AI isn't just one thing — there are different types, each more powerful than the last!",
+              speech:`Think of AI levels like a video game! 🎮<br><br>
+🐣 <strong>Level 1 — Narrow AI:</strong> Does ONE thing super well<br>
+🧠 <strong>Level 2 — General AI:</strong> Thinks like a human (not built yet!)<br>
+🚀 <strong>Level 3 — Super AI:</strong> Smarter than ALL humans (future!)<br><br>
+We're currently at <span class="hi">Level 1</span> — and it's already amazing! 🎉`
+            },
+            { type:"flow", title:"The AI Power Levels",
+              tag:"CLASS 3–4 • AI BASICS • LESSON 2 OF 4",
+              intro:"Here's how the 3 types of AI compare to each other:",
+              nodes:[
+                {icon:"🐣",label:"Narrow AI",sub:"Exists NOW!",color:"fn-green"},
+                {icon:"→",arrow:true},
+                {icon:"🧠",label:"General AI",sub:"In progress...",color:"fn-blue"},
+                {icon:"→",arrow:true},
+                {icon:"🚀",label:"Super AI",sub:"Future dream!",color:"fn-pink"}
+              ],
+              extra:`
+<div class="concept-grid" style="margin-top:20px">
+  <div class="concept-card"><span class="cc-emoji">🐣</span><div class="cc-label">Narrow AI</div><div class="cc-desc">Alexa understands voice but can't drive a car. ChatGPT writes text but can't feel emotions.</div></div>
+  <div class="concept-card"><span class="cc-emoji">🧠</span><div class="cc-label">General AI</div><div class="cc-desc">Could do ANYTHING a human can — cook, code, draw, feel. Scientists are still working on this!</div></div>
+  <div class="concept-card"><span class="cc-emoji">🚀</span><div class="cc-label">Super AI</div><div class="cc-desc">More intelligent than every human combined. This is a future technology that may take decades.</div></div>
+</div>`
+            },
+            { type:"quiz", title:"Quiz Time! Are You a Narrow AI Expert? 🎯",
+              tag:"CLASS 3–4 • AI BASICS • LESSON 2 OF 4",
+              questions:[
+                { q:"Which type of AI exists in our world today (2025)?",
+                  opts:["Super AI","General AI","Narrow AI","All of them"],
+                  correct:2, explain:"Narrow AI is the only type that exists today! Examples: Siri, ChatGPT, Face ID, Spotify." },
+                { q:"Siri can answer your questions but can't paint a picture. What type of AI is Siri?",
+                  opts:["Super AI","General AI","Narrow AI","Robot AI"],
+                  correct:2, explain:"Siri is Narrow AI — it does ONE thing (voice assistant) very well, but can't do everything!" }
+              ]
+            }
+          ]
+        },
+        { id:"ai3-c3", icon:"🦾", title:"What is a Robot?", xp:25,
+          slides:[
+            { type:"teach", bot:"c", botName:"Robo 🦾",
+              title:"What Makes a Robot a Robot?", tag:"CLASS 3–4 • ROBOTICS • LESSON 3 OF 4",
+              intro:"Robots are not just machines — they are intelligent machines that can sense and act!",
+              speech:`Every robot needs <span class="hi">3 things</span> to work:<br><br>
+👁️ <strong>Sensors</strong> — Its EYES and EARS (cameras, microphones)<br>
+🧠 <strong>Controller</strong> — Its BRAIN (a computer chip)<br>
+💪 <strong>Actuators</strong> — Its MUSCLES (motors, wheels, arms)<br><br>
+Just like <span class="em">YOU</span> have: eyes → brain → hands! 🙌`
+            },
+            { type:"flow", title:"How a Robot Works — Step by Step",
+              tag:"CLASS 3–4 • ROBOTICS • LESSON 3 OF 4",
+              intro:"Every time a robot does something, it follows these exact steps:",
+              nodes:[
+                {icon:"👁️",label:"SENSE",sub:"Camera, mic, touch",color:"fn-green"},
+                {icon:"→",arrow:true},
+                {icon:"🧠",label:"THINK",sub:"Computer processes",color:"fn-blue"},
+                {icon:"→",arrow:true},
+                {icon:"⚡",label:"DECIDE",sub:"What to do?",color:"fn-yellow"},
+                {icon:"→",arrow:true},
+                {icon:"💪",label:"ACT",sub:"Move, speak, do",color:"fn-pink"}
+              ],
+              extra:`<div class="callout callout-info"><span class="callout-icon">🤖</span><div class="callout-text">
+<strong>Real Example:</strong> When a Roomba robot vacuum bumps into a wall → it SENSES the bump → its brain THINKS "obstacle!" → it DECIDES to turn → its wheels ACT and turn left. This happens 60 times per second! ⚡</div></div>`
+            },
+            { type:"reallife", title:"Amazing Robots Right Now!",
+              tag:"CLASS 3–4 • ROBOTICS • LESSON 3 OF 4",
+              intro:"Robots are already doing incredible things all around the world!",
+              items:[
+                {icon:"🧹",name:"Roomba (iRobot)",desc:"Cleans your floor by itself! Uses sensors to avoid furniture and knows when it's done."},
+                {icon:"🚗",name:"Tesla Self-Drive",desc:"Drives on highways by itself using cameras, radar and AI. No human needed!"},
+                {icon:"🏭",name:"Amazon Robots",desc:"In Amazon warehouses, 750,000+ robots move packages 24/7 without getting tired!"},
+                {icon:"🚀",name:"Mars Perseverance",desc:"NASA's robot driving on MARS right now — 225 million km from Earth!"},
+                {icon:"🦾",name:"Boston Dynamics",desc:"Robot dog 'Spot' can run, jump, open doors and even dance! Watch on YouTube!"},
+                {icon:"🏥",name:"Da Vinci Surgical",desc:"Robots assist doctors in operations — making cuts 10x more precise than human hands!"}
+              ]
+            },
+            { type:"quiz", title:"Robot Challenge! 🤖",
+              tag:"CLASS 3–4 • ROBOTICS • LESSON 3 OF 4",
+              questions:[
+                { q:"What are the 3 main parts every robot needs?",
+                  opts:["Wheels, battery, screen","Sensors, Controller, Actuators","Camera, keyboard, mouse","Eyes, mouth, nose"],
+                  correct:1, explain:"Every robot needs: Sensors (to sense), Controller/brain (to think) and Actuators (to act)! 🤖" },
+                { q:"Which NASA robot is exploring Mars right now?",
+                  opts:["Roomba","Optimus","Perseverance","Spot"],
+                  correct:2, explain:"NASA's Perseverance rover has been exploring Mars since 2021 — 225 million km away!" }
+              ]
+            }
+          ]
+        },
+        { id:"ai3-c4", icon:"🎮", title:"AI in Games & Fun", xp:20,
+          slides:[
+            { type:"teach", bot:"d", botName:"GameBot 🎮",
+              title:"AI Makes Games Super Fun!", tag:"CLASS 3–4 • AI IN GAMES • LESSON 4 OF 4",
+              intro:"Did you know that AI is inside almost every game you play? Let's find out how!",
+              speech:`When you play a game, AI controls the enemies and NPCs!<br><br>
+🎯 <span class="hi">NPCs</span> (Non-Player Characters) use AI to:<br><br>
+• <span class="em">Chase you</span> — detect your position<br>
+• <span class="em">Avoid obstacles</span> — navigate around walls<br>
+• <span class="em">Team up</span> — work with other AI characters<br>
+• <span class="em">Learn</span> — some games remember your strategy and adapt! 🧠`
+            },
+            { type:"concepts", title:"How Game AI Works",
+              tag:"CLASS 3–4 • AI IN GAMES • LESSON 4 OF 4",
+              intro:"Game developers program AI to behave realistically. Here's how:",
+              items:[
+                {emoji:"🗺️",label:"Pathfinding",desc:"AI finds the best route to reach you — even through a maze! Used in Minecraft creepers."},
+                {emoji:"🎯",label:"Target Tracking",desc:"AI enemies track your location in real-time to hunt you down in battle royale games."},
+                {emoji:"🧠",label:"Decision Trees",desc:"Like a flowchart — 'If player is near → attack. If health low → run away!'"},
+                {emoji:"🤝",label:"Teamwork",desc:"In games like PUBG, AI bots work together, flanking you from multiple sides!"},
+                {emoji:"🎲",label:"Randomness",desc:"AI adds random moves so enemies don't feel repetitive and boring."},
+                {emoji:"📈",label:"Adaptive AI",desc:"Some games get harder as you improve — the AI literally learns your playstyle!"}
+              ]
+            },
+            { type:"quiz", title:"Final Quiz — Class 3–4 AI! 🏆",
+              tag:"CLASS 3–4 • AI IN GAMES • LESSON 4 OF 4",
+              questions:[
+                { q:"In video games, what are AI-controlled characters called?",
+                  opts:["Players","NPCs (Non-Player Characters)","Avatars","Sprites"],
+                  correct:1, explain:"NPCs = Non-Player Characters! They are controlled by AI, not by real human players." },
+                { q:"What do you call AI's ability to find the shortest path through a maze?",
+                  opts:["Target Tracking","Decision Making","Pathfinding","Team AI"],
+                  correct:2, explain:"Pathfinding is when AI calculates the best route to reach a destination — like Google Maps but in games!" }
+              ]
+            }
+          ]
         }
       ]
     }
   ]
-};
+},
+
+// ──────────────── CLASS 5–6 ────────────────
+5:{
+  label:"Class 5–6", badge:"🔬 Explorer", badgeStyle:"background:rgba(168,85,247,0.15);color:#A855F7;border:1px solid rgba(168,85,247,0.3)",
+  subjects:[
+    { id:"cv5", icon:"👁️", name:"Computer Vision",
+      chapters:[
+        { id:"cv5-c1", icon:"📸", title:"How AI Sees Images", xp:25,
+          slides:[
+            { type:"teach", bot:"b", botName:"PixelBot 📸",
+              title:"How Does AI Actually See?", tag:"CLASS 5–6 • COMPUTER VISION • LESSON 1",
+              intro:"When you look at a photo, you see a cat. But what does an AI see? Something very different!",
+              speech:`When AI looks at a photo, it sees <span class="hi">millions of tiny squares</span> called <span class="em">PIXELS</span>!<br><br>
+Each pixel is just a <strong>number from 0 to 255</strong>:<br>
+• 0 = Completely black<br>
+• 255 = Completely white<br>
+• Numbers in between = Shades of grey/color<br><br>
+So a 12 megapixel photo = <span class="hi">12 million numbers</span>! AI reads all of them! 🤯`
+            },
+            { type:"flow", title:"How AI Processes an Image",
+              tag:"CLASS 5–6 • COMPUTER VISION • LESSON 1",
+              intro:"Here's the exact journey from a photo to AI understanding it:",
+              nodes:[
+                {icon:"📸",label:"Photo",sub:"Your selfie",color:"fn-sky"},
+                {icon:"→",arrow:true},
+                {icon:"🔢",label:"Pixels",sub:"Millions of numbers",color:"fn-blue"},
+                {icon:"→",arrow:true},
+                {icon:"🧮",label:"CNN",sub:"AI neural network",color:"fn-yellow"},
+                {icon:"→",arrow:true},
+                {icon:"🔍",label:"Features",sub:"Edges, shapes",color:"fn-green"},
+                {icon:"→",arrow:true},
+                {icon:"🎯",label:'"It\'s a cat!"',sub:"Final answer",color:"fn-pink"}
+              ],
+              extra:`<div class="callout callout-info"><span class="callout-icon">🔬</span><div class="callout-text">
+<strong>What is a CNN?</strong> Convolutional Neural Network — a special AI brain designed to understand images. 
+It first detects edges → then shapes → then objects. Just like how your eyes work!</div></div>`
+            },
+            { type:"reallife", title:"Computer Vision All Around You!",
+              tag:"CLASS 5–6 • COMPUTER VISION • LESSON 1",
+              intro:"Computer Vision is used in so many amazing ways today:",
+              items:[
+                {icon:"🔓",name:"Face ID (Apple)",desc:"Scans 30,000 dots on your face in 0.001 seconds to verify it's really you!"},
+                {icon:"🔍",name:"Google Lens",desc:"Point your phone at ANYTHING — AI identifies plants, products, books, equations!"},
+                {icon:"🚗",name:"Tesla Autopilot",desc:"8 cameras around the car use CV to detect cars, pedestrians, lanes every second!"},
+                {icon:"🏥",name:"Medical Diagnosis",desc:"AI reads X-rays and MRIs to detect cancer, sometimes more accurately than doctors!"},
+                {icon:"😄",name:"Snapchat Filters",desc:"CV finds your face in real-time and places funny filters exactly on your features!"},
+                {icon:"🏪",name:"Amazon Go Shops",desc:"Walk in, take items, walk out — CV cameras track what you take and charge you automatically!"}
+              ]
+            },
+            { type:"quiz", title:"Computer Vision Quiz! 🎯",
+              tag:"CLASS 5–6 • COMPUTER VISION • LESSON 1",
+              questions:[
+                { q:"What does AI actually 'see' when it looks at an image?",
+                  opts:["Colors and shapes like we do","Numbers (pixel values 0-255)","Lines and circles","Words describing the image"],
+                  correct:1, explain:"AI sees numbers! Each pixel = a number from 0 (black) to 255 (white). A 12MP photo = 12 million numbers!" },
+                { q:"What does CNN stand for in computer vision?",
+                  opts:["Computer Networking Node","Convolutional Neural Network","Camera Neural Network","Creative Number Navigation"],
+                  correct:1, explain:"CNN = Convolutional Neural Network. It's a special AI brain designed specifically to understand images!" }
+              ]
+            }
+          ]
+        },
+        { id:"cv5-c2", icon:"🚗", title:"Self-Driving Cars", xp:30,
+          slides:[
+            { type:"teach", bot:"a", botName:"AutoBot 🚗",
+              title:"How Self-Driving Cars Work!", tag:"CLASS 5–6 • COMPUTER VISION • LESSON 2",
+              intro:"Self-driving cars use every type of sensor and AI — let's break down how they work!",
+              speech:`A self-driving car has more technology than a spaceship! 🚀<br><br>
+It uses <span class="em">multiple sensors working together</span>:<br>
+📷 <strong>Cameras</strong> — See lanes, signs, traffic lights<br>
+📡 <strong>LiDAR</strong> — Laser creates 3D map of surroundings<br>
+📻 <strong>Radar</strong> — Detects speed and distance of cars<br>
+🗺️ <strong>GPS + Maps</strong> — Knows exact road positions<br><br>
+All combined = <span class="hi">360° vision better than any human!</span> 🤯`
+            },
+            { type:"concepts", title:"The 5 Sensors of a Self-Driving Car",
+              tag:"CLASS 5–6 • COMPUTER VISION • LESSON 2",
+              intro:"Each sensor plays a unique role — together they make the car 'see' perfectly:",
+              items:[
+                {emoji:"📷",label:"Camera",desc:"Like human eyes — sees colors, reads signs, detects lane markings. Tesla uses 8 cameras!"},
+                {emoji:"📡",label:"LiDAR",desc:"Shoots 1 MILLION laser beams per second to create a 3D map. Like a bat's echolocation!"},
+                {emoji:"📻",label:"Radar",desc:"Uses radio waves to detect how fast other cars are going — works even in fog and rain!"},
+                {emoji:"🗺️",label:"GPS",desc:"Knows exact position to within 1 centimetre using satellites 20,000km in space!"},
+                {emoji:"🔄",label:"IMU Sensor",desc:"Like your ear's balance organ — tells the car if it's tilting, turning or accelerating!"}
+              ]
+            },
+            { type:"quiz", title:"Self-Driving Cars Quiz! 🚗",
+              tag:"CLASS 5–6 • COMPUTER VISION • LESSON 2",
+              questions:[
+                { q:"Which sensor fires 1 million laser beams per second to create a 3D map?",
+                  opts:["Camera","Radar","LiDAR","GPS"],
+                  correct:2, explain:"LiDAR fires lasers in all directions to build a 3D model of everything around the car — like bat echolocation!" },
+                { q:"How many cameras does a Tesla car use for its Autopilot system?",
+                  opts:["1","4","8","16"],
+                  correct:2, explain:"Tesla uses 8 cameras placed around the car for 360° vision with no blind spots!" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ──────────────── CLASS 7–8 ────────────────
+7:{
+  label:"Class 7–8", badge:"🚀 Builder", badgeStyle:"background:rgba(6,182,212,0.15);color:#06B6D4;border:1px solid rgba(6,182,212,0.3)",
+  subjects:[
+    { id:"ml7", icon:"📊", name:"Machine Learning",
+      chapters:[
+        { id:"ml7-c1", icon:"🤔", title:"What is Machine Learning?", xp:30,
+          slides:[
+            { type:"teach", bot:"a", botName:"MLBot 📊",
+              title:"Machine Learning — Computers That Learn!", tag:"CLASS 7–8 • MACHINE LEARNING • LESSON 1",
+              intro:"Traditional programming tells computers WHAT to do. Machine Learning lets computers figure it out THEMSELVES!",
+              speech:`Imagine you want to teach a child to recognise cats 🐱<br><br>
+<strong>Old way:</strong> Write rules → "Has pointy ears? Has whiskers? Has fur? → It's a cat!" 
+<span class="hot">Problem: What about hairless cats? Wrong!</span><br><br>
+<span class="hi">ML way:</span> Show 50,000 cat photos → Computer finds the patterns itself!<br><br>
+→ <span class="em">No rules needed. It LEARNS from examples!</span> 🎉`
+            },
+            { type:"flow", title:"The Machine Learning Process",
+              tag:"CLASS 7–8 • MACHINE LEARNING • LESSON 1",
+              intro:"This is how a machine learns — every ML project follows these exact steps:",
+              nodes:[
+                {icon:"📦",label:"Collect Data",sub:"10,000+ examples",color:"fn-sky"},
+                {icon:"→",arrow:true},
+                {icon:"🧹",label:"Clean Data",sub:"Remove errors",color:"fn-blue"},
+                {icon:"→",arrow:true},
+                {icon:"🎓",label:"Train Model",sub:"AI finds patterns",color:"fn-yellow"},
+                {icon:"→",arrow:true},
+                {icon:"🧪",label:"Test Model",sub:"Check accuracy",color:"fn-green"},
+                {icon:"→",arrow:true},
+                {icon:"🚀",label:"Deploy!",sub:"Use in real world",color:"fn-pink"}
+              ],
+              extra:`<div class="callout callout-tip"><span class="callout-icon">💡</span><div class="callout-text">
+<strong>Data is Everything!</strong> In ML, the quality of your data determines how good your AI becomes. 
+More data + better data = smarter AI. That's why companies like Google collect SO much data!</div></div>`
+            },
+            { type:"concepts", title:"3 Types of Machine Learning",
+              tag:"CLASS 7–8 • MACHINE LEARNING • LESSON 1",
+              intro:"There are 3 different ways to train a machine learning model:",
+              items:[
+                {emoji:"👨‍🏫",label:"Supervised Learning",desc:"Teacher provides labeled examples. Like learning with an answer key. Used for: spam detection, image recognition."},
+                {emoji:"🕵️",label:"Unsupervised Learning",desc:"No labels! AI finds hidden groups and patterns itself. Used for: customer segmentation, anomaly detection."},
+                {emoji:"🎮",label:"Reinforcement Learning",desc:"AI learns by trial and error — gets rewarded for good actions. Used for: game AI, robotics, AlphaGo."},
+                {emoji:"📊",label:"Training Data",desc:"The examples you feed the AI to learn from. More = better, usually!"},
+                {emoji:"🏋️",label:"Training",desc:"The process of the AI adjusting itself to get better — can take hours or weeks!"},
+                {emoji:"🎯",label:"Accuracy",desc:"How often the model gets the right answer. 99% accuracy on 1 million tests = GREAT!"}
+              ]
+            },
+            { type:"reallife", title:"ML Powers Your Whole Life!",
+              tag:"CLASS 7–8 • MACHINE LEARNING • LESSON 1",
+              items:[
+                {icon:"🎬",name:"Netflix Recommendations",desc:"ML studies what you watch, pause, rewatch — then predicts your next favorite show with 80%+ accuracy!"},
+                {icon:"📧",name:"Gmail Spam Filter",desc:"ML trained on billions of emails knows which are spam. Blocks 100 million spam emails per MINUTE!"},
+                {icon:"💳",name:"Bank Fraud Detection",desc:"ML spots unusual transactions in microseconds. Saved $27 billion in fraud last year!"},
+                {icon:"🏥",name:"Cancer Detection",desc:"ML trained on millions of scans detects cancer with 94% accuracy — better than many doctors!"},
+                {icon:"🌤️",name:"Weather Forecasting",desc:"ML analyses terabytes of satellite data to predict tomorrow's weather with 90% accuracy!"},
+                {icon:"🗣️",name:"Google Translate",desc:"ML trained on 100+ languages can translate a sentence between any 2 of them instantly!"}
+              ]
+            },
+            { type:"quiz", title:"ML Master Quiz! 🏆",
+              tag:"CLASS 7–8 • MACHINE LEARNING • LESSON 1",
+              questions:[
+                { q:"What is the key difference between traditional programming and Machine Learning?",
+                  opts:["ML uses more code","Traditional programming uses more data","ML learns from examples; traditional programming uses explicit rules","ML is faster always"],
+                  correct:2, explain:"Traditional programming: you write every rule. ML: you give examples and the computer finds the rules itself!" },
+                { q:"AlphaGo became the world's best chess/Go player by playing millions of games. What type of ML did it use?",
+                  opts:["Supervised Learning","Unsupervised Learning","Reinforcement Learning","Transfer Learning"],
+                  correct:2, explain:"Reinforcement Learning! AlphaGo played millions of games, getting rewards for winning moves — and got better and better!" }
+              ]
+            }
+          ]
+        },
+        { id:"ml7-c2", icon:"🐍", title:"Python for AI", xp:35,
+          slides:[
+            { type:"teach", bot:"b", botName:"PyBot 🐍",
+              title:"Python — The Language of AI!", tag:"CLASS 7–8 • PYTHON CODING • LESSON 2",
+              intro:"Python is the most popular programming language for AI. Let's learn why and how to use it!",
+              speech:`Python is like <span class="hi">speaking to a computer in simple English</span>! 🐍<br><br>
+Why Python for AI?<br>
+✅ <span class="em">Simple syntax</span> — reads like English<br>
+✅ <span class="cool">Huge library</span> — 300,000+ ready-made tools<br>
+✅ <span class="hi">Community</span> — 30+ million developers<br><br>
+Used by: <strong>Google, Netflix, Instagram, NASA, SpaceX!</strong> 🚀<br><br>
+Let's write your first AI-related code! 💻`
+            },
+            { type:"code", title:"Your First Python Programs!",
+              tag:"CLASS 7–8 • PYTHON CODING • LESSON 2",
+              intro:"Let's look at real Python code — don't worry, it's much simpler than you think!",
+              snippets:[
+                {
+                  filename:"hello_ai.py",
+                  lines:[
+                    {t:"comment",c:"# Your first Python program!"},
+                    {t:"func",c:'print'},{t:"normal",c:'('},{t:"string",c:'"Hello, AI World! 🤖"'},{t:"normal",c:')'},
+                    {t:"normal",c:""},
+                    {t:"comment",c:"# Variables store data"},
+                    {t:"var",c:'my_name'},{t:"normal",c:' = '},{t:"string",c:'"Vaibhav"'},
+                    {t:"var",c:'my_class'},{t:"normal",c:' = '},{t:"num",c:'8'},
+                    {t:"func",c:'print'},{t:"normal",c:'(f'},{t:"string",c:'"I am {my_name} from Class {my_class}!"'},{t:"normal",c:')'},
+                    {t:"normal",c:""},
+                    {t:"comment",c:"# Output:"},
+                    {t:"output",c:"Hello, AI World! 🤖"},
+                    {t:"output",c:"I am Vaibhav from Class 8!"}
+                  ]
+                }
+              ],
+              extra:`
+<div class="callout callout-tip" style="margin-top:16px"><span class="callout-icon">💡</span><div class="callout-text">
+<strong>Try it yourself!</strong> Go to <strong>replit.com</strong> or <strong>python.org/shell</strong> and type this code.
+See what happens when you change your name!</div></div>`
+            },
+            { type:"quiz", title:"Python & ML Quiz! 🐍",
+              tag:"CLASS 7–8 • PYTHON CODING • LESSON 2",
+              questions:[
+                { q:"Which Python command shows output on the screen?",
+                  opts:["show()","display()","print()","output()"],
+                  correct:2, explain:"print() is the command to show output in Python! It's one of the first commands every programmer learns." },
+                { q:"What symbol do you use to write a comment in Python (a note the computer ignores)?",
+                  opts:["//","/*","#","<!--"],
+                  correct:2, explain:"# (hash symbol) is used for comments in Python! Comments help humans understand code but are ignored by the computer." }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ──────────────── CLASS 9–10 ────────────────
+9:{
+  label:"Class 9–10", badge:"⚡ Advanced", badgeStyle:"background:rgba(245,158,11,0.15);color:#F59E0B;border:1px solid rgba(245,158,11,0.3)",
+  subjects:[
+    { id:"dl9", icon:"🧬", name:"Deep Learning",
+      chapters:[
+        { id:"dl9-c1", icon:"🧬", title:"Neural Networks", xp:40,
+          slides:[
+            { type:"teach", bot:"c", botName:"NeuroBot 🧬",
+              title:"Neural Networks — AI Inspired by Your Brain!", tag:"CLASS 9–10 • DEEP LEARNING • LESSON 1",
+              intro:"Your brain has 86 billion neurons. Scientists copied this idea to create Artificial Neural Networks!",
+              speech:`Your brain has <span class="hi">86 billion neurons</span> connected by <span class="em">100 trillion synapses</span>!<br><br>
+Artificial Neural Networks copy this:<br>
+🟢 <strong>Input Layer</strong> — receives data (like eyes seeing)<br>
+🟣 <strong>Hidden Layers</strong> — processes and transforms (like brain thinking)<br>
+🔴 <strong>Output Layer</strong> — gives the final answer (like mouth speaking)<br><br>
+The more hidden layers → <span class="hot">the DEEPER</span> the network → <span class="hi">Deep Learning!</span> 🚀`
+            },
+            { type:"neural", title:"Neural Network — Live Visualization!",
+              tag:"CLASS 9–10 • DEEP LEARNING • LESSON 1",
+              intro:"This is what an actual neural network looks like when processing data:",
+              input:["X₁","X₂","X₃","X₄"],
+              hidden1:["H₁","H₂","H₃","H₄","H₅"],
+              hidden2:["H₆","H₇","H₈","H₉"],
+              output:["Y₁","Y₂"],
+              labels:["Input Layer","Hidden Layer 1","Hidden Layer 2","Output Layer"],
+              extra:`
+<div class="concept-grid" style="margin-top:20px">
+  <div class="concept-card"><span class="cc-emoji">⚖️</span><div class="cc-label">Weights</div><div class="cc-desc">Numbers on each connection that determine how important that signal is. ML adjusts these during training!</div></div>
+  <div class="concept-card"><span class="cc-emoji">🔥</span><div class="cc-label">Activation</div><div class="cc-desc">Function that decides if a neuron "fires" or not. Like a neuron in your brain either activating or staying quiet.</div></div>
+  <div class="concept-card"><span class="cc-emoji">🔙</span><div class="cc-label">Backpropagation</div><div class="cc-desc">The AI's learning process — calculates errors and adjusts weights backwards through the network.</div></div>
+  <div class="concept-card"><span class="cc-emoji">🔄</span><div class="cc-label">Epochs</div><div class="cc-desc">One full pass through all training data. Models often train for 100s of epochs to improve!</div></div>
+</div>`
+            },
+            { type:"reallife", title:"Deep Learning is Everywhere!",
+              tag:"CLASS 9–10 • DEEP LEARNING • LESSON 1",
+              items:[
+                {icon:"🎨",name:"DALL-E / Stable Diffusion",desc:"Deep Learning generates photorealistic images from text descriptions. 'A robot in Jaipur at sunset'!"},
+                {icon:"🎙️",name:"Google Speech-to-Text",desc:"Deep neural networks convert your voice to text with 95%+ accuracy in 100+ languages!"},
+                {icon:"🏥",name:"DeepMind AlphaFold",desc:"DL solved the 50-year protein structure problem — could cure millions of diseases!"},
+                {icon:"🎬",name:"Deepfake Technology",desc:"Deep Learning can swap faces in videos. Why media literacy matters more than ever!"},
+                {icon:"🚗",name:"Autonomous Driving",desc:"Tesla's FSD uses a deep neural network with 1 billion+ parameters to drive safely!"},
+                {icon:"💊",name:"Drug Discovery",desc:"DL predicts which molecules could become medicines — reducing drug development from 10 years to 1!"}
+              ]
+            },
+            { type:"quiz", title:"Deep Learning Expert Quiz! ⚡",
+              tag:"CLASS 9–10 • DEEP LEARNING • LESSON 1",
+              questions:[
+                { q:"What makes a neural network 'deep'?",
+                  opts:["It processes very complex data","It has many hidden layers between input and output","It is very large in size","It was trained for a long time"],
+                  correct:1, explain:"'Deep' refers to having MANY hidden layers. More layers = more complex patterns the network can learn!" },
+                { q:"What is 'Backpropagation'?",
+                  opts:["Moving data forward through the network","The process of adjusting weights backwards to reduce error","Backing up neural network data","Removing layers from the network"],
+                  correct:1, explain:"Backpropagation calculates how much each weight contributed to the error, then adjusts ALL weights to do better next time!" }
+              ]
+            }
+          ]
+        },
+        { id:"dl9-c2", icon:"✍️", title:"Prompt Engineering", xp:35,
+          slides:[
+            { type:"teach", bot:"d", botName:"PromptBot ✍️",
+              title:"Prompt Engineering — Talk to AI Perfectly!", tag:"CLASS 9–10 • PROMPT ENGINEERING • LESSON 2",
+              intro:"Prompt Engineering is the skill of communicating with AI to get amazing results. It's the most important new skill of this decade!",
+              speech:`A <span class="hi">prompt</span> is what you type to an AI like ChatGPT.<br><br>
+The <span class="em">exact words you use</span> completely change the quality of the answer!<br><br>
+<span class="hot">Bad prompt</span>: "Write about climate change"<br>
+→ Gets a generic, boring essay<br><br>
+<span class="hi">Great prompt</span>: "Write a compelling 3-paragraph essay about climate change for a Class 10 student, using India-specific examples, in a conversational tone"<br>
+→ Gets exactly what you need! ✨`
+            },
+            { type:"concepts", title:"The CRAFT Formula for Perfect Prompts",
+              tag:"CLASS 9–10 • PROMPT ENGINEERING • LESSON 2",
+              intro:"Remember CRAFT — the 5 ingredients of an amazing AI prompt:",
+              items:[
+                {emoji:"🎭",label:"C — Context",desc:"Tell AI who you are and why you need this. 'I am a Class 10 student preparing for exams...'"},
+                {emoji:"📋",label:"R — Role",desc:"Give AI a role to play. 'Act as an expert physics teacher' or 'You are a creative writer'"},
+                {emoji:"🎯",label:"A — Action",desc:"Be specific about WHAT you want. 'Explain', 'Write', 'List', 'Compare', 'Create code'"},
+                {emoji:"📏",label:"F — Format",desc:"Specify how you want the answer. 'In bullet points', 'as a table', 'in 200 words', 'with examples'"},
+                {emoji:"🎓",label:"T — Tone",desc:"Set the style. 'Simple language for a 12-year-old', 'professional', 'funny', 'detailed'"}
+              ]
+            },
+            { type:"quiz", title:"Prompt Engineering Quiz! ✍️",
+              tag:"CLASS 9–10 • PROMPT ENGINEERING • LESSON 2",
+              questions:[
+                { q:"Which prompt will give you the BEST result from ChatGPT?",
+                  opts:[
+                    "Explain photosynthesis",
+                    "Explain photosynthesis as a teacher would to a Class 9 student, using 3 bullet points and a real-life analogy",
+                    "Tell me about plants and light",
+                    "Photosynthesis meaning"
+                  ],
+                  correct:1, explain:"The second prompt uses CRAFT! Context (Class 9 student), Format (3 bullets), Action (explain), Tone (teacher). Specific = better results!" },
+                { q:"What does the 'R' in CRAFT stand for?",
+                  opts:["Research","Relevance","Role","Result"],
+                  correct:2, explain:"R = Role! Telling AI to 'Act as an expert doctor' or 'You are a creative writer' dramatically improves response quality!" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+},
+
+// ──────────────── CLASS 11–12 ────────────────
+11:{
+  label:"Class 11–12", badge:"🏆 Expert", badgeStyle:"background:rgba(236,72,153,0.15);color:#EC4899;border:1px solid rgba(236,72,153,0.3)",
+  subjects:[
+    { id:"llm11", icon:"🦙", name:"LLMs & Transformers",
+      chapters:[
+        { id:"llm11-c1", icon:"🦙", title:"How LLMs Work", xp:50,
+          slides:[
+            { type:"teach", bot:"a", botName:"GPTBot 🦙",
+              title:"Large Language Models — How ChatGPT Actually Works!", tag:"CLASS 11–12 • LLMs • LESSON 1",
+              intro:"ChatGPT has taken the world by storm. But HOW does it actually work? Let's go deep!",
+              speech:`LLM = <span class="hi">Large Language Model</span><br><br>
+<span class="em">"Large"</span> = Billions to trillions of parameters<br>
+<span class="em">"Language"</span> = Trained on text data<br>
+<span class="em">"Model"</span> = A massive mathematical function<br><br>
+GPT-4 has an estimated <span class="hi">1.8 TRILLION parameters</span> — trained on most of the internet!<br><br>
+At its core, it does ONE simple thing: <span class="hot">predict the next word</span>. But do this billions of times with trillion-parameter math and you get... <span class="hi">intelligence!</span> 🤯`
+            },
+            { type:"flow", title:"How an LLM Generates Text",
+              tag:"CLASS 11–12 • LLMs • LESSON 1",
+              intro:"When you ask ChatGPT something, here's what happens inside — in milliseconds:",
+              nodes:[
+                {icon:"💬",label:"Your Prompt",sub:'"What is AI?"',color:"fn-sky"},
+                {icon:"→",arrow:true},
+                {icon:"🔤",label:"Tokenize",sub:"Split into tokens",color:"fn-blue"},
+                {icon:"→",arrow:true},
+                {icon:"⚡",label:"Transformer",sub:"Self-attention layers",color:"fn-yellow"},
+                {icon:"→",arrow:true},
+                {icon:"📊",label:"Probability",sub:"Next token scores",color:"fn-green"},
+                {icon:"→",arrow:true},
+                {icon:"🎯",label:"Pick Token",sub:"Repeat 100x+",color:"fn-pink"}
+              ],
+              extra:`
+<div class="callout callout-info" style="margin-top:12px"><span class="callout-icon">🔤</span><div class="callout-text">
+<strong>What is a Token?</strong> Tokens are chunks of text — roughly 3/4 of a word. 
+"ChatGPT is amazing" = ["Chat", "G", "PT", " is", " amazing"] = 5 tokens.
+GPT-4 can process 128,000 tokens at once — that's an entire novel!</div></div>`
+            },
+            { type:"concepts", title:"Key Concepts Inside an LLM",
+              tag:"CLASS 11–12 • LLMs • LESSON 1",
+              intro:"These are the technical building blocks that make LLMs so powerful:",
+              items:[
+                {emoji:"👁️",label:"Self-Attention",desc:"Lets the model understand how each word relates to every other word in context. 'Bank' near 'river' vs 'Bank' near 'money'!"},
+                {emoji:"📐",label:"Transformer Architecture",desc:"The revolutionary 2017 'Attention is All You Need' paper — powers all modern LLMs including GPT, Claude, Gemini!"},
+                {emoji:"🎲",label:"Temperature",desc:"Controls randomness. Temperature 0 = always picks most likely word. Temperature 1 = more creative/random."},
+                {emoji:"📝",label:"Context Window",desc:"How much text the model 'remembers' in one conversation. GPT-4 = 128K tokens. Claude 3 = 200K tokens!"},
+                {emoji:"🎓",label:"RLHF",desc:"Reinforcement Learning from Human Feedback — how ChatGPT was trained to be helpful and safe!"},
+                {emoji:"🔧",label:"Fine-tuning",desc:"Taking a base LLM and training it further on specific data — like making a medical AI from GPT!"}
+              ]
+            },
+            { type:"reallife", title:"The LLM Revolution!",
+              tag:"CLASS 11–12 • LLMs • LESSON 1",
+              items:[
+                {icon:"💬",name:"ChatGPT (OpenAI)",desc:"200M daily users. GPT-4 scores in top 10% of bar exam, top 1% of GRE. Changed education, coding, writing forever."},
+                {icon:"🎵",name:"Claude (Anthropic)",desc:"The AI powering this very lesson! Known for safety, nuance, and very long context understanding."},
+                {icon:"🔵",name:"Gemini (Google)",desc:"Google's LLM integrated into Search, Gmail, Docs. Trained on YouTube, Books, web data + multimodal!"},
+                {icon:"🦙",name:"LLaMA (Meta)",desc:"Open-source LLM by Meta. Anyone can download and run it — sparked massive innovation!"},
+                {icon:"💻",name:"GitHub Copilot",desc:"LLM trained on all of GitHub's code. Writes 40% of code for developers — fastest adopted software tool ever!"},
+                {icon:"🎨",name:"GPT-4V Vision",desc:"LLMs can now SEE! Describe images, read charts, analyse photos — multimodal AI is the next frontier!"}
+              ]
+            },
+            { type:"quiz", title:"LLM Expert Quiz! 🏆",
+              tag:"CLASS 11–12 • LLMs • LESSON 1",
+              questions:[
+                { q:"What does an LLM fundamentally do at each step of generating text?",
+                  opts:["Searches the internet for answers","Predicts the most likely next token/word","Copies text from its training data","Calculates mathematical equations"],
+                  correct:1, explain:"At its core, an LLM predicts the next most likely token. Do this billions of times with massive math = intelligent-seeming responses!" },
+                { q:"What is 'Self-Attention' in Transformers?",
+                  opts:["The model focusing on itself","The mechanism that understands relationships between all words in context","A way to train faster","Memory storage technique"],
+                  correct:1, explain:"Self-Attention lets each word 'attend to' every other word — so 'Bank' knows if it means river-bank or money-bank from context!" }
+              ]
+            }
+          ]
+        },
+        { id:"llm11-c2", icon:"🔗", title:"RAG — Custom AI Knowledge", xp:50,
+          slides:[
+            { type:"teach", bot:"b", botName:"RAGBot 🔗",
+              title:"RAG — Making AI Know YOUR Data!", tag:"CLASS 11–12 • RAG SYSTEMS • LESSON 2",
+              intro:"ChatGPT doesn't know your company's data, your textbook, or today's news. RAG solves this brilliantly!",
+              speech:`<span class="hi">RAG</span> = Retrieval Augmented Generation<br><br>
+<span class="hot">The Problem:</span> LLMs have a knowledge cutoff — they don't know recent events or private data!<br><br>
+<span class="hi">The Solution:</span> Before answering, <span class="em">retrieve relevant documents</span> and add them to the prompt!<br><br>
+It's like giving a student access to specific reference books during an exam — <span class="hi">their answers become much better!</span> 📚✨`
+            },
+            { type:"flow", title:"The RAG Pipeline",
+              tag:"CLASS 11–12 • RAG SYSTEMS • LESSON 2",
+              intro:"Here's the technical flow of a RAG system — this powers AI chatbots in companies worldwide:",
+              nodes:[
+                {icon:"❓",label:"User Query",sub:'"What is our refund policy?"',color:"fn-sky"},
+                {icon:"→",arrow:true},
+                {icon:"🔢",label:"Embed Query",sub:"Convert to vector",color:"fn-blue"},
+                {icon:"→",arrow:true},
+                {icon:"🗄️",label:"Vector DB",sub:"Search similar docs",color:"fn-yellow"},
+                {icon:"→",arrow:true},
+                {icon:"📄",label:"Retrieve",sub:"Top 3-5 relevant chunks",color:"fn-green"},
+                {icon:"→",arrow:true},
+                {icon:"🤖",label:"LLM + Context",sub:"Generate with facts",color:"fn-pink"},
+                {icon:"→",arrow:true},
+                {icon:"✅",label:"Accurate Answer!",sub:"Based on real data",color:"fn-sky"}
+              ],
+              extra:`<div class="callout callout-tip"><span class="callout-icon">🎯</span><div class="callout-text">
+<strong>Vector Databases</strong> are the secret sauce of RAG! They store text as mathematical vectors (long arrays of numbers) that capture the MEANING of text. Similar meanings = close vectors. Tools: Pinecone, Weaviate, Chroma, pgvector!</div></div>`
+            },
+            { type:"concepts", title:"RAG Tech Stack You Should Know",
+              tag:"CLASS 11–12 • RAG SYSTEMS • LESSON 2",
+              items:[
+                {emoji:"🔢",label:"Embeddings",desc:"Text converted to 1536-dimensional vectors. Similar meanings have similar vectors. OpenAI's text-embedding-3 is best!"},
+                {emoji:"🗄️",label:"Vector Databases",desc:"Special databases that search by vector similarity. Pinecone, Weaviate, Chroma are the top tools in 2024!"},
+                {emoji:"🔍",label:"Semantic Search",desc:"Finding documents by MEANING, not just keywords. 'Heart disease' matches 'cardiac problems' even with different words!"},
+                {emoji:"📚",label:"Chunking",desc:"Breaking documents into 300-500 token chunks for more precise retrieval. Bad chunking = bad RAG!"},
+                {emoji:"⚡",label:"LangChain",desc:"The most popular Python library for building RAG apps. Used by 100,000+ developers worldwide!"},
+                {emoji:"🦙",label:"LlamaIndex",desc:"Specialized RAG framework. Best for document QnA systems. Used by enterprises building private AI!"}
+              ]
+            },
+            { type:"quiz", title:"RAG Systems Expert Quiz! 🔗",
+              tag:"CLASS 11–12 • RAG SYSTEMS • LESSON 2",
+              questions:[
+                { q:"What problem does RAG solve for Large Language Models?",
+                  opts:["Makes them faster","Gives them access to current/private knowledge beyond their training data","Makes them cheaper to run","Reduces their size"],
+                  correct:1, explain:"RAG solves the knowledge cutoff problem! By retrieving relevant documents at query time, LLMs can answer questions about new or private data." },
+                { q:"What are 'Embeddings' in the context of RAG?",
+                  opts:["Images in documents","Text converted to numerical vectors that capture meaning","Metadata tags on documents","Compression of text"],
+                  correct:1, explain:"Embeddings convert text into high-dimensional vectors (numbers) that represent meaning. Similar meanings = similar vectors = can be found by search!" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+}; // end CLASSES
 
 // ═══════════════════════════════════════════
-// APP STATE
+//  STATE
 // ═══════════════════════════════════════════
-let currentClass = 3;
-let completedChapters = new Set();
-let xpTotal = 0;
-let activeSubject = null;
+let currentClass = null;
+let currentChapter = null;
+let currentSlide = 0;
+let completedChapters = {};
+let totalXP = 0;
+let quizAnswered = {};
 
 // ═══════════════════════════════════════════
-// PARTICLES
+//  PARTICLES
 // ═══════════════════════════════════════════
-(function createParticles() {
-  const c = document.getElementById('particles');
-  const colors = ['#6C63FF','#FF6584','#43E97B','#FFD166'];
-  for(let i=0;i<18;i++){
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random()*8+4;
-    p.style.cssText = `
-      width:${size}px;height:${size}px;
-      left:${Math.random()*100}%;
-      background:${colors[Math.floor(Math.random()*colors.length)]};
-      animation-duration:${Math.random()*12+8}s;
-      animation-delay:${Math.random()*8}s;
-      opacity:.15`;
-    c.appendChild(p);
+(function(){
+  const p = document.getElementById('particles');
+  const c = ['#7C3AED','#EC4899','#10B981','#F59E0B','#06B6D4'];
+  for(let i=0;i<20;i++){
+    const d = document.createElement('div');
+    d.className='ptcl';
+    const s = Math.random()*8+3;
+    d.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;
+      background:${c[Math.floor(Math.random()*c.length)]};
+      animation-duration:${Math.random()*14+8}s;animation-delay:${Math.random()*8}s`;
+    p.appendChild(d);
   }
 })();
 
 // ═══════════════════════════════════════════
-// NAVIGATION
+//  NAVIGATION
 // ═══════════════════════════════════════════
-function showHome() {
-  document.getElementById('home').style.display='flex';
-  document.getElementById('app').style.display='none';
+function goHome(){
+  document.getElementById('homePage').style.display='block';
+  document.getElementById('learningApp').style.display='none';
+  currentClass=null;
+  document.querySelectorAll('.nav-class-btn').forEach(b=>b.classList.remove('active'));
 }
 
-function openClass(cls) {
-  currentClass = cls;
-  const data = curriculum[cls];
-  if(!data) return;
-
-  document.getElementById('home').style.display='none';
-  document.getElementById('app').style.display='block';
-  document.getElementById('appTitle').textContent = data.icon + ' ' + data.label + ' · AI Learning';
-  const badge = document.getElementById('appBadge');
-  badge.textContent = data.badge;
-  badge.style.background = data.badgeColor;
-  badge.style.color = data.badgeText;
-  badge.style.border = `1px solid ${data.badgeText}44`;
-
-  // Update nav buttons
-  const btns = document.querySelectorAll('.nav-classes button');
-  btns.forEach(b => b.classList.remove('active'));
-  const classMap = {3:0,5:1,7:2,9:3,11:4};
-  if(btns[classMap[cls]]) btns[classMap[cls]].classList.add('active');
-
+function openClass(cls){
+  currentClass=cls;
+  const data=CLASSES[cls];
+  if(!data)return;
+  document.getElementById('homePage').style.display='none';
+  document.getElementById('learningApp').style.display='block';
+  document.getElementById('topbarTitle').textContent=data.label;
+  const badge=document.getElementById('topbarBadge');
+  badge.textContent=data.badge; badge.style.cssText=data.badgeStyle;
+  document.querySelectorAll('.nav-class-btn').forEach((b,i)=>{
+    b.classList.remove('active');
+    const map={3:0,5:1,7:2,9:3,11:4};
+    if(map[cls]===i)b.classList.add('active');
+  });
   buildSidebar(data);
-  showWelcome();
+  showWelcome(data);
+  updateProgress();
   window.scrollTo(0,0);
 }
 
-function buildSidebar(data) {
-  const list = document.getElementById('subjectList');
-  list.innerHTML = '';
-
-  data.subjects.forEach(subj => {
-    const li = document.createElement('li');
-
-    const btn = document.createElement('button');
-    btn.className = 'subject-btn' + (activeSubject===subj.id?' active':'');
-    btn.innerHTML = `<span class="subject-icon">${subj.icon}</span>${subj.name}
-      <span style="margin-left:auto;font-size:11px;color:var(--muted)">▼</span>`;
-    btn.onclick = () => toggleSubject(subj.id, li, subj);
-
-    const chapList = document.createElement('ul');
-    chapList.className = 'chapter-list' + (activeSubject===subj.id?' open':'');
-    chapList.id = 'chaplist-'+subj.id;
-
-    subj.chapters.forEach(ch => {
-      const cli = document.createElement('li');
-      const cbtn = document.createElement('button');
-      const isDone = completedChapters.has(ch.id);
-      cbtn.className = 'chapter-btn' + (isDone?' done-ch':'');
-      cbtn.innerHTML = `<span>${ch.icon}</span>${ch.title}${isDone?'<span class="done">✓</span>':''}`;
-      cbtn.onclick = () => loadLesson(ch, subj);
-      cli.appendChild(cbtn);
-      chapList.appendChild(cli);
+// ═══════════════════════════════════════════
+//  SIDEBAR
+// ═══════════════════════════════════════════
+function buildSidebar(data){
+  const inner=document.getElementById('sidebarInner');
+  inner.innerHTML=`<div class="sb-section-title">📚 Subjects & Chapters</div>`;
+  data.subjects.forEach(subj=>{
+    const wrap=document.createElement('div');
+    wrap.className='sb-subject';
+    const btn=document.createElement('button');
+    btn.className='sb-subject-btn';
+    btn.innerHTML=`<span class="sb-subject-left"><span>${subj.icon}</span><span>${subj.name}</span></span>
+      <span class="sb-chevron">▼</span>`;
+    const chapDiv=document.createElement('div');
+    chapDiv.className='sb-chapters';
+    chapDiv.id='chaplist-'+subj.id;
+    subj.chapters.forEach(ch=>{
+      const done=completedChapters[ch.id];
+      const cb=document.createElement('button');
+      cb.className='sb-chap-btn'+(done?' done':'');
+      cb.id='chapbtn-'+ch.id;
+      cb.innerHTML=`<span class="chap-icon">${ch.icon}${done?' ✓':''}</span><span>${ch.title}</span>
+        <span style="margin-left:auto;font-size:11px;color:var(--y);font-weight:800">${ch.xp}xp</span>`;
+      cb.onclick=()=>loadChapter(ch);
+      chapDiv.appendChild(cb);
     });
-
-    li.appendChild(btn);
-    li.appendChild(chapList);
-    list.appendChild(li);
+    btn.onclick=()=>toggleSubject(subj.id,btn);
+    wrap.appendChild(btn);
+    wrap.appendChild(chapDiv);
+    inner.appendChild(wrap);
   });
-
-  updateProgress();
+  // Stats
+  const data2=CLASSES[currentClass];
+  const total=data2.subjects.reduce((a,s)=>a+s.chapters.length,0);
+  const done=data2.subjects.reduce((a,s)=>a+s.chapters.filter(c=>completedChapters[c.id]).length,0);
+  inner.innerHTML+=`
+  <div class="sb-stats">
+    <div class="sb-stat-row"><span>Chapters Done</span><span class="sb-stat-val">${done}/${total}</span></div>
+    <div class="sb-stat-row"><span>XP Earned</span><span class="sb-stat-val">⭐ ${totalXP}</span></div>
+    <div class="sb-stat-row"><span>Progress</span><span class="sb-stat-val">${total?Math.round(done/total*100):0}%</span></div>
+  </div>`;
 }
 
-function toggleSubject(id, li, subj) {
-  activeSubject = activeSubject===id ? null : id;
-  document.querySelectorAll('.subject-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.chapter-list').forEach(c => c.classList.remove('open'));
-  if(activeSubject) {
-    li.querySelector('.subject-btn').classList.add('active');
-    document.getElementById('chaplist-'+id).classList.add('open');
-  }
+function toggleSubject(id,btn){
+  const c=document.getElementById('chaplist-'+id);
+  const isOpen=c.classList.contains('open');
+  document.querySelectorAll('.sb-chapters').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('.sb-subject-btn').forEach(x=>x.classList.remove('open'));
+  if(!isOpen){c.classList.add('open');btn.classList.add('open');}
 }
 
 // ═══════════════════════════════════════════
-// LESSON LOADING
+//  WELCOME SCREEN
 // ═══════════════════════════════════════════
-function showWelcome() {
-  const mc = document.getElementById('mainContent');
-  mc.innerHTML = `<div class="lesson-area active" id="welcomeLesson">
-    <div class="lesson-header">
-      <div class="lesson-class">WELCOME TO STU-BRAIN 🧠</div>
-      <div class="lesson-title">Choose a chapter to start! 🚀</div>
-      <div class="lesson-desc">Click a subject in the sidebar, then pick a chapter. Each lesson has animations, real examples & a quiz!</div>
+function showWelcome(data){
+  const total=data.subjects.reduce((a,s)=>a+s.chapters.length,0);
+  const totalXPAvail=data.subjects.reduce((a,s)=>a+s.chapters.reduce((b,c)=>b+c.xp,0),0);
+  document.getElementById('learnPanel').innerHTML=`
+  <div class="welcome-screen">
+    <div class="ws-title">Welcome to ${data.label}! 🎉</div>
+    <div class="ws-sub">
+      You have <strong>${total} chapters</strong> to master, worth <strong>⭐ ${totalXPAvail} XP</strong> total!<br>
+      Click a chapter in the sidebar to begin your immersive learning journey.
     </div>
-    <div class="visual-row">
-      <div class="visual-card"><span class="visual-icon">🎬</span><div class="visual-label">Animations</div><div class="visual-desc">See concepts come alive</div></div>
-      <div class="visual-card"><span class="visual-icon">🌍</span><div class="visual-label">Real Examples</div><div class="visual-desc">Connect to your world</div></div>
-      <div class="visual-card"><span class="visual-icon">🧩</span><div class="visual-label">Quizzes</div><div class="visual-desc">Test your knowledge</div></div>
-      <div class="visual-card"><span class="visual-icon">🏆</span><div class="visual-label">+${Object.values(curriculum[currentClass]?.subjects||{}).reduce((a,s)=>a+s.chapters.reduce((b,c)=>b+c.xp,0),0)} XP</div><div class="visual-desc">Earn as you learn!</div></div>
+    <div class="ws-cards">
+      <div class="ws-card"><span class="ws-card-icon">🎬</span><div class="ws-card-label">Animated Lessons</div><div class="ws-card-desc">Step-by-step slides with bot teachers and moving diagrams</div></div>
+      <div class="ws-card"><span class="ws-card-icon">🌍</span><div class="ws-card-label">Real Examples</div><div class="ws-card-desc">Every concept tied to apps you actually use daily</div></div>
+      <div class="ws-card"><span class="ws-card-icon">🧩</span><div class="ws-card-label">Interactive Quiz</div><div class="ws-card-desc">Test yourself after each lesson with instant feedback</div></div>
+      <div class="ws-card"><span class="ws-card-icon">⭐</span><div class="ws-card-label">XP Rewards</div><div class="ws-card-desc">Earn experience points for every chapter you complete</div></div>
     </div>
   </div>`;
 }
 
-function loadLesson(ch, subj) {
-  // Mark chapter active
-  document.querySelectorAll('.chapter-btn').forEach(b => b.classList.remove('active'));
-  event.currentTarget && event.currentTarget.classList.add('active');
+// ═══════════════════════════════════════════
+//  LOAD CHAPTER
+// ═══════════════════════════════════════════
+function loadChapter(ch){
+  currentChapter=ch;
+  currentSlide=0;
+  quizAnswered={};
+  document.querySelectorAll('.sb-chap-btn').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('chapbtn-'+ch.id);
+  if(btn)btn.classList.add('active');
+  renderSlide();
+}
 
-  const mc = document.getElementById('mainContent');
-  mc.innerHTML = `<div class="lesson-area active">${ch.lesson()}
-    <div class="lesson-btns">
-      <button class="lbtn lbtn-primary" onclick="completeChapter('${ch.id}',${ch.xp})">✅ Mark Complete (+${ch.xp} XP)</button>
-      <button class="lbtn lbtn-outline" onclick="showWelcome()">← Back to Menu</button>
-    </div>
+// ═══════════════════════════════════════════
+//  RENDER SLIDE
+// ═══════════════════════════════════════════
+function renderSlide(){
+  const ch=currentChapter;
+  const s=ch.slides[currentSlide];
+  const total=ch.slides.length;
+  const progW=Math.round((currentSlide/total)*100);
+
+  // Dot nav
+  let dots='';
+  ch.slides.forEach((_,i)=>{
+    const st=i<currentSlide?'done':i===currentSlide?'active':'';
+    dots+=`<div class="slide-dot ${st}" onclick="jumpSlide(${i})"></div>`;
+  });
+  const slideLabel=`Slide ${currentSlide+1} of ${total}`;
+
+  let inner='';
+  if(s.type==='teach') inner=renderTeach(s);
+  else if(s.type==='concepts') inner=renderConcepts(s);
+  else if(s.type==='reallife') inner=renderRealLife(s);
+  else if(s.type==='flow') inner=renderFlow(s);
+  else if(s.type==='code') inner=renderCode(s);
+  else if(s.type==='neural') inner=renderNeural(s);
+  else if(s.type==='quiz') inner=renderQuiz(s);
+
+  const isLast=currentSlide===total-1;
+  const isDone=completedChapters[ch.id];
+  let navBtns=``;
+  if(currentSlide>0) navBtns+=`<button class="snav-btn snav-prev" onclick="prevSlide()">← Previous</button>`;
+  if(!isLast) navBtns+=`<button class="snav-btn snav-next" onclick="nextSlide()">Next Slide →</button>`;
+  else if(!isDone) navBtns+=`<button class="snav-btn snav-complete" onclick="completeChapter()">🏆 Complete Chapter!</button>`;
+  else navBtns+=`<button class="snav-btn snav-complete" onclick="goHome()">🏠 Back to Home</button>`;
+
+  document.getElementById('learnPanel').innerHTML=`
+  <div class="lesson-wrap">
+    <div class="lesson-prog-bar"><div class="lesson-prog-fill" style="width:${progW}%"></div></div>
+    <div class="slide-progress">${dots}<span class="slide-label">${slideLabel}</span></div>
+    ${inner}
+    <div class="slide-nav">${navBtns}</div>
   </div>`;
 
-  mc.scrollTop = 0;
+  document.getElementById('learnPanel').scrollTop=0;
 }
 
-// ═══════════════════════════════════════════
-// QUIZ
-// ═══════════════════════════════════════════
-function checkQuiz(btn, result) {
-  const opts = btn.parentElement.querySelectorAll('.quiz-opt');
-  opts.forEach(o => o.disabled = true);
-  btn.classList.add(result);
-  const fb = btn.closest('.quiz-section').querySelector('.quiz-feedback');
-  fb.classList.add('show');
-  if(result==='correct') {
-    fb.className = 'quiz-feedback show feedback-correct';
-    fb.innerHTML = '🎉 Correct! Excellent work! You understand this perfectly!';
-    // Star animation
-    for(let i=0;i<3;i++) setTimeout(()=>createStar(fb), i*200);
-  } else {
-    fb.className = 'quiz-feedback show feedback-wrong';
-    const correct = btn.parentElement.querySelector('[onclick*="correct"]');
-    if(correct) correct.classList.add('correct');
-    fb.innerHTML = '❌ Not quite! The highlighted answer is correct. Review the lesson above!';
-  }
+// ─── SLIDE RENDERERS ───
+
+function renderTeach(s){
+  return `
+  <div class="slide-class-tag">${s.tag}</div>
+  <div class="slide-title">${s.title}</div>
+  <div class="slide-intro">${s.intro}</div>
+  <div class="bot-teach">
+    <div class="bot-avatar bot-${s.bot}">${getBotEmoji(s.bot)}</div>
+    <div class="bot-speech">
+      <div class="bot-name">${s.botName} says:</div>
+      <div class="bot-text">${s.speech}</div>
+    </div>
+  </div>
+  ${s.extra||''}`;
 }
 
-function createStar(parent) {
-  const s = document.createElement('span');
-  s.textContent='⭐';
-  s.style.cssText='font-size:20px;animation:starPop .3s ease;display:inline-block;margin:0 2px';
-  parent.appendChild(s);
+function renderConcepts(s){
+  const cards=s.items.map((item,i)=>`
+  <div class="concept-card" style="animation-delay:${i*0.07}s">
+    <span class="cc-emoji">${item.emoji}</span>
+    <div class="cc-label">${item.label}</div>
+    <div class="cc-desc">${item.desc}</div>
+  </div>`).join('');
+  return `
+  <div class="slide-class-tag">${s.tag}</div>
+  <div class="slide-title">${s.title}</div>
+  <div class="slide-intro">${s.intro}</div>
+  <div class="concept-grid">${cards}</div>
+  ${s.extra||''}`;
 }
 
-// ═══════════════════════════════════════════
-// COMPLETION
-// ═══════════════════════════════════════════
-function completeChapter(id, xp) {
-  if(completedChapters.has(id)) return;
-  completedChapters.add(id);
-  xpTotal += xp;
-  updateProgress();
-  rebuildChapterDone(id);
+function renderRealLife(s){
+  const cards=s.items.map((item,i)=>`
+  <div class="rl-card" style="animation-delay:${i*0.08}s">
+    <span class="rl-app-icon">${item.icon}</span>
+    <div class="rl-app-name">${item.name}</div>
+    <div class="rl-app-desc">${item.desc}</div>
+  </div>`).join('');
+  return `
+  <div class="slide-class-tag">${s.tag}</div>
+  <div class="rl-section-title">🌍 ${s.title}</div>
+  <div class="slide-intro">${s.intro||''}</div>
+  <div class="rl-grid">${cards}</div>
+  ${s.extra||''}`;
+}
 
-  // Show completion banner
-  const mc = document.getElementById('mainContent');
-  const existing = mc.querySelector('.complete-banner');
-  if(!existing) {
-    const banner = document.createElement('div');
-    banner.className = 'complete-banner';
-    banner.innerHTML = `
-      <div class="complete-icon">🏆</div>
-      <div>
-        <div class="complete-title">Chapter Complete!</div>
-        <div class="complete-desc">Fantastic work! Keep going to master AI & Technology!</div>
-        <div class="stars" id="starRow"></div>
+function renderFlow(s){
+  const nodes=s.nodes.map(n=>{
+    if(n.arrow) return `<div class="flow-arrow">→</div>`;
+    return `<div class="flow-node ${n.color} active-node" style="animation-delay:0.1s">
+      <span class="fn-icon">${n.icon}</span>
+      <div class="fn-label">${n.label}</div>
+      ${n.sub?`<div class="fn-sub">${n.sub}</div>`:''}
+    </div>`;
+  }).join('');
+  return `
+  <div class="slide-class-tag">${s.tag}</div>
+  <div class="slide-title">${s.title}</div>
+  <div class="slide-intro">${s.intro}</div>
+  <div class="diagram-box">
+    <div class="diagram-title">⚡ Interactive Flow Diagram</div>
+    <div class="flow-diagram">${nodes}</div>
+  </div>
+  ${s.extra||''}`;
+}
+
+function renderCode(s){
+  let blocks=s.snippets.map(sn=>{
+    const lines=sn.lines.map(l=>{
+      if(l.t==='comment') return `<div><span class="c-comment">${l.c}</span></div>`;
+      if(l.t==='keyword') return `<span class="c-keyword">${l.c}</span>`;
+      if(l.t==='string') return `<span class="c-string">${l.c}</span>`;
+      if(l.t==='func') return `<span class="c-func">${l.c}</span>`;
+      if(l.t==='var') return `<div><span class="c-var">${l.c}</span>`;
+      if(l.t==='num') return `<span class="c-num">${l.c}</span>`;
+      if(l.t==='output') return `<div><span class="c-output">${l.c}</span></div>`;
+      return `<span>${l.c}</span>`;
+    }).join('');
+    return `
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dot" style="background:#FF5F57"></div>
+        <div class="code-dot" style="background:#FFBD2E"></div>
+        <div class="code-dot" style="background:#27C93F"></div>
+        <div class="code-filename">${sn.filename}</div>
       </div>
-      <div class="xp-badge">+${xp} XP</div>`;
-    mc.querySelector('.lesson-area').appendChild(banner);
-    // Add stars with delay
-    const starRow = banner.querySelector('#starRow');
-    [0,200,400].forEach(d => setTimeout(()=>{
-      const s = document.createElement('span');
-      s.textContent='⭐';
-      s.className='star';
-      s.style.animationDelay=d+'ms';
-      starRow.appendChild(s);
-    }, d));
+      <div class="code-body">${lines}</div>
+    </div>`;
+  }).join('');
+  return `
+  <div class="slide-class-tag">${s.tag}</div>
+  <div class="slide-title">${s.title}</div>
+  <div class="slide-intro">${s.intro}</div>
+  ${blocks}
+  ${s.extra||''}`;
+}
+
+function renderNeural(s){
+  const mkNodes=(arr,cls)=>arr.map((n,i)=>
+    `<div class="nn-node ${cls}" style="animation-delay:${i*0.2}s">${n}</div>`).join('');
+  const mkArrows=(count)=>Array(count).fill(0).map((_,i)=>
+    `<div class="nn-arrow-line" style="animation-delay:${i*0.1}s"></div>`).join('');
+  return `
+  <div class="slide-class-tag">${s.tag}</div>
+  <div class="slide-title">${s.title}</div>
+  <div class="slide-intro">${s.intro}</div>
+  <div class="diagram-box">
+    <div class="diagram-title">🧬 Live Neural Network Visualization</div>
+    <div class="neural-vis">
+      <div class="nn-col">
+        ${mkNodes(s.input,'nn-in')}
+        <div class="nn-col-label">${s.labels[0]}<br><small style="color:var(--a);font-size:10px">📥 Input</small></div>
+      </div>
+      <div class="nn-arrows">${mkArrows(s.input.length)}</div>
+      <div class="nn-col">
+        ${mkNodes(s.hidden1,'nn-h1')}
+        <div class="nn-col-label">${s.labels[1]}<br><small style="color:var(--p2);font-size:10px">🔮 Process</small></div>
+      </div>
+      <div class="nn-arrows">${mkArrows(s.hidden2.length)}</div>
+      <div class="nn-col">
+        ${mkNodes(s.hidden2,'nn-h2')}
+        <div class="nn-col-label">${s.labels[2]}<br><small style="color:var(--sky);font-size:10px">🔍 Deep</small></div>
+      </div>
+      <div class="nn-arrows">${mkArrows(s.output.length)}</div>
+      <div class="nn-col">
+        ${mkNodes(s.output,'nn-out')}
+        <div class="nn-col-label">${s.labels[3]}<br><small style="color:var(--s);font-size:10px">🎯 Output</small></div>
+      </div>
+    </div>
+  </div>
+  ${s.extra||''}`;
+}
+
+function renderQuiz(s){
+  const qCards=s.questions.map((q,qi)=>{
+    const opts=q.opts.map((o,oi)=>{
+      const letter=String.fromCharCode(65+oi);
+      return `<button class="quiz-opt-btn" id="qopt-${qi}-${oi}" onclick="answerQ(${qi},${oi})" data-correct="${q.correct}" data-explain="${encodeURIComponent(q.explain)}">
+        <span class="opt-letter">${letter}</span>${o}
+      </button>`;
+    }).join('');
+    return `
+    <div style="margin-bottom:28px" id="qblock-${qi}">
+      <div class="quiz-q">Q${qi+1}. ${q.q}</div>
+      <div class="quiz-opts">${opts}</div>
+      <div class="quiz-feedback" id="qfb-${qi}"></div>
+    </div>`;
+  }).join('');
+  return `
+  <div class="slide-class-tag">${s.tag}</div>
+  <div class="quiz-wrap">
+    <div class="quiz-header">
+      <span class="quiz-icon">🧩</span>
+      <span class="quiz-title">${s.title}</span>
+      <span class="quiz-num">${s.questions.length} Questions</span>
+    </div>
+    ${qCards}
+  </div>`;
+}
+
+// ─── QUIZ LOGIC ───
+function answerQ(qi,oi){
+  const qKey=`${currentChapter.id}-${currentSlide}-${qi}`;
+  if(quizAnswered[qKey])return;
+  quizAnswered[qKey]=true;
+
+  const slide=currentChapter.slides[currentSlide];
+  const q=slide.questions[qi];
+  const isCorrect=oi===q.correct;
+
+  // Disable all opts for this question
+  for(let i=0;i<q.opts.length;i++){
+    const b=document.getElementById(`qopt-${qi}-${i}`);
+    b.disabled=true;
+    if(i===q.correct) b.classList.add('correct');
+    else if(i===oi && !isCorrect) b.classList.add('wrong');
+  }
+
+  const fb=document.getElementById(`qfb-${qi}`);
+  fb.classList.add('show');
+  if(isCorrect){
+    fb.className='quiz-feedback show qf-correct';
+    fb.innerHTML=`🎉 <strong>Correct!</strong> ${decodeURIComponent(document.getElementById(`qopt-${qi}-${oi}`).dataset.explain)}`;
+  } else {
+    fb.className='quiz-feedback show qf-wrong';
+    fb.innerHTML=`❌ <strong>Not quite!</strong> ${q.explain}`;
   }
 }
 
-function rebuildChapterDone(id) {
-  document.querySelectorAll('.chapter-btn').forEach(btn => {
-    if(btn.textContent.includes(id)) {
-      btn.classList.add('done-ch');
-      if(!btn.querySelector('.done')) {
-        const d = document.createElement('span');
-        d.className='done';d.textContent='✓';
-        btn.appendChild(d);
-      }
+// ─── SLIDE NAVIGATION ───
+function nextSlide(){ if(currentSlide<currentChapter.slides.length-1){currentSlide++;renderSlide();} }
+function prevSlide(){ if(currentSlide>0){currentSlide--;renderSlide();} }
+function jumpSlide(i){ currentSlide=i; renderSlide(); }
+
+// ─── COMPLETE CHAPTER ───
+function completeChapter(){
+  const ch=currentChapter;
+  if(completedChapters[ch.id])return;
+  completedChapters[ch.id]=true;
+  totalXP+=ch.xp;
+  document.getElementById('totalXPDisp').textContent=totalXP;
+  showXPPopup(ch.xp);
+  updateProgress();
+  buildSidebar(CLASSES[currentClass]);
+  // Re-mark active button
+  setTimeout(()=>{
+    const btn=document.getElementById('chapbtn-'+ch.id);
+    if(btn)btn.classList.add('active');
+  },100);
+  showCompletionScreen(ch);
+}
+
+function showXPPopup(xp){
+  const p=document.getElementById('xpPopup');
+  document.getElementById('xpAmt').textContent=xp;
+  p.style.display='flex';
+  setTimeout(()=>{p.style.opacity='0';p.style.transform='translateY(-30px)';},1800);
+  setTimeout(()=>{p.style.display='none';p.style.opacity='1';p.style.transform='';},2200);
+}
+
+function showCompletionScreen(ch){
+  const data=CLASSES[currentClass];
+  // Find next chapter
+  let nextCh=null;
+  let found=false;
+  for(const subj of data.subjects){
+    for(const c of subj.chapters){
+      if(found && !completedChapters[c.id]){nextCh=c;break;}
+      if(c.id===ch.id)found=true;
     }
-  });
+    if(nextCh)break;
+  }
+
+  document.getElementById('learnPanel').innerHTML=`
+  <div class="completion-screen">
+    <span class="comp-trophy">🏆</span>
+    <div class="comp-title">Chapter Complete!</div>
+    <div class="comp-sub">
+      Amazing work completing <strong>"${ch.title}"</strong>!<br>
+      You're one step closer to becoming an AI expert! 🚀
+    </div>
+    <div class="comp-xp">⭐ +${ch.xp} XP Earned!</div>
+    <div class="comp-stars">
+      <span class="comp-star">⭐</span>
+      <span class="comp-star">⭐</span>
+      <span class="comp-star">⭐</span>
+    </div>
+    <div>
+      ${nextCh?`<button class="comp-next-btn" onclick='loadChapter(${JSON.stringify(nextCh)})'>Next Chapter → ${nextCh.icon} ${nextCh.title}</button>`:''}
+      <button class="comp-back-btn" onclick="showWelcome(CLASSES[currentClass])">📚 Back to Chapters</button>
+    </div>
+  </div>`;
 }
 
-function updateProgress() {
-  const data = curriculum[currentClass];
-  if(!data) return;
-  const total = data.subjects.reduce((a,s)=>a+s.chapters.length,0);
-  const done = data.subjects.reduce((a,s)=>a+s.chapters.filter(c=>completedChapters.has(c.id)).length,0);
-  const pct = total>0 ? Math.round(done/total*100) : 0;
-  document.getElementById('progressPct').textContent = pct+'%';
-  document.getElementById('progressFill').style.width = pct+'%';
+function updateProgress(){
+  const data=CLASSES[currentClass];
+  if(!data)return;
+  const total=data.subjects.reduce((a,s)=>a+s.chapters.length,0);
+  const done=data.subjects.reduce((a,s)=>a+s.chapters.filter(c=>completedChapters[c.id]).length,0);
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progLabel').textContent=pct+'%';
 }
 
-// ═══════════════════════════════════════════
-// SCROLL REVEAL
-// ═══════════════════════════════════════════
-const observer = new IntersectionObserver(e => {
-  e.forEach(el => { if(el.isIntersecting) el.target.classList.add('visible'); });
-},{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+function getBotEmoji(t){
+  return {a:'🤖',b:'🌟',c:'⚡',d:'🎯'}[t]||'🤖';
+}
 
-// Start with home
-showHome();
+// Start on home
+goHome();
 </script>
 </body>
 </html>
