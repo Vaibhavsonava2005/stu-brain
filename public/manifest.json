@@ -1,0 +1,20 @@
+{
+  "name": "STU-BRAIN – AI Learning Platform",
+  "short_name": "STU-BRAIN",
+  "description": "Future AI Learning for Classes 8-12 — AI, ML, Robotics, Deep Learning",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#0D0D2B",
+  "theme_color": "#6C63FF",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/icon-16.png",  "sizes": "16x16",   "type": "image/png" },
+    { "src": "/icon-32.png",  "sizes": "32x32",   "type": "image/png" },
+    { "src": "/icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "apple-touch-icon" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable any" }
+  ],
+  "categories": ["education"],
+  "lang": "en-IN",
+  "scope": "/"
+}

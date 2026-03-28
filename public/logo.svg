@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6C63FF"/>
+      <stop offset="100%" style="stop-color:#FF6584"/>
+    </linearGradient>
+    <linearGradient id="brain" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#E8E5FF;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="url(#bg)"/>
+  <!-- Rounded square inset -->
+  <rect x="80" y="80" width="352" height="352" rx="72" fill="rgba(255,255,255,0.12)"/>
+  <!-- Brain shape simplified -->
+  <!-- Left hemisphere -->
+  <path d="M155 220 C140 200 138 170 160 155 C175 145 195 148 205 160 C205 148 215 138 230 138 C245 138 255 150 255 165 L255 345 C255 345 240 350 225 345 C210 340 200 328 195 315 C185 325 170 325 158 318 C142 308 138 288 145 272 C135 265 130 248 135 235 C138 228 146 222 155 220Z" fill="url(#brain)"/>
+  <!-- Right hemisphere -->
+  <path d="M357 220 C372 200 374 170 352 155 C337 145 317 148 307 160 C307 148 297 138 282 138 C267 138 257 150 257 165 L257 345 C257 345 272 350 287 345 C302 340 312 328 317 315 C327 325 342 325 354 318 C370 308 374 288 367 272 C377 265 382 248 377 235 C374 228 366 222 357 220Z" fill="url(#brain)"/>
+  <!-- Center divide line -->
+  <rect x="251" y="148" width="10" height="192" rx="5" fill="rgba(108,99,255,0.4)"/>
+  <!-- Neural dots - left -->
+  <circle cx="185" cy="200" r="8" fill="#43E97B" opacity="0.9"/>
+  <circle cx="175" cy="240" r="6" fill="#FFD166" opacity="0.9"/>
+  <circle cx="190" cy="275" r="7" fill="#38BFFF" opacity="0.9"/>
+  <circle cx="220" cy="300" r="6" fill="#FF6584" opacity="0.9"/>
+  <circle cx="210" cy="220" r="5" fill="#43E97B" opacity="0.7"/>
+  <!-- Neural dots - right -->
+  <circle cx="327" cy="200" r="8" fill="#43E97B" opacity="0.9"/>
+  <circle cx="337" cy="240" r="6" fill="#FFD166" opacity="0.9"/>
+  <circle cx="322" cy="275" r="7" fill="#38BFFF" opacity="0.9"/>
+  <circle cx="292" cy="300" r="6" fill="#FF6584" opacity="0.9"/>
+  <circle cx="302" cy="220" r="5" fill="#43E97B" opacity="0.7"/>
+  <!-- Connection lines -->
+  <line x1="185" y1="200" x2="210" y2="220" stroke="#43E97B" stroke-width="2" opacity="0.5"/>
+  <line x1="175" y1="240" x2="190" y2="275" stroke="#FFD166" stroke-width="2" opacity="0.5"/>
+  <line x1="327" y1="200" x2="302" y2="220" stroke="#43E97B" stroke-width="2" opacity="0.5"/>
+  <line x1="337" y1="240" x2="322" y2="275" stroke="#FFD166" stroke-width="2" opacity="0.5"/>
+</svg>
