@@ -108,7 +108,7 @@ export async function initDB() {
 
   const bcrypt = await import('bcryptjs');
   const h = await bcrypt.default.hash('demo123', 10);
-  const adminPwd = process.env.SUPERADMIN_PASSWORD || '090991';
+  const adminPwd = process.env.SUPERADMIN_PASSWORD || 'changeme-set-SUPERADMIN_PASSWORD-in-vercel';
   const sh = await bcrypt.default.hash(adminPwd, 10);
 
   await db`INSERT INTO users (school_id,name,email,student_id,password_hash,role,class_level) SELECT s.id,'Vaibhav Sonava','student@demo.com','STU2025001',${h},'student',9 FROM schools s WHERE s.code='DEMO2025' ON CONFLICT (email) DO NOTHING`;
