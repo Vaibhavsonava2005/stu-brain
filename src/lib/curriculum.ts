@@ -12,6 +12,760 @@ export interface Subject { id: string; icon: string; name: string; nameHi: strin
 export interface ClassData { label: string; labelHi: string; badge: string; badgeHi: string; badgeStyle: string; emoji: string; subjects: Subject[]; }
 
 export const CURRICULUM: Record<number, ClassData> = {
+  3: {
+    label: 'Class 3', labelHi: 'कक्षा 3', badge: '🌟 AI Explorer', badgeHi: '🌟 AI खोजकर्ता',
+    badgeStyle: 'background:rgba(56,189,248,.15);color:#38BFF8;border:1px solid rgba(56,189,248,.3)',
+    emoji: '🌟',
+    subjects: [{
+      id: 's3_ct', icon: '🧠', name: 'Computational Thinking & AI Basics', nameHi: 'कम्प्यूटेशनल थिंकिंग और AI',
+      chapters: [
+        {
+          id: 'c3_1', icon: '🤖', title: 'What is AI? Robots and Smart Machines!', titleHi: 'What is AI? Robots and Smart Machines!', xp: 15,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 3 · WHAT IS AI · CHAPTER 1', tagHi: 'CLASS 3 · WHAT IS AI · CHAPTER 1',
+              title: 'Meet AI — Your Smart Machine Friend!', titleHi: 'Meet AI — Your Smart Machine Friend!',
+              intro: 'AI is all around you! Your phone, your TV, even toys can have AI. Let\'s meet AI today!', introHi: 'AI is all around you! Your phone, your TV, even toys can have AI. Let\'s meet AI today!',
+              speech: '<span class="hi">AI = Artificial Intelligence</span><br><br>Artificial = <span class="em">Made by humans</span> 🔧<br>Intelligence = <span class="cool">Ability to think and learn</span> 🧠<br><br>AI is like a very smart helper that a computer can be!<br><br>🤖 <strong>Robots</strong> are machines that can move and do tasks<br>📱 <strong>Siri & Alexa</strong> listen and answer your questions<br>🎮 <strong>Game bots</strong> play against you in video games<br>🚗 <strong>Self-driving cars</strong> drive without a human!<br><br><span class="em">AI does NOT have feelings — but it is very clever!</span>',
+              speechHi: '<span class="hi">AI = Artificial Intelligence</span><br><br>Artificial = <span class="em">Made by humans</span> 🔧<br>Intelligence = <span class="cool">Ability to think and learn</span> 🧠<br><br>AI is like a very smart helper that a computer can be!<br><br>🤖 <strong>Robots</strong> are machines that can move and do tasks<br>📱 <strong>Siri & Alexa</strong> listen and answer your questions<br>🎮 <strong>Game bots</strong> play against you in video games<br>🚗 <strong>Self-driving cars</strong> drive without a human!<br><br><span class="em">AI does NOT have feelings — but it is very clever!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 3 · AI EXAMPLES', tagHi: 'CLASS 3 · AI EXAMPLES',
+              title: 'AI Friends You Already Know!', titleHi: 'AI Friends You Already Know!',
+              intro: 'You use AI every single day without knowing it!', introHi: 'You use AI every single day without knowing it!',
+              items: [
+                { em:'📱', l:'Alexa & Siri', lHi:'Alexa & Siri', d:'They listen to your voice and answer questions! Ask: "What is 2+2?" and they tell you instantly!', dHi:'They listen to your voice and answer questions! Ask: "What is 2+2?" and they tell you instantly!' },
+                { em:'🎮', l:'Video Game Bots', lHi:'Video Game Bots', d:'In PUBG, FIFA, or Clash of Clans — the enemy characters are controlled by AI!', dHi:'In PUBG, FIFA, or Clash of Clans — the enemy characters are controlled by AI!' },
+                { em:'📺', l:'YouTube & Netflix', lHi:'YouTube & Netflix', d:'They watch what YOU watch and suggest more videos you might like — that is AI!', dHi:'They watch what YOU watch and suggest more videos you might like — that is AI!' },
+                { em:'🚗', l:'Google Maps', lHi:'Google Maps', d:'AI looks at traffic from millions of phones and shows you the fastest route!', dHi:'AI looks at traffic from millions of phones and shows you the fastest route!' },
+                { em:'🤖', l:'Factory Robots', lHi:'Factory Robots', d:'In Maruti, Tata factories — robot arms weld and paint cars without any human help!', dHi:'In Maruti, Tata factories — robot arms weld and paint cars without any human help!' },
+                { em:'📸', l:'Face Unlock', lHi:'Face Unlock', d:'Your phone uses AI to recognize YOUR face and unlock only for you!', dHi:'Your phone uses AI to recognize YOUR face and unlock only for you!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 3 · AI QUIZ', tagHi: 'CLASS 3 · AI QUIZ',
+              title: '🧩 What is AI? — Fun Quiz!', titleHi: '🧩 What is AI? — Fun Quiz!',
+              questions: [
+                { q: 'What does AI stand for?', qHi: 'What does AI stand for?',
+                  opts: ['Auto Intelligence', 'Artificial Intelligence', 'Amazing Internet', 'Apple iPad'], optsHi: ['Auto Intelligence', 'Artificial Intelligence', 'Amazing Internet', 'Apple iPad'],
+                  c: 1, ex: 'AI = Artificial Intelligence! Artificial means made by humans, and Intelligence means ability to think and learn!', exHi: 'AI = Artificial Intelligence! Artificial means made by humans, and Intelligence means ability to think and learn!' },
+                { q: 'Which of these uses AI?', qHi: 'Which of these uses AI?',
+                  opts: ['A pencil', 'A book', 'Siri on iPhone', 'A rubber eraser'], optsHi: ['A pencil', 'A book', 'Siri on iPhone', 'A rubber eraser'],
+                  c: 2, ex: 'Siri uses AI! It listens to your voice, understands what you said, and answers you. That is Artificial Intelligence!', exHi: 'Siri uses AI! It listens to your voice, understands what you said, and answers you. That is Artificial Intelligence!' },
+                { q: 'Can AI have feelings like sadness or happiness?', qHi: 'Can AI have feelings like sadness or happiness?',
+                  opts: ['Yes, it cries', 'Yes, it laughs', 'No, AI has no feelings', 'Yes, it gets angry'], optsHi: ['Yes, it cries', 'Yes, it laughs', 'No, AI has no feelings', 'Yes, it gets angry'],
+                  c: 2, ex: 'AI has NO feelings! It is a program — very clever, but it cannot feel sad, happy, or angry. Only humans and animals have real feelings.', exHi: 'AI has NO feelings! It is a program — very clever, but it cannot feel sad, happy, or angry. Only humans and animals have real feelings.' },
+                { q: 'What does a robot use to move and do tasks?', qHi: 'What does a robot use to move and do tasks?',
+                  opts: ['Magic', 'Feelings', 'Artificial Intelligence + Motors', 'Only human control'], optsHi: ['Magic', 'Feelings', 'Artificial Intelligence + Motors', 'Only human control'],
+                  c: 2, ex: 'Robots use AI + motors! AI decides what to do, and motors make the arms and legs move. Together they make a smart machine!', exHi: 'Robots use AI + motors! AI decides what to do, and motors make the arms and legs move. Together they make a smart machine!' },
+                { q: 'YouTube suggesting your next video is an example of?', qHi: 'YouTube suggesting your next video is an example of?',
+                  opts: ['Magic', 'Artificial Intelligence', 'Your teacher choosing', 'Random selection'], optsHi: ['Magic', 'Artificial Intelligence', 'Your teacher choosing', 'Random selection'],
+                  c: 1, ex: 'YouTube uses AI! It watches what videos you like, for how long you watch, and suggests more similar videos. Smart algorithm!', exHi: 'YouTube uses AI! It watches what videos you like, for how long you watch, and suggests more similar videos. Smart algorithm!' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c3_2', icon: '🔢', title: 'Patterns and Puzzles — How Computers Think!', titleHi: 'Patterns and Puzzles — How Computers Think!', xp: 15,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 3 · PATTERNS · CHAPTER 2', tagHi: 'CLASS 3 · PATTERNS · CHAPTER 2',
+              title: 'Computers Love Patterns — Can You Find Them?', titleHi: 'Computers Love Patterns — Can You Find Them?',
+              intro: 'Computers are pattern-finding supermachines! Let\'s learn how computers find patterns just like you do!', introHi: 'Computers are pattern-finding supermachines! Let\'s learn how computers find patterns just like you do!',
+              speech: '<span class="hi">A Pattern</span> = Something that <span class="em">repeats</span> in a special order<br><br>🔴🔵🔴🔵🔴 — What comes next? <span class="cool">🔵</span> ✅<br>1, 2, 3, 4, 5 — What comes next? <span class="em">6</span> ✅<br>Mon, Tue, Wed — What comes next? <span class="cool">Thu</span> ✅<br><br><span class="hi">Computers find patterns MUCH faster than humans!</span><br><br>🎵 <strong>Spotify</strong> finds patterns in songs you like → suggests more<br>📱 <strong>Autocorrect</strong> finds patterns in how you type → fixes mistakes<br>🌦️ <strong>Weather app</strong> finds patterns in temperature → predicts rain<br><br><span class="em">AI learns by finding millions of patterns in data!</span>',
+              speechHi: '<span class="hi">A Pattern</span> = Something that <span class="em">repeats</span> in a special order<br><br>🔴🔵🔴🔵🔴 — What comes next? <span class="cool">🔵</span> ✅<br>1, 2, 3, 4, 5 — What comes next? <span class="em">6</span> ✅<br>Mon, Tue, Wed — What comes next? <span class="cool">Thu</span> ✅<br><br><span class="hi">Computers find patterns MUCH faster than humans!</span><br><br>🎵 <strong>Spotify</strong> finds patterns in songs you like → suggests more<br>📱 <strong>Autocorrect</strong> finds patterns in how you type → fixes mistakes<br>🌦️ <strong>Weather app</strong> finds patterns in temperature → predicts rain<br><br><span class="em">AI learns by finding millions of patterns in data!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 3 · PATTERN TYPES', tagHi: 'CLASS 3 · PATTERN TYPES',
+              title: 'Different Types of Patterns', titleHi: 'Different Types of Patterns',
+              intro: 'Patterns are everywhere — in numbers, shapes, colors, and even music!', introHi: 'Patterns are everywhere — in numbers, shapes, colors, and even music!',
+              items: [
+                { em:'🔢', l:'Number Patterns', lHi:'Number Patterns', d:'2, 4, 6, 8, ? → The pattern is +2 each time! Answer: 10. Computers find these instantly in millions of numbers.', dHi:'2, 4, 6, 8, ? → The pattern is +2 each time! Answer: 10. Computers find these instantly in millions of numbers.' },
+                { em:'🎨', l:'Color Patterns', lHi:'Color Patterns', d:'Red, Blue, Green, Red, Blue, ? → The pattern repeats every 3. Answer: Green! AI uses this for image recognition.', dHi:'Red, Blue, Green, Red, Blue, ? → The pattern repeats every 3. Answer: Green! AI uses this for image recognition.' },
+                { em:'📅', l:'Time Patterns', lHi:'Time Patterns', d:'Monday to Monday = 7 days. AI uses time patterns to predict when traffic will be high or low!', dHi:'Monday to Monday = 7 days. AI uses time patterns to predict when traffic will be high or low!' },
+                { em:'🗣️', l:'Word Patterns', lHi:'Word Patterns', d:'AI learns that "Good ___" is often followed by "morning" or "night". This is how autocorrect works!', dHi:'AI learns that "Good ___" is often followed by "morning" or "night". This is how autocorrect works!' },
+                { em:'🎵', l:'Music Patterns', lHi:'Music Patterns', d:'Songs have beat patterns: 1-2-3-4, 1-2-3-4. Spotify AI finds your music pattern to suggest new songs.', dHi:'Songs have beat patterns: 1-2-3-4, 1-2-3-4. Spotify AI finds your music pattern to suggest new songs.' },
+                { em:'🌡️', l:'Weather Patterns', lHi:'Weather Patterns', d:'When temperature drops + humidity rises + wind changes → AI predicts: rain coming! Pattern recognition!', dHi:'When temperature drops + humidity rises + wind changes → AI predicts: rain coming! Pattern recognition!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 3 · PATTERNS QUIZ', tagHi: 'CLASS 3 · PATTERNS QUIZ',
+              title: '🧩 Patterns Quiz!', titleHi: '🧩 Patterns Quiz!',
+              questions: [
+                { q: 'What comes next: 2, 4, 6, 8, __?', qHi: 'What comes next: 2, 4, 6, 8, __?',
+                  opts: ['9', '10', '11', '12'], optsHi: ['9', '10', '11', '12'],
+                  c: 1, ex: '10! The pattern is +2 each time. 2+2=4, 4+2=6, 6+2=8, 8+2=10! This is an arithmetic pattern.', exHi: '10! The pattern is +2 each time. 2+2=4, 4+2=6, 6+2=8, 8+2=10! This is an arithmetic pattern.' },
+                { q: 'What comes next: 🔴🔵🔴🔵🔴__?', qHi: 'What comes next: 🔴🔵🔴🔵🔴__?',
+                  opts: ['🔴', '🔵', '🟢', '⚪'], optsHi: ['🔴', '🔵', '🟢', '⚪'],
+                  c: 1, ex: 'Blue! The pattern is Red-Blue repeating. After Red comes Blue!', exHi: 'Blue! The pattern is Red-Blue repeating. After Red comes Blue!' },
+                { q: 'Autocorrect fixes your spelling using?', qHi: 'Autocorrect fixes your spelling using?',
+                  opts: ['A human editor', 'Pattern recognition of common words', 'Random guessing', 'A dictionary only'], optsHi: ['A human editor', 'Pattern recognition of common words', 'Random guessing', 'A dictionary only'],
+                  c: 1, ex: 'Pattern recognition! Autocorrect learns patterns of how words are spelled and typed, then fixes your mistakes automatically.', exHi: 'Pattern recognition! Autocorrect learns patterns of how words are spelled and typed, then fixes your mistakes automatically.' },
+                { q: 'Weather apps predict rain by?', qHi: 'Weather apps predict rain by?',
+                  opts: ['Guessing', 'Asking people', 'Finding patterns in temperature, wind and humidity data', 'Looking outside'], optsHi: ['Guessing', 'Asking people', 'Finding patterns in temperature, wind and humidity data', 'Looking outside'],
+                  c: 2, ex: 'Pattern recognition in data! AI analyzes temperature drops, humidity increases, and wind changes — patterns that historically come before rain.', exHi: 'Pattern recognition in data! AI analyzes temperature drops, humidity increases, and wind changes — patterns that historically come before rain.' },
+                { q: 'Which app uses music patterns to suggest songs?', qHi: 'Which app uses music patterns to suggest songs?',
+                  opts: ['Calculator', 'Camera', 'Spotify', 'Calendar'], optsHi: ['Calculator', 'Camera', 'Spotify', 'Calendar'],
+                  c: 2, ex: 'Spotify uses AI to find patterns in what music you listen to — then suggests songs with similar patterns of rhythm and sound!', exHi: 'Spotify uses AI to find patterns in what music you listen to — then suggests songs with similar patterns of rhythm and sound!' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c3_3', icon: '📋', title: 'Giving Instructions — Algorithms in Daily Life!', titleHi: 'Giving Instructions — Algorithms in Daily Life!', xp: 15,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 3 · ALGORITHMS · CHAPTER 3', tagHi: 'CLASS 3 · ALGORITHMS · CHAPTER 3',
+              title: 'An Algorithm is Just a Recipe for Computers!', titleHi: 'An Algorithm is Just a Recipe for Computers!',
+              intro: 'You already know algorithms! When you brush your teeth or make a sandwich — you follow steps. Computers do the same!', introHi: 'You already know algorithms! When you brush your teeth or make a sandwich — you follow steps. Computers do the same!',
+              speech: '<span class="hi">Algorithm</span> = A set of <span class="em">step-by-step instructions</span> to solve a problem<br><br>🪥 <strong>Brushing Teeth Algorithm:</strong><br>Step 1: Pick up toothbrush<br>Step 2: Add toothpaste<br>Step 3: Brush for 2 minutes<br>Step 4: Rinse mouth<br>Step 5: Done! ✅<br><br>Computers follow algorithms to do EVERYTHING:<br>🔍 <span class="em">Google Search</span> — algorithm ranks websites<br>🎯 <span class="cool">Netflix recommendations</span> — algorithm picks your shows<br>🚗 <span class="hi">GPS routing</span> — algorithm finds shortest path<br><br><span class="em">Good algorithm = clear steps, correct order, works every time!</span>',
+              speechHi: '<span class="hi">Algorithm</span> = A set of <span class="em">step-by-step instructions</span> to solve a problem<br><br>🪥 <strong>Brushing Teeth Algorithm:</strong><br>Step 1: Pick up toothbrush<br>Step 2: Add toothpaste<br>Step 3: Brush for 2 minutes<br>Step 4: Rinse mouth<br>Step 5: Done! ✅<br><br>Computers follow algorithms to do EVERYTHING:<br>🔍 <span class="em">Google Search</span> — algorithm ranks websites<br>🎯 <span class="cool">Netflix recommendations</span> — algorithm picks your shows<br>🚗 <span class="hi">GPS routing</span> — algorithm finds shortest path<br><br><span class="em">Good algorithm = clear steps, correct order, works every time!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 3 · ALGORITHM EXAMPLES', tagHi: 'CLASS 3 · ALGORITHM EXAMPLES',
+              title: 'Algorithms All Around Us!', titleHi: 'Algorithms All Around Us!',
+              intro: 'Every app you use runs an algorithm behind the scenes!', introHi: 'Every app you use runs an algorithm behind the scenes!',
+              items: [
+                { em:'🔍', l:'Google Search', lHi:'Google Search', d:'You type "best school in Jaipur" → Google\'s algorithm checks billions of websites → shows most relevant results in 0.5 seconds!', dHi:'You type "best school in Jaipur" → Google\'s algorithm checks billions of websites → shows most relevant results in 0.5 seconds!' },
+                { em:'🚗', l:'Google Maps', lHi:'Google Maps', d:'Type: Home to School. Algorithm checks all roads → calculates times → picks fastest path. Updates if there is traffic!', dHi:'Type: Home to School. Algorithm checks all roads → calculates times → picks fastest path. Updates if there is traffic!' },
+                { em:'🛒', l:'Flipkart Delivery', lHi:'Flipkart Delivery', d:'After you order: algorithm assigns nearest warehouse → finds best delivery route → estimates arrival time. All automatic!', dHi:'After you order: algorithm assigns nearest warehouse → finds best delivery route → estimates arrival time. All automatic!' },
+                { em:'📧', l:'Email Spam Filter', lHi:'Email Spam Filter', d:'Email arrives → algorithm checks: unknown sender? + suspicious words? + many links? → Yes = SPAM folder!', dHi:'Email arrives → algorithm checks: unknown sender? + suspicious words? + many links? → Yes = SPAM folder!' },
+                { em:'🎮', l:'Snake Game', lHi:'Snake Game', d:'Snake moves: if wall ahead → turn. If food ahead → move forward. If tail ahead → turn. Simple algorithm makes the game!', dHi:'Snake moves: if wall ahead → turn. If food ahead → move forward. If tail ahead → turn. Simple algorithm makes the game!' },
+                { em:'🏦', l:'ATM Machine', lHi:'ATM Machine', d:'Insert card → enter PIN → select amount → algorithm checks: valid card? + correct PIN? + enough balance? → Give money!', dHi:'Insert card → enter PIN → select amount → algorithm checks: valid card? + correct PIN? + enough balance? → Give money!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 3 · ALGORITHM QUIZ', tagHi: 'CLASS 3 · ALGORITHM QUIZ',
+              title: '🧩 Algorithms Quiz!', titleHi: '🧩 Algorithms Quiz!',
+              questions: [
+                { q: 'What is an algorithm?', qHi: 'What is an algorithm?',
+                  opts: ['A type of robot', 'A step-by-step set of instructions to solve a problem', 'A math equation', 'A computer language'], optsHi: ['A type of robot', 'A step-by-step set of instructions to solve a problem', 'A math equation', 'A computer language'],
+                  c: 1, ex: 'An algorithm is step-by-step instructions! Like a recipe tells you how to make food, an algorithm tells a computer exactly what to do and in what order.', exHi: 'An algorithm is step-by-step instructions! Like a recipe tells you how to make food, an algorithm tells a computer exactly what to do and in what order.' },
+                { q: 'When you brush your teeth following steps, you are following?', qHi: 'When you brush your teeth following steps, you are following?',
+                  opts: ['A magic spell', 'An algorithm', 'A pattern', 'A sensor'], optsHi: ['A magic spell', 'An algorithm', 'A pattern', 'A sensor'],
+                  c: 1, ex: 'An algorithm! Pick brush → add paste → brush → rinse. That is an algorithm — step-by-step instructions!', exHi: 'An algorithm! Pick brush → add paste → brush → rinse. That is an algorithm — step-by-step instructions!' },
+                { q: 'Google Maps finds the fastest route using?', qHi: 'Google Maps finds the fastest route using?',
+                  opts: ['Magic', 'Asking drivers', 'An algorithm that checks all roads and times', 'Human guides'], optsHi: ['Magic', 'Asking drivers', 'An algorithm that checks all roads and times', 'Human guides'],
+                  c: 2, ex: 'An algorithm! Google Maps automatically checks all possible routes, calculates travel time for each, and picks the fastest one for you!', exHi: 'An algorithm! Google Maps automatically checks all possible routes, calculates travel time for each, and picks the fastest one for you!' },
+                { q: 'What makes a GOOD algorithm?', qHi: 'What makes a GOOD algorithm?',
+                  opts: ['It is very long', 'Clear steps in the right order that work every time', 'It uses computers only', 'It is very complicated'], optsHi: ['It is very long', 'Clear steps in the right order that work every time', 'It uses computers only', 'It is very complicated'],
+                  c: 1, ex: 'A good algorithm is: clear steps + correct order + works every time. Simple and reliable is better than complex and confusing!', exHi: 'A good algorithm is: clear steps + correct order + works every time. Simple and reliable is better than complex and confusing!' },
+                { q: 'Email spam filter works by?', qHi: 'Email spam filter works by?',
+                  opts: ['Humans reading every email', 'An algorithm checking for suspicious patterns', 'Deleting all emails', 'Random selection'], optsHi: ['Humans reading every email', 'An algorithm checking for suspicious patterns', 'Deleting all emails', 'Random selection'],
+                  c: 1, ex: 'Algorithm! It checks patterns: unknown sender, suspicious words, too many links. If these patterns match spam patterns → move to Spam folder!', exHi: 'Algorithm! It checks patterns: unknown sender, suspicious words, too many links. If these patterns match spam patterns → move to Spam folder!' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c3_4', icon: '🌍', title: 'AI All Around Us — Smart Machines in Daily Life!', titleHi: 'AI All Around Us — Smart Machines in Daily Life!', xp: 15,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 3 · AI IN LIFE · CHAPTER 4', tagHi: 'CLASS 3 · AI IN LIFE · CHAPTER 4',
+              title: 'AI is Helping India Every Single Day!', titleHi: 'AI is Helping India Every Single Day!',
+              intro: 'From your phone to your school to your neighborhood — AI is working hard to make life better in India!', introHi: 'From your phone to your school to your neighborhood — AI is working hard to make life better in India!',
+              speech: '<span class="hi">AI in YOUR Daily Life:</span><br><br>⏰ <span class="em">Morning:</span> Phone alarm → AI adjusts based on your sleep<br>🗺️ <span class="cool">Going to school:</span> Google Maps → AI avoids traffic<br>🎵 <span class="hi">Music:</span> Spotify → AI picks your favorite songs<br>📚 <span class="em">Homework:</span> Google search → AI finds answers<br>🎮 <span class="cool">Gaming:</span> PUBG enemies → AI plays against you<br>🛒 <span class="hi">Shopping:</span> Flipkart → AI shows things you like<br><br><span class="em">India\'s own AI: Aadhaar, UPI, DigiLocker — all use AI!</span>',
+              speechHi: '<span class="hi">AI in YOUR Daily Life:</span><br><br>⏰ <span class="em">Morning:</span> Phone alarm → AI adjusts based on your sleep<br>🗺️ <span class="cool">Going to school:</span> Google Maps → AI avoids traffic<br>🎵 <span class="hi">Music:</span> Spotify → AI picks your favorite songs<br>📚 <span class="em">Homework:</span> Google search → AI finds answers<br>🎮 <span class="cool">Gaming:</span> PUBG enemies → AI plays against you<br>🛒 <span class="hi">Shopping:</span> Flipkart → AI shows things you like<br><br><span class="em">India\'s own AI: Aadhaar, UPI, DigiLocker — all use AI!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 3 · INDIA AI', tagHi: 'CLASS 3 · INDIA AI',
+              title: 'AI Made in India — Desh ka AI!', titleHi: 'AI Made in India — Desh ka AI!',
+              intro: 'India has built some of the most powerful AI systems in the world!', introHi: 'India has built some of the most powerful AI systems in the world!',
+              items: [
+                { em:'🆔', l:'Aadhaar — World Record!', lHi:'Aadhaar — World Record!', d:'1.3 BILLION Indians have Aadhaar. AI checks your fingerprint in 0.1 seconds to confirm who you are! World\'s biggest biometric system.', dHi:'1.3 BILLION Indians have Aadhaar. AI checks your fingerprint in 0.1 seconds to confirm who you are! World\'s biggest biometric system.' },
+                { em:'💰', l:'UPI — India\'s Pride', lHi:'UPI — India\'s Pride', d:'PhonePe, Google Pay, Paytm use AI to detect fraud in 0.01 seconds. 500 crore+ transactions every month, mostly fraud-free!', dHi:'PhonePe, Google Pay, Paytm use AI to detect fraud in 0.01 seconds. 500 crore+ transactions every month, mostly fraud-free!' },
+                { em:'🚀', l:'ISRO — AI in Space', lHi:'ISRO — AI in Space', d:'Chandrayaan-3 used AI to land on the Moon\'s south pole! AI processed thousands of calculations per second. India is space superpower!', dHi:'Chandrayaan-3 used AI to land on the Moon\'s south pole! AI processed thousands of calculations per second. India is space superpower!' },
+                { em:'🌾', l:'KisanAI — Helping Farmers', lHi:'KisanAI — Helping Farmers', d:'AI takes satellite photos of farms and tells farmers: "Your wheat has rust disease — treat it now!" Saves crores in crop losses every year.', dHi:'AI takes satellite photos of farms and tells farmers: "Your wheat has rust disease — treat it now!" Saves crores in crop losses every year.' },
+                { em:'📚', l:'DIKSHA — Education AI', lHi:'DIKSHA — Education AI', d:'Government AI platform teaches 20 crore students in 20 Indian languages. Even children in remote villages can access great education!', dHi:'Government AI platform teaches 20 crore students in 20 Indian languages. Even children in remote villages can access great education!' },
+                { em:'🏥', l:'AIIMS AI — Saving Lives', lHi:'AIIMS AI — Saving Lives', d:'AI at AIIMS hospital can detect cancer from X-ray images. Catches diseases earlier than human doctors in some cases!', dHi:'AI at AIIMS hospital can detect cancer from X-ray images. Catches diseases earlier than human doctors in some cases!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 3 · INDIA AI QUIZ', tagHi: 'CLASS 3 · INDIA AI QUIZ',
+              title: '🧩 AI in India Quiz!', titleHi: '🧩 AI in India Quiz!',
+              questions: [
+                { q: 'How many Indians have Aadhaar biometric ID?', qHi: 'How many Indians have Aadhaar biometric ID?',
+                  opts: ['1 crore', '10 crore', '1.3 billion (130 crore)', '50 lakh'], optsHi: ['1 crore', '10 crore', '1.3 billion (130 crore)', '50 lakh'],
+                  c: 2, ex: '1.3 billion = 130 crore Indians! Aadhaar is the world\'s largest biometric database. AI verifies your fingerprint in just 0.1 seconds!', exHi: '1.3 billion = 130 crore Indians! Aadhaar is the world\'s largest biometric database. AI verifies your fingerprint in just 0.1 seconds!' },
+                { q: 'ISRO used AI for which mission?', qHi: 'ISRO used AI for which mission?',
+                  opts: ['Mangalyaan only', 'Chandrayaan-3 Moon landing', 'Building rockets', 'Launching satellites only'], optsHi: ['Mangalyaan only', 'Chandrayaan-3 Moon landing', 'Building rockets', 'Launching satellites only'],
+                  c: 1, ex: 'Chandrayaan-3! AI processed thousands of calculations per second to land safely on the Moon\'s south pole in 2023. Proud moment for India!', exHi: 'Chandrayaan-3! AI processed thousands of calculations per second to land safely on the Moon\'s south pole in 2023. Proud moment for India!' },
+                { q: 'KisanAI helps farmers by?', qHi: 'KisanAI helps farmers by?',
+                  opts: ['Selling crops for them', 'Detecting crop diseases from satellite photos', 'Giving loans', 'Driving tractors'], optsHi: ['Selling crops for them', 'Detecting crop diseases from satellite photos', 'Giving loans', 'Driving tractors'],
+                  c: 1, ex: 'KisanAI analyzes satellite images of farms! It detects diseases like rust or blight early — before they spread. Saves crores of rupees in crop losses!', exHi: 'KisanAI analyzes satellite images of farms! It detects diseases like rust or blight early — before they spread. Saves crores of rupees in crop losses!' },
+                { q: 'DIKSHA is an AI platform for?', qHi: 'DIKSHA is an AI platform for?',
+                  opts: ['Banking', 'Education in 20 Indian languages', 'Shopping', 'Gaming'], optsHi: ['Banking', 'Education in 20 Indian languages', 'Shopping', 'Gaming'],
+                  c: 1, ex: 'DIKSHA is India\'s government AI education platform! It teaches 20 crore students in 20+ languages including Hindi, Tamil, Telugu, Marathi, and more.', exHi: 'DIKSHA is India\'s government AI education platform! It teaches 20 crore students in 20+ languages including Hindi, Tamil, Telugu, Marathi, and more.' },
+                { q: 'UPI platforms like Paytm use AI to?', qHi: 'UPI platforms like Paytm use AI to?',
+                  opts: ['Design the app', 'Detect fraud in transactions instantly', 'Print money', 'Build phones'], optsHi: ['Design the app', 'Detect fraud in transactions instantly', 'Print money', 'Build phones'],
+                  c: 1, ex: 'Fraud detection! AI monitors every UPI transaction and blocks suspicious ones in milliseconds — protecting your money automatically!', exHi: 'Fraud detection! AI monitors every UPI transaction and blocks suspicious ones in milliseconds — protecting your money automatically!' }
+              ]
+            }
+          ]
+        }
+      ]
+    }]
+  },
+  4: {
+    label: 'Class 4', labelHi: 'कक्षा 4', badge: '💡 AI Learner', badgeHi: '💡 AI सीखने वाला',
+    badgeStyle: 'background:rgba(168,85,247,.15);color:#A855F7;border:1px solid rgba(168,85,247,.3)',
+    emoji: '💡',
+    subjects: [{
+      id: 's4_ct', icon: '🔍', name: 'Sensors, Logic & Problem Solving', nameHi: 'सेंसर, लॉजिक और समस्या समाधान',
+      chapters: [
+        {
+          id: 'c4_1', icon: '🔍', title: 'How Computers See and Hear — Sensors!', titleHi: 'How Computers See and Hear — Sensors!', xp: 18,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 4 · SENSORS · CHAPTER 1', tagHi: 'CLASS 4 · SENSORS · CHAPTER 1',
+              title: 'How Computers Feel the World — Through Sensors!', titleHi: 'How Computers Feel the World — Through Sensors!',
+              intro: 'Humans use eyes, ears, and nose to feel the world. Computers use SENSORS! Let\'s discover how!', introHi: 'Humans use eyes, ears, and nose to feel the world. Computers use SENSORS! Let\'s discover how!',
+              speech: '<span class="hi">Sensor</span> = A device that <span class="em">detects</span> something from the world<br><br>You have senses → Computers have sensors!<br>👁️ <span class="em">Eyes</span> → <span class="cool">Camera sensor</span> (phones, CCTV)<br>👂 <span class="em">Ears</span> → <span class="cool">Microphone sensor</span> (Alexa, Siri)<br>👃 <span class="em">Nose</span> → <span class="cool">Gas/smell sensor</span> (smoke detectors)<br>✋ <span class="em">Touch</span> → <span class="cool">Touchscreen sensor</span> (your phone!)<br>🌡️ <span class="em">Feeling hot/cold</span> → <span class="cool">Temperature sensor</span><br><br><span class="hi">AI + Sensors = Smart Machines that understand the world!</span>',
+              speechHi: '<span class="hi">Sensor</span> = A device that <span class="em">detects</span> something from the world<br><br>You have senses → Computers have sensors!<br>👁️ <span class="em">Eyes</span> → <span class="cool">Camera sensor</span> (phones, CCTV)<br>👂 <span class="em">Ears</span> → <span class="cool">Microphone sensor</span> (Alexa, Siri)<br>👃 <span class="em">Nose</span> → <span class="cool">Gas/smell sensor</span> (smoke detectors)<br>✋ <span class="em">Touch</span> → <span class="cool">Touchscreen sensor</span> (your phone!)<br>🌡️ <span class="em">Feeling hot/cold</span> → <span class="cool">Temperature sensor</span><br><br><span class="hi">AI + Sensors = Smart Machines that understand the world!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 4 · SENSOR USES', tagHi: 'CLASS 4 · SENSOR USES',
+              title: 'Sensors Make AI Smart!', titleHi: 'Sensors Make AI Smart!',
+              intro: 'Every smart device you use is full of sensors feeding data to AI!', introHi: 'Every smart device you use is full of sensors feeding data to AI!',
+              items: [
+                { em:'📱', l:'Your Phone Has 10+ Sensors!', lHi:'Your Phone Has 10+ Sensors!', d:'Front camera, rear camera, microphone, touchscreen, GPS (location), accelerometer (knows if you rotate), fingerprint, light sensor — all sensors!', dHi:'Front camera, rear camera, microphone, touchscreen, GPS (location), accelerometer (knows if you rotate), fingerprint, light sensor — all sensors!' },
+                { em:'🚗', l:'Self-Driving Car Sensors', lHi:'Self-Driving Car Sensors', d:'Cameras see the road, radar detects objects 200m away, LIDAR creates a 3D map of surroundings. AI processes all sensors together to drive safely!', dHi:'Cameras see the road, radar detects objects 200m away, LIDAR creates a 3D map of surroundings. AI processes all sensors together to drive safely!' },
+                { em:'🏠', l:'Smart Home Sensors', lHi:'Smart Home Sensors', d:'Motion sensors turn lights on when you enter. Temperature sensors adjust AC automatically. Door sensors alert your phone if opened!', dHi:'Motion sensors turn lights on when you enter. Temperature sensors adjust AC automatically. Door sensors alert your phone if opened!' },
+                { em:'🏥', l:'Medical Sensors', lHi:'Medical Sensors', d:'Pulse oximeter measures oxygen in blood. Smart watch measures heart rate 24/7. AI analyzes patterns and alerts doctor if something is wrong!', dHi:'Pulse oximeter measures oxygen in blood. Smart watch measures heart rate 24/7. AI analyzes patterns and alerts doctor if something is wrong!' },
+                { em:'🌾', l:'Farm Sensors', lHi:'Farm Sensors', d:'Soil moisture sensors tell farmers when to water crops. Temperature sensors protect plants from frost. AI combines all data to give advice!', dHi:'Soil moisture sensors tell farmers when to water crops. Temperature sensors protect plants from frost. AI combines all data to give advice!' },
+                { em:'✈️', l:'Airplane Sensors', lHi:'Airplane Sensors', d:'1000+ sensors on a modern airplane! Monitor engine temperature, wing stress, fuel level, altitude. AI alerts pilots if anything is wrong.', dHi:'1000+ sensors on a modern airplane! Monitor engine temperature, wing stress, fuel level, altitude. AI alerts pilots if anything is wrong.' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 4 · SENSORS QUIZ', tagHi: 'CLASS 4 · SENSORS QUIZ',
+              title: '🧩 Sensors Quiz!', titleHi: '🧩 Sensors Quiz!',
+              questions: [
+                { q: 'What is a sensor?', qHi: 'What is a sensor?',
+                  opts: ['A robot arm', 'A device that detects something from the world', 'A type of AI', 'A computer screen'], optsHi: ['A robot arm', 'A device that detects something from the world', 'A type of AI', 'A computer screen'],
+                  c: 1, ex: 'A sensor detects things from the world — light, sound, temperature, touch, movement. It is how machines feel their environment!', exHi: 'A sensor detects things from the world — light, sound, temperature, touch, movement. It is how machines feel their environment!' },
+                { q: 'Which sensor does Alexa use to hear you?', qHi: 'Which sensor does Alexa use to hear you?',
+                  opts: ['Camera sensor', 'Touchscreen', 'Microphone sensor', 'GPS sensor'], optsHi: ['Camera sensor', 'Touchscreen', 'Microphone sensor', 'GPS sensor'],
+                  c: 2, ex: 'Microphone sensor! Alexa is always listening for the word "Alexa" using its microphone. When it hears it, the AI wakes up and processes your command.', exHi: 'Microphone sensor! Alexa is always listening for the word "Alexa" using its microphone. When it hears it, the AI wakes up and processes your command.' },
+                { q: 'What sensor does your phone use to know when you rotate it?', qHi: 'What sensor does your phone use to know when you rotate it?',
+                  opts: ['Camera', 'Accelerometer/Gyroscope', 'Microphone', 'Fingerprint'], optsHi: ['Camera', 'Accelerometer/Gyroscope', 'Microphone', 'Fingerprint'],
+                  c: 1, ex: 'Accelerometer! It detects movement and rotation. When you rotate your phone, the accelerometer tells AI which way is up, so the screen rotates too!', exHi: 'Accelerometer! It detects movement and rotation. When you rotate your phone, the accelerometer tells AI which way is up, so the screen rotates too!' },
+                { q: 'Self-driving cars use LIDAR to?', qHi: 'Self-driving cars use LIDAR to?',
+                  opts: ['Listen to traffic', 'Create a 3D map of surroundings', 'Take photos only', 'Check fuel'], optsHi: ['Listen to traffic', 'Create a 3D map of surroundings', 'Take photos only', 'Check fuel'],
+                  c: 1, ex: 'LIDAR creates a 3D map! It shoots laser beams in all directions and measures how long they take to bounce back. AI uses this 3D map to navigate safely.', exHi: 'LIDAR creates a 3D map! It shoots laser beams in all directions and measures how long they take to bounce back. AI uses this 3D map to navigate safely.' },
+                { q: 'Smart home temperature sensors are used to?', qHi: 'Smart home temperature sensors are used to?',
+                  opts: ['Make the home look nice', 'Automatically adjust the AC based on temperature', 'Cook food', 'Water plants only'], optsHi: ['Make the home look nice', 'Automatically adjust the AC based on temperature', 'Cook food', 'Water plants only'],
+                  c: 1, ex: 'Auto-adjust AC! When it gets too hot or cold, the sensor detects it and AI automatically adjusts the air conditioner — no human needed!', exHi: 'Auto-adjust AC! When it gets too hot or cold, the sensor detects it and AI automatically adjusts the air conditioner — no human needed!' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c4_2', icon: '🤔', title: 'True or False? How Computers Make Decisions!', titleHi: 'True or False? How Computers Make Decisions!', xp: 18,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 4 · DECISIONS · CHAPTER 2', tagHi: 'CLASS 4 · DECISIONS · CHAPTER 2',
+              title: 'Yes or No — How AI Makes Every Decision!', titleHi: 'Yes or No — How AI Makes Every Decision!',
+              intro: 'Every decision a computer makes is based on YES or NO questions! This is called Boolean Logic — the brain of all computers!', introHi: 'Every decision a computer makes is based on YES or NO questions! This is called Boolean Logic — the brain of all computers!',
+              speech: '<span class="hi">Boolean Logic</span> = Everything is either <span class="em">TRUE</span> or <span class="cool">FALSE</span><br><br>Computer thinks in 1s and 0s:<br><span class="em">1 = TRUE = YES = ON</span><br><span class="cool">0 = FALSE = NO = OFF</span><br><br><strong>Example — Spam Email Filter:</strong><br>Is sender unknown? TRUE → +1 suspicious point<br>Does subject say "FREE MONEY"? TRUE → +2 suspicious points<br>Are there 10+ links? TRUE → +2 suspicious points<br>Total > 3? <span class="hi">TRUE → SPAM!</span><br><br>This is how <span class="em">all AI decisions</span> work — just Yes/No questions!',
+              speechHi: '<span class="hi">Boolean Logic</span> = Everything is either <span class="em">TRUE</span> or <span class="cool">FALSE</span><br><br>Computer thinks in 1s and 0s:<br><span class="em">1 = TRUE = YES = ON</span><br><span class="cool">0 = FALSE = NO = OFF</span><br><br><strong>Example — Spam Email Filter:</strong><br>Is sender unknown? TRUE → +1 suspicious point<br>Does subject say "FREE MONEY"? TRUE → +2 suspicious points<br>Are there 10+ links? TRUE → +2 suspicious points<br>Total > 3? <span class="hi">TRUE → SPAM!</span><br><br>This is how <span class="em">all AI decisions</span> work — just Yes/No questions!'
+            },
+            { type: 'concepts', tag: 'CLASS 4 · DECISION EXAMPLES', tagHi: 'CLASS 4 · DECISION EXAMPLES',
+              title: 'Computers Making Smart Decisions!', titleHi: 'Computers Making Smart Decisions!',
+              intro: 'Every time AI decides something — it is just asking True/False questions!', introHi: 'Every time AI decides something — it is just asking True/False questions!',
+              items: [
+                { em:'🚦', l:'Traffic Light AI', lHi:'Traffic Light AI', d:'Is pedestrian waiting? AND is timer finished? → BOTH TRUE → Change to green! Simple True/False logic controls traffic.', dHi:'Is pedestrian waiting? AND is timer finished? → BOTH TRUE → Change to green! Simple True/False logic controls traffic.' },
+                { em:'🎮', l:'Game AI Decisions', lHi:'Game AI Decisions', d:'Is enemy near? TRUE. Is player health low? TRUE. Attack or retreat? AI decides in microseconds using Yes/No logic!', dHi:'Is enemy near? TRUE. Is player health low? TRUE. Attack or retreat? AI decides in microseconds using Yes/No logic!' },
+                { em:'💳', l:'Bank Fraud Detection', lHi:'Bank Fraud Detection', d:'Is transaction from new country? AND is amount very large? AND is it 3 AM? → 3 TRUEs → BLOCK transaction! Protect money!', dHi:'Is transaction from new country? AND is amount very large? AND is it 3 AM? → 3 TRUEs → BLOCK transaction! Protect money!' },
+                { em:'🎓', l:'Online Exam System', lHi:'Online Exam System', d:'Has time run out? OR has student submitted? → Either TRUE → Save answers and end exam. Computers never miss this!', dHi:'Has time run out? OR has student submitted? → Either TRUE → Save answers and end exam. Computers never miss this!' },
+                { em:'🛒', l:'Out of Stock Alert', lHi:'Out of Stock Alert', d:'Is product quantity = 0? TRUE → Send alert to supplier. TRUE → Show "Out of Stock" to buyers. Simple but powerful!', dHi:'Is product quantity = 0? TRUE → Send alert to supplier. TRUE → Show "Out of Stock" to buyers. Simple but powerful!' },
+                { em:'📱', l:'Face Unlock', lHi:'Face Unlock', d:'Does face match stored face? TRUE → Unlock phone. FALSE → Keep locked. Just one True/False question protects all your data!', dHi:'Does face match stored face? TRUE → Unlock phone. FALSE → Keep locked. Just one True/False question protects all your data!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 4 · DECISIONS QUIZ', tagHi: 'CLASS 4 · DECISIONS QUIZ',
+              title: '🧩 Computer Decisions Quiz!', titleHi: '🧩 Computer Decisions Quiz!',
+              questions: [
+                { q: 'In Boolean logic, what are the only two values?', qHi: 'In Boolean logic, what are the only two values?',
+                  opts: ['Yes and Maybe', 'True and False (1 and 0)', 'Big and Small', 'Fast and Slow'], optsHi: ['Yes and Maybe', 'True and False (1 and 0)', 'Big and Small', 'Fast and Slow'],
+                  c: 1, ex: 'True and False (or 1 and 0)! Every single decision a computer makes comes down to these two values. This is the foundation of all computing!', exHi: 'True and False (or 1 and 0)! Every single decision a computer makes comes down to these two values. This is the foundation of all computing!' },
+                { q: 'Face unlock works by asking?', qHi: 'Face unlock works by asking?',
+                  opts: ['How many fingers you have', 'Does this face match the stored face? (True or False)', 'What color is your hair', 'How tall are you'], optsHi: ['How many fingers you have', 'Does this face match the stored face? (True or False)', 'What color is your hair', 'How tall are you'],
+                  c: 1, ex: 'TRUE or FALSE — does this face match? AI compares your face to the stored one. True = match = unlock. False = no match = stay locked!', exHi: 'TRUE or FALSE — does this face match? AI compares your face to the stored one. True = match = unlock. False = no match = stay locked!' },
+                { q: 'Bank fraud detection blocks transactions when suspicious checks are?', qHi: 'Bank fraud detection blocks transactions when suspicious checks are?',
+                  opts: ['All FALSE', 'Mixed True and False', 'All or mostly TRUE', 'Random'], optsHi: ['All FALSE', 'Mixed True and False', 'All or mostly TRUE', 'Random'],
+                  c: 2, ex: 'When suspicious indicators are ALL or mostly TRUE — like foreign country + large amount + unusual time — AI blocks the transaction to protect your money!', exHi: 'When suspicious indicators are ALL or mostly TRUE — like foreign country + large amount + unusual time — AI blocks the transaction to protect your money!' },
+                { q: 'Boolean logic uses which numbers to represent True and False?', qHi: 'Boolean logic uses which numbers to represent True and False?',
+                  opts: ['2 and 3', '1 and 0', '10 and 100', '7 and 8'], optsHi: ['2 and 3', '1 and 0', '10 and 100', '7 and 8'],
+                  c: 1, ex: '1 = True, 0 = False! All computer data — videos, photos, music, text — is ultimately stored as millions of 1s and 0s. This is called binary!', exHi: '1 = True, 0 = False! All computer data — videos, photos, music, text — is ultimately stored as millions of 1s and 0s. This is called binary!' },
+                { q: 'Traffic light changes when?', qHi: 'Traffic light changes when?',
+                  opts: ['Randomly', 'The driver asks politely', 'When both conditions (pedestrian waiting AND timer done) are TRUE', 'Only at night'], optsHi: ['Randomly', 'The driver asks politely', 'When both conditions (pedestrian waiting AND timer done) are TRUE', 'Only at night'],
+                  c: 2, ex: 'When both conditions are TRUE! Modern traffic AI checks multiple conditions simultaneously — pedestrian waiting, timer finished, emergency vehicles approaching — and decides based on True/False logic.', exHi: 'When both conditions are TRUE! Modern traffic AI checks multiple conditions simultaneously — pedestrian waiting, timer finished, emergency vehicles approaching — and decides based on True/False logic.' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c4_3', icon: '🧩', title: 'Problem Solving — Breaking Big Problems Small!', titleHi: 'Problem Solving — Breaking Big Problems Small!', xp: 18,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 4 · PROBLEM SOLVING · CHAPTER 3', tagHi: 'CLASS 4 · PROBLEM SOLVING · CHAPTER 3',
+              title: 'Decomposition — The Superpower of Smart Thinkers!', titleHi: 'Decomposition — The Superpower of Smart Thinkers!',
+              intro: 'The secret to solving any big problem? Break it into smaller pieces! This is called Decomposition — and it is how all programmers and AI systems work!', introHi: 'The secret to solving any big problem? Break it into smaller pieces! This is called Decomposition — and it is how all programmers and AI systems work!',
+              speech: '<span class="hi">Decomposition</span> = Breaking a <span class="em">big problem</span> into <span class="cool">small easy pieces</span><br><br><strong>Example: How does Google Maps work?</strong><br>Big problem: "Get me from home to school fastest"<br><br>Break it down:<br>📍 Step 1: Find current location (GPS)<br>🗺️ Step 2: Find all possible routes<br>⏱️ Step 3: Calculate time for each route<br>🚗 Step 4: Check current traffic on each<br>✅ Step 5: Pick shortest time → Show it!<br><br><span class="em">5 small easy problems</span> instead of <span class="hi">1 huge impossible problem!</span><br><br>Decomposition is used by: Google, ISRO, Doctors, Architects, YOU!',
+              speechHi: '<span class="hi">Decomposition</span> = Breaking a <span class="em">big problem</span> into <span class="cool">small easy pieces</span><br><br><strong>Example: How does Google Maps work?</strong><br>Big problem: "Get me from home to school fastest"<br><br>Break it down:<br>📍 Step 1: Find current location (GPS)<br>🗺️ Step 2: Find all possible routes<br>⏱️ Step 3: Calculate time for each route<br>🚗 Step 4: Check current traffic on each<br>✅ Step 5: Pick shortest time → Show it!<br><br><span class="em">5 small easy problems</span> instead of <span class="hi">1 huge impossible problem!</span><br><br>Decomposition is used by: Google, ISRO, Doctors, Architects, YOU!'
+            },
+            { type: 'concepts', tag: 'CLASS 4 · DECOMPOSITION', tagHi: 'CLASS 4 · DECOMPOSITION',
+              title: 'Big Problems Made Small!', titleHi: 'Big Problems Made Small!',
+              intro: 'Every complex thing you see was built by breaking it into small pieces!', introHi: 'Every complex thing you see was built by breaking it into small pieces!',
+              items: [
+                { em:'🏗️', l:'Building a School', lHi:'Building a School', d:'1. Design classrooms. 2. Buy materials. 3. Pour foundation. 4. Build walls. 5. Add roof. 6. Install doors/windows. 7. Paint. Each step is separate!', dHi:'1. Design classrooms. 2. Buy materials. 3. Pour foundation. 4. Build walls. 5. Add roof. 6. Install doors/windows. 7. Paint. Each step is separate!' },
+                { em:'🚀', l:'ISRO Rocket Launch', lHi:'ISRO Rocket Launch', d:'1. Design rocket. 2. Build fuel tanks. 3. Build engine. 4. Program guidance system. 5. Safety checks. 6. Launch. Decomposed into 100s of tasks!', dHi:'1. Design rocket. 2. Build fuel tanks. 3. Build engine. 4. Program guidance system. 5. Safety checks. 6. Launch. Decomposed into 100s of tasks!' },
+                { em:'🎮', l:'Making a Video Game', lHi:'Making a Video Game', d:'1. Design characters. 2. Create levels. 3. Write game logic. 4. Add sounds. 5. Test bugs. 6. Release. Each part done by a different team!', dHi:'1. Design characters. 2. Create levels. 3. Write game logic. 4. Add sounds. 5. Test bugs. 6. Release. Each part done by a different team!' },
+                { em:'🍕', l:'Zomato Delivery', lHi:'Zomato Delivery', d:'1. Receive order. 2. Find nearest restaurant. 3. Send order to kitchen. 4. Assign delivery person. 5. Track delivery. Each is a separate system!', dHi:'1. Receive order. 2. Find nearest restaurant. 3. Send order to kitchen. 4. Assign delivery person. 5. Track delivery. Each is a separate system!' },
+                { em:'🏥', l:'Doctor Diagnosing', lHi:'Doctor Diagnosing', d:'1. Ask symptoms. 2. Examine patient. 3. Run tests. 4. Compare results. 5. Diagnose. 6. Prescribe. Not one guess — systematic process!', dHi:'1. Ask symptoms. 2. Examine patient. 3. Run tests. 4. Compare results. 5. Diagnose. 6. Prescribe. Not one guess — systematic process!' },
+                { em:'📱', l:'WhatsApp Message', lHi:'WhatsApp Message', d:'1. You type. 2. Message compressed. 3. Sent to server. 4. Server finds receiver. 5. Sent to receiver. 6. Decrypted and shown. 6 steps for one message!', dHi:'1. You type. 2. Message compressed. 3. Sent to server. 4. Server finds receiver. 5. Sent to receiver. 6. Decrypted and shown. 6 steps for one message!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 4 · DECOMPOSITION QUIZ', tagHi: 'CLASS 4 · DECOMPOSITION QUIZ',
+              title: '🧩 Problem Solving Quiz!', titleHi: '🧩 Problem Solving Quiz!',
+              questions: [
+                { q: 'Decomposition means?', qHi: 'Decomposition means?',
+                  opts: ['Making problems bigger', 'Breaking a big problem into smaller easy pieces', 'Making computers faster', 'Learning to type fast'], optsHi: ['Making problems bigger', 'Breaking a big problem into smaller easy pieces', 'Making computers faster', 'Learning to type fast'],
+                  c: 1, ex: 'Breaking big into small! Decomposition is splitting a complex problem into smaller, manageable pieces that are easier to solve. It is a fundamental computational thinking skill!', exHi: 'Breaking big into small! Decomposition is splitting a complex problem into smaller, manageable pieces that are easier to solve. It is a fundamental computational thinking skill!' },
+                { q: 'ISRO builds rockets by?', qHi: 'ISRO builds rockets by?',
+                  opts: ['One person building everything', 'Decomposing into hundreds of separate tasks done by teams', 'Guessing and hoping', 'Buying from other countries'], optsHi: ['One person building everything', 'Decomposing into hundreds of separate tasks done by teams', 'Guessing and hoping', 'Buying from other countries'],
+                  c: 1, ex: 'Decomposition! ISRO breaks rocket building into hundreds of specialized tasks — engines, fuel systems, guidance, communications — each done by expert teams.', exHi: 'Decomposition! ISRO breaks rocket building into hundreds of specialized tasks — engines, fuel systems, guidance, communications — each done by expert teams.' },
+                { q: 'Zomato delivery involves how many separate systems working together?', qHi: 'Zomato delivery involves how many separate systems working together?',
+                  opts: ['Just 1 — the app', '2 — restaurant and delivery', 'Multiple decomposed systems: order, restaurant, delivery, payment', 'It is all done manually'], optsHi: ['Just 1 — the app', '2 — restaurant and delivery', 'Multiple decomposed systems: order, restaurant, delivery, payment', 'It is all done manually'],
+                  c: 2, ex: 'Multiple systems! Order receiving, restaurant assignment, kitchen tracking, delivery assignment, live tracking, payment — each is a separate decomposed system!', exHi: 'Multiple systems! Order receiving, restaurant assignment, kitchen tracking, delivery assignment, live tracking, payment — each is a separate decomposed system!' },
+                { q: 'Why is decomposition useful?', qHi: 'Why is decomposition useful?',
+                  opts: ['It makes problems harder', 'It makes big complex problems easier to solve one piece at a time', 'It slows down computers', 'It is only for math problems'], optsHi: ['It makes problems harder', 'It makes big complex problems easier to solve one piece at a time', 'It slows down computers', 'It is only for math problems'],
+                  c: 1, ex: 'Decomposition makes problems manageable! Instead of being overwhelmed by one huge problem, you solve many small problems. This is how all great engineers and programmers think!', exHi: 'Decomposition makes problems manageable! Instead of being overwhelmed by one huge problem, you solve many small problems. This is how all great engineers and programmers think!' },
+                { q: 'When making a video game, decomposition means?', qHi: 'When making a video game, decomposition means?',
+                  opts: ['One person doing everything', 'Separate teams for characters, levels, sound, testing etc.', 'Playing games only', 'Buying readymade games'], optsHi: ['One person doing everything', 'Separate teams for characters, levels, sound, testing etc.', 'Playing games only', 'Buying readymade games'],
+                  c: 1, ex: 'Separate teams! Characters team, levels team, sound team, testing team — each focuses on their small piece. Together they create a complete game!', exHi: 'Separate teams! Characters team, levels team, sound team, testing team — each focuses on their small piece. Together they create a complete game!' }
+              ]
+            }
+          ]
+        }
+      ]
+    }]
+  },
+  5: {
+    label: 'Class 5', labelHi: 'कक्षा 5', badge: '🔬 CT Thinker', badgeHi: '🔬 CT थिंकर',
+    badgeStyle: 'background:rgba(20,184,166,.15);color:#14B8A6;border:1px solid rgba(20,184,166,.3)',
+    emoji: '🔬',
+    subjects: [{
+      id: 's5_ct', icon: '💭', name: 'Computational Thinking Deep Dive', nameHi: 'कम्प्यूटेशनल थिंकिंग गहरा अध्ययन',
+      chapters: [
+        {
+          id: 'c5_1', icon: '💭', title: 'Computational Thinking — The Way Smart People Think!', titleHi: 'Computational Thinking — The Way Smart People Think!', xp: 20,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 5 · CT · CHAPTER 1', tagHi: 'CLASS 5 · CT · CHAPTER 1',
+              title: 'Computational Thinking — The Most Important Skill of the 21st Century!', titleHi: 'Computational Thinking — The Most Important Skill of the 21st Century!',
+              intro: 'Computational Thinking is not just for computers — it is a way of solving ANY problem smarter and faster. Doctors, engineers, scientists all use it!', introHi: 'Computational Thinking is not just for computers — it is a way of solving ANY problem smarter and faster. Doctors, engineers, scientists all use it!',
+              speech: '<span class="hi">Computational Thinking</span> = A <span class="em">powerful way to think</span> and solve problems<br><br>4 Key Skills:<br>🔍 <span class="em">Decomposition</span> — Break big → small<br>🔎 <span class="cool">Pattern Recognition</span> — Find what repeats<br>🎯 <span class="hi">Abstraction</span> — Focus on what matters<br>📋 <span class="em">Algorithm Design</span> — Make step-by-step plan<br><br><strong>Example: How a doctor diagnoses:</strong><br>1. Decompose: break symptoms into categories<br>2. Patterns: these symptoms together = which disease?<br>3. Abstraction: ignore irrelevant info<br>4. Algorithm: follow diagnostic steps<br><br><span class="em">This is EXACTLY how AI systems are built!</span>',
+              speechHi: '<span class="hi">Computational Thinking</span> = A <span class="em">powerful way to think</span> and solve problems<br><br>4 Key Skills:<br>🔍 <span class="em">Decomposition</span> — Break big → small<br>🔎 <span class="cool">Pattern Recognition</span> — Find what repeats<br>🎯 <span class="hi">Abstraction</span> — Focus on what matters<br>📋 <span class="em">Algorithm Design</span> — Make step-by-step plan<br><br><strong>Example: How a doctor diagnoses:</strong><br>1. Decompose: break symptoms into categories<br>2. Patterns: these symptoms together = which disease?<br>3. Abstraction: ignore irrelevant info<br>4. Algorithm: follow diagnostic steps<br><br><span class="em">This is EXACTLY how AI systems are built!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 5 · CT SKILLS', tagHi: 'CLASS 5 · CT SKILLS',
+              title: 'The 4 Powers of Computational Thinking', titleHi: 'The 4 Powers of Computational Thinking',
+              intro: 'Master these 4 skills and you can solve any problem — just like a computer scientist!', introHi: 'Master these 4 skills and you can solve any problem — just like a computer scientist!',
+              items: [
+                { em:'✂️', l:'Decomposition — Divide & Conquer', lHi:'Decomposition — Divide & Conquer', d:'Big problem → many small problems. How ISRO launches rockets, how doctors diagnose, how WhatsApp sends messages. Break it down first!', dHi:'Big problem → many small problems. How ISRO launches rockets, how doctors diagnose, how WhatsApp sends messages. Break it down first!' },
+                { em:'🔄', l:'Pattern Recognition — See What Repeats', lHi:'Pattern Recognition — See What Repeats', d:'Spot what happens again and again. How AI detects spam emails, how Netflix suggests shows, how weather forecasts work. Patterns tell the future!', dHi:'Spot what happens again and again. How AI detects spam emails, how Netflix suggests shows, how weather forecasts work. Patterns tell the future!' },
+                { em:'🎯', l:'Abstraction — What Actually Matters?', lHi:'Abstraction — What Actually Matters?', d:'Ignore unnecessary details. Focus on the CORE of a problem. A map is an abstraction of reality — it shows roads but not every tree and stone.', dHi:'Ignore unnecessary details. Focus on the CORE of a problem. A map is an abstraction of reality — it shows roads but not every tree and stone.' },
+                { em:'📝', l:'Algorithm — Your Step-by-Step Plan', lHi:'Algorithm — Your Step-by-Step Plan', d:'Once you understand the problem: write exact steps to solve it. Must be: clear, in order, complete, and work every single time.', dHi:'Once you understand the problem: write exact steps to solve it. Must be: clear, in order, complete, and work every single time.' },
+                { em:'🧠', l:'CT in Real Life (Not Just Computers)', lHi:'CT in Real Life (Not Just Computers)', d:'Chefs use CT to plan recipes. Architects use CT to design buildings. Doctors use CT to diagnose. Athletes use CT to plan strategies. It is for EVERYONE!', dHi:'Chefs use CT to plan recipes. Architects use CT to design buildings. Doctors use CT to diagnose. Athletes use CT to plan strategies. It is for EVERYONE!' },
+                { em:'🏆', l:'CT + AI = Superpower', lHi:'CT + AI = Superpower', d:'When you learn CT, you can understand and build AI systems. The best AI engineers in India — at Google, ISRO, IIT — all mastered CT first!', dHi:'When you learn CT, you can understand and build AI systems. The best AI engineers in India — at Google, ISRO, IIT — all mastered CT first!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 5 · CT QUIZ', tagHi: 'CLASS 5 · CT QUIZ',
+              title: '🧩 Computational Thinking Quiz!', titleHi: '🧩 Computational Thinking Quiz!',
+              questions: [
+                { q: 'What are the 4 key skills of Computational Thinking?', qHi: 'What are the 4 key skills of Computational Thinking?',
+                  opts: ['Add, Subtract, Multiply, Divide', 'Decomposition, Pattern Recognition, Abstraction, Algorithm Design', 'Reading, Writing, Maths, Science', 'Speed, Memory, Logic, Art'], optsHi: ['Add, Subtract, Multiply, Divide', 'Decomposition, Pattern Recognition, Abstraction, Algorithm Design', 'Reading, Writing, Maths, Science', 'Speed, Memory, Logic, Art'],
+                  c: 1, ex: '4 CT skills: Decomposition (break into pieces), Pattern Recognition (find what repeats), Abstraction (focus on what matters), Algorithm Design (step-by-step plan). Master these and you can solve any problem!', exHi: '4 CT skills: Decomposition (break into pieces), Pattern Recognition (find what repeats), Abstraction (focus on what matters), Algorithm Design (step-by-step plan). Master these and you can solve any problem!' },
+                { q: 'Abstraction in problem solving means?', qHi: 'Abstraction in problem solving means?',
+                  opts: ['Making problems more complex', 'Focusing on important details and ignoring irrelevant ones', 'Drawing pictures', 'Using advanced mathematics'], optsHi: ['Making problems more complex', 'Focusing on important details and ignoring irrelevant ones', 'Drawing pictures', 'Using advanced mathematics'],
+                  c: 1, ex: 'Focus on what matters! A map is a perfect example of abstraction — it shows roads and buildings but ignores individual trees, parked cars, and people. Just the important details!', exHi: 'Focus on what matters! A map is a perfect example of abstraction — it shows roads and buildings but ignores individual trees, parked cars, and people. Just the important details!' },
+                { q: 'A doctor diagnosing a patient uses which CT skill first?', qHi: 'A doctor diagnosing a patient uses which CT skill first?',
+                  opts: ['Algorithm only', 'Decomposition — breaking symptoms into categories', 'Pattern Recognition only', 'Abstraction only'], optsHi: ['Algorithm only', 'Decomposition — breaking symptoms into categories', 'Pattern Recognition only', 'Abstraction only'],
+                  c: 1, ex: 'Decomposition first! Doctor breaks your problem into categories: fever?, pain?, when did it start?, any allergies? Decomposing the big health problem into smaller checkable pieces.', exHi: 'Decomposition first! Doctor breaks your problem into categories: fever?, pain?, when did it start?, any allergies? Decomposing the big health problem into smaller checkable pieces.' },
+                { q: 'Computational Thinking is useful for?', qHi: 'Computational Thinking is useful for?',
+                  opts: ['Only computer programmers', 'Everyone — doctors, engineers, chefs, architects, athletes', 'Only students in Class 11-12', 'Only people with computers'], optsHi: ['Only computer programmers', 'Everyone — doctors, engineers, chefs, architects, athletes', 'Only students in Class 11-12', 'Only people with computers'],
+                  c: 1, ex: 'Everyone! CT is a universal problem-solving approach used by doctors, engineers, chefs, architects, scientists, athletes — anyone who needs to solve complex problems systematically.', exHi: 'Everyone! CT is a universal problem-solving approach used by doctors, engineers, chefs, architects, scientists, athletes — anyone who needs to solve complex problems systematically.' },
+                { q: 'Pattern Recognition helps AI by?', qHi: 'Pattern Recognition helps AI by?',
+                  opts: ['Making it run faster on computers', 'Helping it learn from repeating data to make predictions', 'Making the screen brighter', 'Connecting to internet faster'], optsHi: ['Making it run faster on computers', 'Helping it learn from repeating data to make predictions', 'Making the screen brighter', 'Connecting to internet faster'],
+                  c: 1, ex: 'Learning from patterns! AI finds patterns in millions of data points — spam emails have certain word patterns, fraudulent transactions have time/amount patterns. Patterns = predictions!', exHi: 'Learning from patterns! AI finds patterns in millions of data points — spam emails have certain word patterns, fraudulent transactions have time/amount patterns. Patterns = predictions!' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c5_2', icon: '🔗', title: 'Abstraction — What Details Really Matter?', titleHi: 'Abstraction — What Details Really Matter?', xp: 20,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 5 · ABSTRACTION · CHAPTER 2', tagHi: 'CLASS 5 · ABSTRACTION · CHAPTER 2',
+              title: 'Abstraction — The Art of Ignoring What Does Not Matter!', titleHi: 'Abstraction — The Art of Ignoring What Does Not Matter!',
+              intro: 'The most powerful thinking skill: knowing WHAT to ignore! Great scientists, engineers and AI systems all master abstraction.', introHi: 'The most powerful thinking skill: knowing WHAT to ignore! Great scientists, engineers and AI systems all master abstraction.',
+              speech: '<span class="hi">Abstraction</span> = Focus on <span class="em">important details</span>, ignore <span class="cool">unnecessary ones</span><br><br><strong>Think about a MAP:</strong><br>❌ Map does NOT show: every tree, every person, every parked car<br>✅ Map DOES show: roads, buildings, distances, directions<br><br>A map is a perfect ABSTRACTION of reality!<br><br>More examples:<br>📱 <span class="em">WhatsApp icon</span> — looks like a phone, not a real phone<br>🚰 <span class="cool">Water tap icon</span> — represents water, not real water<br>🏥 <span class="hi">Red Cross</span> — represents hospital/medical everywhere<br><br><span class="em">AI uses abstraction to focus on KEY features of data!</span>',
+              speechHi: '<span class="hi">Abstraction</span> = Focus on <span class="em">important details</span>, ignore <span class="cool">unnecessary ones</span><br><br><strong>Think about a MAP:</strong><br>❌ Map does NOT show: every tree, every person, every parked car<br>✅ Map DOES show: roads, buildings, distances, directions<br><br>A map is a perfect ABSTRACTION of reality!<br><br>More examples:<br>📱 <span class="em">WhatsApp icon</span> — looks like a phone, not a real phone<br>🚰 <span class="cool">Water tap icon</span> — represents water, not real water<br>🏥 <span class="hi">Red Cross</span> — represents hospital/medical everywhere<br><br><span class="em">AI uses abstraction to focus on KEY features of data!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 5 · ABSTRACTION EXAMPLES', tagHi: 'CLASS 5 · ABSTRACTION EXAMPLES',
+              title: 'Abstraction in the Real World', titleHi: 'Abstraction in the Real World',
+              intro: 'Abstraction makes complex things simple enough to understand and use!', introHi: 'Abstraction makes complex things simple enough to understand and use!',
+              items: [
+                { em:'🗺️', l:'Google Maps Abstraction', lHi:'Google Maps Abstraction', d:'Reality has billions of trees, houses, people. Maps abstract this to: roads, distances, landmarks. AI uses the map abstraction to calculate routes — not reality!', dHi:'Reality has billions of trees, houses, people. Maps abstract this to: roads, distances, landmarks. AI uses the map abstraction to calculate routes — not reality!' },
+                { em:'📱', l:'App Icons Are Abstraction', lHi:'App Icons Are Abstraction', d:'Phone icon = call. Camera icon = photos. Envelope icon = email. These icons abstract complex functions into simple recognizable symbols. No words needed!', dHi:'Phone icon = call. Camera icon = photos. Envelope icon = email. These icons abstract complex functions into simple recognizable symbols. No words needed!' },
+                { em:'🏧', l:'ATM Interface Abstraction', lHi:'ATM Interface Abstraction', d:'You see: account balance, withdrawal, deposit. You do NOT see: complex banking database, encryption, network protocols. Abstracted away for simplicity!', dHi:'You see: account balance, withdrawal, deposit. You do NOT see: complex banking database, encryption, network protocols. Abstracted away for simplicity!' },
+                { em:'🤖', l:'How AI Uses Abstraction', lHi:'How AI Uses Abstraction', d:'Face recognition AI ignores: hair color, glasses, makeup. Focuses on: distance between eyes, nose shape, jawline. Abstracts away irrelevant features!', dHi:'Face recognition AI ignores: hair color, glasses, makeup. Focuses on: distance between eyes, nose shape, jawline. Abstracts away irrelevant features!' },
+                { em:'🎓', l:'School Timetable Abstraction', lHi:'School Timetable Abstraction', d:'Timetable abstracts your week to: subject names, times, room numbers. Ignores: who teaches exactly, which textbook, weather that day. Just key info!', dHi:'Timetable abstracts your week to: subject names, times, room numbers. Ignores: who teaches exactly, which textbook, weather that day. Just key info!' },
+                { em:'🚦', l:'Traffic Light Abstraction', lHi:'Traffic Light Abstraction', d:'3 colors. Green = go. Yellow = slow. Red = stop. Abstracts complex traffic management into 3 simple states everyone understands worldwide!', dHi:'3 colors. Green = go. Yellow = slow. Red = stop. Abstracts complex traffic management into 3 simple states everyone understands worldwide!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 5 · ABSTRACTION QUIZ', tagHi: 'CLASS 5 · ABSTRACTION QUIZ',
+              title: '🧩 Abstraction Quiz!', titleHi: '🧩 Abstraction Quiz!',
+              questions: [
+                { q: 'A map is an example of abstraction because?', qHi: 'A map is an example of abstraction because?',
+                  opts: ['It is made of paper', 'It shows important details (roads) but hides unnecessary ones (every tree)', 'It is colorful', 'It has a scale'], optsHi: ['It is made of paper', 'It shows important details (roads) but hides unnecessary ones (every tree)', 'It is colorful', 'It has a scale'],
+                  c: 1, ex: 'Maps abstract reality! They show what is important for navigation — roads, landmarks, distances — and ignore millions of irrelevant details like individual trees, parked cars, and people.', exHi: 'Maps abstract reality! They show what is important for navigation — roads, landmarks, distances — and ignore millions of irrelevant details like individual trees, parked cars, and people.' },
+                { q: 'App icons on your phone are examples of abstraction because?', qHi: 'App icons on your phone are examples of abstraction because?',
+                  opts: ['They are small', 'They represent complex functions with simple recognizable symbols', 'They are colorful', 'They are made by artists'], optsHi: ['They are small', 'They represent complex functions with simple recognizable symbols', 'They are colorful', 'They are made by artists'],
+                  c: 1, ex: 'Icons are abstraction! A small phone symbol represents making calls. An envelope represents emails. Complex technical functions abstracted into simple symbols anyone can understand immediately!', exHi: 'Icons are abstraction! A small phone symbol represents making calls. An envelope represents emails. Complex technical functions abstracted into simple symbols anyone can understand immediately!' },
+                { q: 'How does face recognition AI use abstraction?', qHi: 'How does face recognition AI use abstraction?',
+                  opts: ['It looks at everything equally', 'It focuses on key facial features (eye distance, nose shape) and ignores irrelevant ones (hair, glasses)', 'It counts your teeth', 'It checks your age'], optsHi: ['It looks at everything equally', 'It focuses on key facial features (eye distance, nose shape) and ignores irrelevant ones (hair, glasses)', 'It counts your teeth', 'It checks your age'],
+                  c: 1, ex: 'Focuses on key features! AI abstracts away hair, makeup, and glasses — which change. It focuses on stable features: distance between eyes, nose shape, jawline structure. These never change!', exHi: 'Focuses on key features! AI abstracts away hair, makeup, and glasses — which change. It focuses on stable features: distance between eyes, nose shape, jawline structure. These never change!' },
+                { q: 'An ATM interface abstracts away?', qHi: 'An ATM interface abstracts away?',
+                  opts: ['Your bank balance', 'Complex backend banking systems, encryption, network protocols', 'Your PIN number', 'Your account number'], optsHi: ['Your bank balance', 'Complex backend banking systems, encryption, network protocols', 'Your PIN number', 'Your account number'],
+                  c: 1, ex: 'Backend complexity! You just see simple buttons: check balance, withdraw, deposit. The complex databases, encryption, and network connections are all abstracted away behind that simple screen!', exHi: 'Backend complexity! You just see simple buttons: check balance, withdraw, deposit. The complex databases, encryption, and network connections are all abstracted away behind that simple screen!' },
+                { q: 'Why is abstraction useful in problem solving?', qHi: 'Why is abstraction useful in problem solving?',
+                  opts: ['It makes problems more complicated', 'It helps focus on what matters most, making complex problems manageable', 'It is only useful for artists', 'It slows down thinking'], optsHi: ['It makes problems more complicated', 'It helps focus on what matters most, making complex problems manageable', 'It is only useful for artists', 'It slows down thinking'],
+                  c: 1, ex: 'Focus! By ignoring irrelevant details, you can focus brainpower on what truly matters. This is why great scientists, engineers, and AI systems all use abstraction as a core thinking tool!', exHi: 'Focus! By ignoring irrelevant details, you can focus brainpower on what truly matters. This is why great scientists, engineers, and AI systems all use abstraction as a core thinking tool!' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c5_3', icon: '🌐', title: 'AI in Everyday Life — Seeing AI Everywhere!', titleHi: 'AI in Everyday Life — Seeing AI Everywhere!', xp: 20,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 5 · AI EVERYWHERE · CHAPTER 3', tagHi: 'CLASS 5 · AI EVERYWHERE · CHAPTER 3',
+              title: 'You Use AI 100+ Times Every Day Without Knowing!', titleHi: 'You Use AI 100+ Times Every Day Without Knowing!',
+              intro: 'From waking up to sleeping — AI is helping you every single moment. Let\'s count all the AIs in your day!', introHi: 'From waking up to sleeping — AI is helping you every single moment. Let\'s count all the AIs in your day!',
+              speech: '<span class="hi">Your AI-Powered Day:</span><br><br>⏰ <span class="em">Wake up</span> — Smart alarm (studies your sleep patterns)<br>📱 <span class="cool">Face unlock</span> — AI recognizes your face<br>🎵 <span class="hi">Morning music</span> — Spotify AI picks your favorites<br>🌤️ <span class="em">Check weather</span> — AI predicted it 7 days ago<br>🚗 <span class="cool">School route</span> — Google Maps AI avoids traffic<br>📚 <span class="hi">Google search</span> — AI ranks 5 billion websites in 0.5 seconds<br>🎮 <span class="em">Evening games</span> — AI opponents in PUBG, Clash of Clans<br>📺 <span class="cool">Night TV</span> — Netflix AI suggested what to watch<br><br><span class="em">You interact with AI 100+ times every single day!</span>',
+              speechHi: '<span class="hi">Your AI-Powered Day:</span><br><br>⏰ <span class="em">Wake up</span> — Smart alarm (studies your sleep patterns)<br>📱 <span class="cool">Face unlock</span> — AI recognizes your face<br>🎵 <span class="hi">Morning music</span> — Spotify AI picks your favorites<br>🌤️ <span class="em">Check weather</span> — AI predicted it 7 days ago<br>🚗 <span class="cool">School route</span> — Google Maps AI avoids traffic<br>📚 <span class="hi">Google search</span> — AI ranks 5 billion websites in 0.5 seconds<br>🎮 <span class="em">Evening games</span> — AI opponents in PUBG, Clash of Clans<br>📺 <span class="cool">Night TV</span> — Netflix AI suggested what to watch<br><br><span class="em">You interact with AI 100+ times every single day!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 5 · AI AROUND US', tagHi: 'CLASS 5 · AI AROUND US',
+              title: 'AI in Every Part of Life', titleHi: 'AI in Every Part of Life',
+              intro: 'AI is not just in phones and computers — it is in hospitals, farms, courts, and space!', introHi: 'AI is not just in phones and computers — it is in hospitals, farms, courts, and space!',
+              items: [
+                { em:'🏥', l:'AI in Healthcare', lHi:'AI in Healthcare', d:'AIIMS AI detects cancer from X-rays. Apollo AI predicts heart attacks from ECG. Practo AI helps doctors diagnose faster. AI saves lives every day in India!', dHi:'AIIMS AI detects cancer from X-rays. Apollo AI predicts heart attacks from ECG. Practo AI helps doctors diagnose faster. AI saves lives every day in India!' },
+                { em:'🌾', l:'AI in Agriculture', lHi:'AI in Agriculture', d:'Kisan AI detects crop disease from satellite photos. Soil sensors tell when to water. Weather AI protects crops from frost. India\'s 600 million farmers need this!', dHi:'Kisan AI detects crop disease from satellite photos. Soil sensors tell when to water. Weather AI protects crops from frost. India\'s 600 million farmers need this!' },
+                { em:'⚖️', l:'AI in Justice', lHi:'AI in Justice', d:'SUPACE — Supreme Court AI reads 10 years of legal cases in minutes. Helps judges make fair, consistent decisions based on all past cases!', dHi:'SUPACE — Supreme Court AI reads 10 years of legal cases in minutes. Helps judges make fair, consistent decisions based on all past cases!' },
+                { em:'🚂', l:'AI in Railways', lHi:'AI in Railways', d:'Indian Railways AI predicts engine failures before they happen. Saves lives, saves money, keeps trains running on time for 2.3 crore passengers daily!', dHi:'Indian Railways AI predicts engine failures before they happen. Saves lives, saves money, keeps trains running on time for 2.3 crore passengers daily!' },
+                { em:'🏙️', l:'AI in Smart Cities', lHi:'AI in Smart Cities', d:'Jaipur, Pune, Surat use AI traffic cameras. Count vehicles, detect violations, adjust signal timing automatically. Reduces traffic jams by 25%!', dHi:'Jaipur, Pune, Surat use AI traffic cameras. Count vehicles, detect violations, adjust signal timing automatically. Reduces traffic jams by 25%!' },
+                { em:'💰', l:'AI in Finance', lHi:'AI in Finance', d:'Paytm, PhonePe, HDFC — AI detects fraud in 0.01 seconds. SBI AI handles 1 crore customer queries monthly. UPI would be impossible without AI!', dHi:'Paytm, PhonePe, HDFC — AI detects fraud in 0.01 seconds. SBI AI handles 1 crore customer queries monthly. UPI would be impossible without AI!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 5 · AI EVERYWHERE QUIZ', tagHi: 'CLASS 5 · AI EVERYWHERE QUIZ',
+              title: '🧩 AI Everywhere Quiz!', titleHi: '🧩 AI Everywhere Quiz!',
+              questions: [
+                { q: 'Approximately how many times do you interact with AI every day?', qHi: 'Approximately how many times do you interact with AI every day?',
+                  opts: ['5-10 times', '20-30 times', '50 times', '100+ times'], optsHi: ['5-10 times', '20-30 times', '50 times', '100+ times'],
+                  c: 3, ex: '100+ times! Every Google search, YouTube video, WhatsApp message, Maps direction, face unlock, and autocorrect involves AI. You are surrounded by AI all day!', exHi: '100+ times! Every Google search, YouTube video, WhatsApp message, Maps direction, face unlock, and autocorrect involves AI. You are surrounded by AI all day!' },
+                { q: 'SUPACE is an AI used in?', qHi: 'SUPACE is an AI used in?',
+                  opts: ['Hospitals', 'Schools', 'The Supreme Court of India for legal research', 'Farms'], optsHi: ['Hospitals', 'Schools', 'The Supreme Court of India for legal research', 'Farms'],
+                  c: 2, ex: 'Supreme Court! SUPACE (Supreme Court Portal for Assistance in Courts Efficiency) uses AI to analyze years of legal cases and help judges make consistent, informed decisions.', exHi: 'Supreme Court! SUPACE (Supreme Court Portal for Assistance in Courts Efficiency) uses AI to analyze years of legal cases and help judges make consistent, informed decisions.' },
+                { q: 'Indian Railways uses AI to?', qHi: 'Indian Railways uses AI to?',
+                  opts: ['Design train tickets', 'Predict engine failures before they happen', 'Sell tickets online only', 'Count passengers'], optsHi: ['Design train tickets', 'Predict engine failures before they happen', 'Sell tickets online only', 'Count passengers'],
+                  c: 1, ex: 'Predict failures! AI analyzes engine data — vibration, temperature, wear patterns — and alerts engineers before failures happen. Prevents accidents and delays for 2.3 crore daily passengers!', exHi: 'Predict failures! AI analyzes engine data — vibration, temperature, wear patterns — and alerts engineers before failures happen. Prevents accidents and delays for 2.3 crore daily passengers!' },
+                { q: 'AI traffic management in cities like Jaipur does?', qHi: 'AI traffic management in cities like Jaipur does?',
+                  opts: ['Only records video', 'Counts vehicles, detects violations, and adjusts signals automatically', 'Blocks roads', 'Only works at night'], optsHi: ['Only records video', 'Counts vehicles, detects violations, and adjusts signals automatically', 'Blocks roads', 'Only works at night'],
+                  c: 1, ex: 'All three! Count vehicles (measure congestion), detect violations (catch rule-breakers), adjust signals automatically (reduce jams). AI cities are 25% more efficient than traditional traffic management!', exHi: 'All three! Count vehicles (measure congestion), detect violations (catch rule-breakers), adjust signals automatically (reduce jams). AI cities are 25% more efficient than traditional traffic management!' },
+                { q: 'KisanAI helps Indian farmers by?', qHi: 'KisanAI helps Indian farmers by?',
+                  opts: ['Selling crops for them', 'Detecting crop diseases from satellite images before they spread', 'Providing loans', 'Driving tractors for them'], optsHi: ['Selling crops for them', 'Detecting crop diseases from satellite images before they spread', 'Providing loans', 'Driving tractors for them'],
+                  c: 1, ex: 'Disease detection! KisanAI analyzes satellite photos of farms and detects diseases like rust, blight, and fungal infections BEFORE they spread. Farmer treats early = saves entire harvest!', exHi: 'Disease detection! KisanAI analyzes satellite photos of farms and detects diseases like rust, blight, and fungal infections BEFORE they spread. Farmer treats early = saves entire harvest!' }
+              ]
+            }
+          ]
+        }
+      ]
+    }]
+  },
+  6: {
+    label: 'Class 6', labelHi: 'कक्षा 6', badge: '📊 Data & AI', badgeHi: '📊 डेटा और AI',
+    badgeStyle: 'background:rgba(249,115,22,.15);color:#F97316;border:1px solid rgba(249,115,22,.3)',
+    emoji: '📊',
+    subjects: [{
+      id: 's6_ai', icon: '🤖', name: 'AI Foundations + Computational Thinking', nameHi: 'AI की नींव + कम्प्यूटेशनल थिंकिंग',
+      chapters: [
+        {
+          id: 'c6_1', icon: '📊', title: 'Data — The Fuel That Powers All AI!', titleHi: 'Data — The Fuel That Powers All AI!', xp: 25,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 6 · DATA · CHAPTER 1', tagHi: 'CLASS 6 · DATA · CHAPTER 1',
+              title: 'Data — Why AI Cannot Exist Without It!', titleHi: 'Data — Why AI Cannot Exist Without It!',
+              intro: 'AI without data is like a car without fuel. Everything AI knows, it learned from DATA. Understanding data is the first step to understanding AI!', introHi: 'AI without data is like a car without fuel. Everything AI knows, it learned from DATA. Understanding data is the first step to understanding AI!',
+              speech: '<span class="hi">DATA</span> = Any information that can be stored and processed<br><br><span class="em">Two types:</span><br>📊 <span class="cool">Structured Data</span> = Organized in rows and columns (Excel, database)<br>📝 <span class="hi">Unstructured Data</span> = No fixed format (photos, videos, text)<br><br><strong>World Data Facts:</strong><br>📱 <span class="em">2.5 quintillion bytes</span> created every day globally<br>📸 <span class="cool">100 million photos</span> uploaded to Instagram daily<br>🗣️ <span class="hi">65 billion WhatsApp messages</span> sent every day<br>🔍 <span class="em">8.5 billion Google searches</span> every day<br><br><span class="em">More quality data → smarter AI!</span><br>Garbage data → Garbage AI (GIGO: Garbage In = Garbage Out)',
+              speechHi: '<span class="hi">DATA</span> = Any information that can be stored and processed<br><br><span class="em">Two types:</span><br>📊 <span class="cool">Structured Data</span> = Organized in rows and columns (Excel, database)<br>📝 <span class="hi">Unstructured Data</span> = No fixed format (photos, videos, text)<br><br><strong>World Data Facts:</strong><br>📱 <span class="em">2.5 quintillion bytes</span> created every day globally<br>📸 <span class="cool">100 million photos</span> uploaded to Instagram daily<br>🗣️ <span class="hi">65 billion WhatsApp messages</span> sent every day<br>🔍 <span class="em">8.5 billion Google searches</span> every day<br><br><span class="em">More quality data → smarter AI!</span><br>Garbage data → Garbage AI (GIGO: Garbage In = Garbage Out)'
+            },
+            { type: 'concepts', tag: 'CLASS 6 · DATA TYPES', tagHi: 'CLASS 6 · DATA TYPES',
+              title: 'Types of Data AI Uses', titleHi: 'Types of Data AI Uses',
+              intro: 'AI can learn from all types of data — each requires different AI techniques!', introHi: 'AI can learn from all types of data — each requires different AI techniques!',
+              items: [
+                { em:'🔢', l:'Structured Data', lHi:'Structured Data', d:'Excel tables, databases, CSV files. Student marks, employee salaries, sales figures. AI processes this fastest — data is already organized!', dHi:'Excel tables, databases, CSV files. Student marks, employee salaries, sales figures. AI processes this fastest — data is already organized!' },
+                { em:'📝', l:'Text Data', lHi:'Text Data', d:'WhatsApp messages, news articles, social media posts, books. 80% of world data is text! NLP (Natural Language Processing) AI handles this.', dHi:'WhatsApp messages, news articles, social media posts, books. 80% of world data is text! NLP (Natural Language Processing) AI handles this.' },
+                { em:'🖼️', l:'Image Data', lHi:'Image Data', d:'Photos, X-rays, satellite images, CCTV footage. Each image = millions of pixel numbers. Computer Vision AI analyzes images.', dHi:'Photos, X-rays, satellite images, CCTV footage. Each image = millions of pixel numbers. Computer Vision AI analyzes images.' },
+                { em:'🎵', l:'Audio Data', lHi:'Audio Data', d:'Voice messages, music, phone calls. Sound waves converted to numbers. Alexa and Siri use speech recognition AI on audio data.', dHi:'Voice messages, music, phone calls. Sound waves converted to numbers. Alexa and Siri use speech recognition AI on audio data.' },
+                { em:'📍', l:'Location Data', lHi:'Location Data', d:'GPS coordinates from phones. Used by Google Maps, Ola, Flipkart delivery. Shows where people go — helps predict traffic and demand.', dHi:'GPS coordinates from phones. Used by Google Maps, Ola, Flipkart delivery. Shows where people go — helps predict traffic and demand.' },
+                { em:'⏰', l:'Time Series Data', lHi:'Time Series Data', d:'Stock prices over time, patient heart rate records, temperature changes. AI finds patterns in how data changes over time.', dHi:'Stock prices over time, patient heart rate records, temperature changes. AI finds patterns in how data changes over time.' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 6 · DATA QUIZ', tagHi: 'CLASS 6 · DATA QUIZ',
+              title: '🧩 Data Quiz!', titleHi: '🧩 Data Quiz!',
+              questions: [
+                { q: 'How many bytes of data are created globally every day?', qHi: 'How many bytes of data are created globally every day?',
+                  opts: ['1 million bytes', '1 billion bytes', '1 trillion bytes', '2.5 quintillion bytes'], optsHi: ['1 million bytes', '1 billion bytes', '1 trillion bytes', '2.5 quintillion bytes'],
+                  c: 3, ex: '2.5 quintillion bytes every day! That is 2,500,000,000,000,000,000 bytes. Most of this powers the AI systems we use daily — search, recommendations, fraud detection.', exHi: '2.5 quintillion bytes every day! That is 2,500,000,000,000,000,000 bytes. Most of this powers the AI systems we use daily — search, recommendations, fraud detection.' },
+                { q: 'What is "structured data"?', qHi: 'What is "structured data"?',
+                  opts: ['Unorganized random information', 'Data organized in rows and columns like spreadsheets', 'Only numbers', 'Only text'], optsHi: ['Unorganized random information', 'Data organized in rows and columns like spreadsheets', 'Only numbers', 'Only text'],
+                  c: 1, ex: 'Organized in rows and columns! Like Excel spreadsheets or databases. Student roll numbers and marks, product prices and quantities — all structured data. Easy for AI to process!', exHi: 'Organized in rows and columns! Like Excel spreadsheets or databases. Student roll numbers and marks, product prices and quantities — all structured data. Easy for AI to process!' },
+                { q: 'WhatsApp messages are an example of?', qHi: 'WhatsApp messages are an example of?',
+                  opts: ['Structured data', 'Location data', 'Unstructured text data', 'Image data'], optsHi: ['Structured data', 'Location data', 'Unstructured text data', 'Image data'],
+                  c: 2, ex: 'Unstructured text data! WhatsApp messages have no fixed format — they can be any length, any topic. Natural Language Processing AI handles unstructured text.', exHi: 'Unstructured text data! WhatsApp messages have no fixed format — they can be any length, any topic. Natural Language Processing AI handles unstructured text.' },
+                { q: 'GIGO in AI stands for?', qHi: 'GIGO in AI stands for?',
+                  opts: ['Google Is Great Online', 'Garbage In Garbage Out — bad data = bad AI results', 'Good Intelligence Gets Output', 'Great Indian Government Online'], optsHi: ['Google Is Great Online', 'Garbage In Garbage Out — bad data = bad AI results', 'Good Intelligence Gets Output', 'Great Indian Government Online'],
+                  c: 1, ex: 'Garbage In Garbage Out! If you train AI on wrong, biased, or low-quality data, it gives wrong, biased, low-quality results. Data quality is the most important thing in AI!', exHi: 'Garbage In Garbage Out! If you train AI on wrong, biased, or low-quality data, it gives wrong, biased, low-quality results. Data quality is the most important thing in AI!' },
+                { q: 'GPS coordinates from phones are what type of data?', qHi: 'GPS coordinates from phones are what type of data?',
+                  opts: ['Structured data', 'Text data', 'Image data', 'Location data'], optsHi: ['Structured data', 'Text data', 'Image data', 'Location data'],
+                  c: 3, ex: 'Location data! GPS coordinates (latitude and longitude) from your phone are collected by Google Maps, Ola, Uber, Flipkart — all to understand where people are and optimize their services.', exHi: 'Location data! GPS coordinates (latitude and longitude) from your phone are collected by Google Maps, Ola, Uber, Flipkart — all to understand where people are and optimize their services.' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c6_2', icon: '🌳', title: 'Decision Trees — AI That Asks Questions!', titleHi: 'Decision Trees — AI That Asks Questions!', xp: 25,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 6 · DECISION TREES · CHAPTER 2', tagHi: 'CLASS 6 · DECISION TREES · CHAPTER 2',
+              title: 'Decision Trees — The Most Intuitive AI Algorithm!', titleHi: 'Decision Trees — The Most Intuitive AI Algorithm!',
+              intro: 'A Decision Tree is an AI that thinks exactly like a doctor or a detective — by asking smart yes/no questions one at a time!', introHi: 'A Decision Tree is an AI that thinks exactly like a doctor or a detective — by asking smart yes/no questions one at a time!',
+              speech: '<span class="hi">Decision Tree</span> = An AI that makes decisions by asking <span class="em">yes/no questions</span><br><br><strong>Doctor diagnosing fever:</strong><br>❓ Temperature > 38°C? <span class="em">YES</span><br>→ ❓ Body pain? <span class="cool">YES</span><br>→ → ❓ Cough? <span class="hi">NO</span><br>→ → → Diagnosis: <span class="em">Possible malaria — test needed</span><br><br>This is EXACTLY how Decision Tree AI works!<br><br><strong>Used in:</strong><br>🏥 <span class="em">Medical diagnosis</span> — symptom → disease<br>💳 <span class="cool">Bank loan approval</span> — income/credit → approve/reject<br>📧 <span class="hi">Spam detection</span> — keywords → spam/not spam<br>🌾 <span class="em">Crop disease</span> — symptoms → disease type',
+              speechHi: '<span class="hi">Decision Tree</span> = An AI that makes decisions by asking <span class="em">yes/no questions</span><br><br><strong>Doctor diagnosing fever:</strong><br>❓ Temperature > 38°C? <span class="em">YES</span><br>→ ❓ Body pain? <span class="cool">YES</span><br>→ → ❓ Cough? <span class="hi">NO</span><br>→ → → Diagnosis: <span class="em">Possible malaria — test needed</span><br><br>This is EXACTLY how Decision Tree AI works!<br><br><strong>Used in:</strong><br>🏥 <span class="em">Medical diagnosis</span> — symptom → disease<br>💳 <span class="cool">Bank loan approval</span> — income/credit → approve/reject<br>📧 <span class="hi">Spam detection</span> — keywords → spam/not spam<br>🌾 <span class="em">Crop disease</span> — symptoms → disease type'
+            },
+            { type: 'concepts', tag: 'CLASS 6 · DECISION TREE USES', tagHi: 'CLASS 6 · DECISION TREE USES',
+              title: 'Where Decision Trees Change Lives', titleHi: 'Where Decision Trees Change Lives',
+              intro: 'Decision Trees are the most used AI algorithm because they are easy to understand and explain!', introHi: 'Decision Trees are the most used AI algorithm because they are easy to understand and explain!',
+              items: [
+                { em:'🏥', l:'Medical Diagnosis AI', lHi:'Medical Diagnosis AI', d:'Doctors at AIIMS trained Decision Tree AI on 10,000 patient cases. Now AI asks the right questions and suggests diagnosis with 91% accuracy — helping junior doctors!', dHi:'Doctors at AIIMS trained Decision Tree AI on 10,000 patient cases. Now AI asks the right questions and suggests diagnosis with 91% accuracy — helping junior doctors!' },
+                { em:'🏦', l:'Loan Approval System', lHi:'Loan Approval System', d:'Bank Decision Tree: Income > 50,000/month? Credit score > 700? Previous loans cleared? Employment stable? Each YES increases approval chance!', dHi:'Bank Decision Tree: Income > 50,000/month? Credit score > 700? Previous loans cleared? Employment stable? Each YES increases approval chance!' },
+                { em:'🌾', l:'Kisan Disease Detector', lHi:'Kisan Disease Detector', d:'Farmer uploads crop photo. AI asks: Yellow spots? Brown edges? White powder? Each answer narrows down to one disease. Farmer gets treatment advice instantly!', dHi:'Farmer uploads crop photo. AI asks: Yellow spots? Brown edges? White powder? Each answer narrows down to one disease. Farmer gets treatment advice instantly!' },
+                { em:'📧', l:'Gmail Spam Filter', lHi:'Gmail Spam Filter', d:'Email arrives. Decision Tree checks: Unknown sender? Suspicious keywords (FREE MONEY!, Click here!)? Many links? No unsubscribe option? → SPAM!', dHi:'Email arrives. Decision Tree checks: Unknown sender? Suspicious keywords (FREE MONEY!, Click here!)? Many links? No unsubscribe option? → SPAM!' },
+                { em:'🎓', l:'School Admission AI', lHi:'School Admission AI', d:'Some schools use AI: Marks > 90%? Distance from school < 10km? Sibling studying here? These questions narrow down admissions — fair and consistent.', dHi:'Some schools use AI: Marks > 90%? Distance from school < 10km? Sibling studying here? These questions narrow down admissions — fair and consistent.' },
+                { em:'🛡️', l:'Insurance Claim', lHi:'Insurance Claim', d:'Was accident reported within 24 hours? Is driver licensed? Is vehicle insured? Are documents complete? Each YES leads to faster, fair claim approval!', dHi:'Was accident reported within 24 hours? Is driver licensed? Is vehicle insured? Are documents complete? Each YES leads to faster, fair claim approval!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 6 · DECISION TREE QUIZ', tagHi: 'CLASS 6 · DECISION TREE QUIZ',
+              title: '🧩 Decision Tree Quiz!', titleHi: '🧩 Decision Tree Quiz!',
+              questions: [
+                { q: 'A Decision Tree makes decisions by?', qHi: 'A Decision Tree makes decisions by?',
+                  opts: ['Random guessing', 'Asking a series of yes/no questions', 'Looking at photos only', 'Using complex math only'], optsHi: ['Random guessing', 'Asking a series of yes/no questions', 'Looking at photos only', 'Using complex math only'],
+                  c: 1, ex: 'Yes/No questions! Like a doctor asking symptoms one by one, a Decision Tree asks questions and branches based on the answer until it reaches a decision. Simple, transparent, powerful!', exHi: 'Yes/No questions! Like a doctor asking symptoms one by one, a Decision Tree asks questions and branches based on the answer until it reaches a decision. Simple, transparent, powerful!' },
+                { q: 'Which of these is NOT a use of Decision Trees?', qHi: 'Which of these is NOT a use of Decision Trees?',
+                  opts: ['Medical diagnosis', 'Spam email detection', 'Loan approval', 'Making music louder'], optsHi: ['Medical diagnosis', 'Spam email detection', 'Loan approval', 'Making music louder'],
+                  c: 3, ex: 'Making music louder is NOT a Decision Tree use! Decision Trees are used for classification problems: is this spam or not? Should loan be approved? What disease is this? Making things louder is just volume control!', exHi: 'Making music louder is NOT a Decision Tree use! Decision Trees are used for classification problems: is this spam or not? Should loan be approved? What disease is this? Making things louder is just volume control!' },
+                { q: 'Why are Decision Trees popular in medicine?', qHi: 'Why are Decision Trees popular in medicine?',
+                  opts: ['They are colorful', 'Doctors can understand and explain each decision step by step', 'They are very complex', 'They work faster than all other AI'], optsHi: ['They are colorful', 'Doctors can understand and explain each decision step by step', 'They are very complex', 'They work faster than all other AI'],
+                  c: 1, ex: 'Transparency! Doctors can follow and explain each question: "We said yes because temperature was high, yes because there was body pain" — trackable reasoning. Very important when human lives are involved!', exHi: 'Transparency! Doctors can follow and explain each question: "We said yes because temperature was high, yes because there was body pain" — trackable reasoning. Very important when human lives are involved!' },
+                { q: 'Kisan AI uses Decision Trees to?', qHi: 'Kisan AI uses Decision Trees to?',
+                  opts: ['Sell crops online', 'Identify crop diseases by asking questions about symptoms', 'Predict rainfall', 'Give loans to farmers'], optsHi: ['Sell crops online', 'Identify crop diseases by asking questions about symptoms', 'Predict rainfall', 'Give loans to farmers'],
+                  c: 1, ex: 'Disease identification! Farmers upload crop photos and answer questions (yellow spots? brown edges?). Decision Tree narrows down to the specific disease and recommends treatment. Saves crores in crop losses!', exHi: 'Disease identification! Farmers upload crop photos and answer questions (yellow spots? brown edges?). Decision Tree narrows down to the specific disease and recommends treatment. Saves crores in crop losses!' },
+                { q: 'Gmail spam filter uses Decision Tree logic to check?', qHi: 'Gmail spam filter uses Decision Tree logic to check?',
+                  opts: ['Email color and font', 'Unknown sender, suspicious keywords, many links, missing unsubscribe', 'How long the email is', 'Who wrote the email'], optsHi: ['Email color and font', 'Unknown sender, suspicious keywords, many links, missing unsubscribe', 'How long the email is', 'Who wrote the email'],
+                  c: 1, ex: 'Pattern of suspicious features! Unknown sender + suspicious keywords + many links + missing unsubscribe → likely spam. The more suspicious features, the higher the spam score!', exHi: 'Pattern of suspicious features! Unknown sender + suspicious keywords + many links + missing unsubscribe → likely spam. The more suspicious features, the higher the spam score!' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c6_3', icon: '⚖️', title: 'AI Ethics — Is AI Always Right?', titleHi: 'AI Ethics — Is AI Always Right?', xp: 25,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 6 · AI ETHICS · CHAPTER 3', tagHi: 'CLASS 6 · AI ETHICS · CHAPTER 3',
+              title: 'AI Can Be Wrong and Unfair — Here Is Why!', titleHi: 'AI Can Be Wrong and Unfair — Here Is Why!',
+              intro: 'AI is powerful but not perfect. Sometimes AI makes mistakes, discriminates against people, or invades privacy. Understanding AI Ethics keeps AI fair and safe!', introHi: 'AI is powerful but not perfect. Sometimes AI makes mistakes, discriminates against people, or invades privacy. Understanding AI Ethics keeps AI fair and safe!',
+              speech: '<span class="hi">AI Ethics</span> = Rules to make sure AI is <span class="em">fair, safe, and honest</span><br><br><strong>Real AI Problems:</strong><br>😰 <span class="em">Bias</span> — AI trained on unfair data becomes unfair<br>🔒 <span class="cool">Privacy</span> — AI collects too much personal data<br>❓ <span class="hi">Transparency</span> — AI decisions should be explainable<br>🎯 <span class="em">Accuracy</span> — AI can be wrong even if confident<br><br><strong>Famous AI Bias Example:</strong><br>Amazon\'s hiring AI was trained on 10 years of resumes.<br>Most past hires were male → AI learned to <span class="em">prefer male resumes</span>!<br>Amazon had to <span class="cool">SHUT IT DOWN</span> — biased AI is dangerous.<br><br><span class="hi">We must build AI that is FAIR to EVERYONE!</span>',
+              speechHi: '<span class="hi">AI Ethics</span> = Rules to make sure AI is <span class="em">fair, safe, and honest</span><br><br><strong>Real AI Problems:</strong><br>😰 <span class="em">Bias</span> — AI trained on unfair data becomes unfair<br>🔒 <span class="cool">Privacy</span> — AI collects too much personal data<br>❓ <span class="hi">Transparency</span> — AI decisions should be explainable<br>🎯 <span class="em">Accuracy</span> — AI can be wrong even if confident<br><br><strong>Famous AI Bias Example:</strong><br>Amazon\'s hiring AI was trained on 10 years of resumes.<br>Most past hires were male → AI learned to <span class="em">prefer male resumes</span>!<br>Amazon had to <span class="cool">SHUT IT DOWN</span> — biased AI is dangerous.<br><br><span class="hi">We must build AI that is FAIR to EVERYONE!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 6 · AI ETHICS PRINCIPLES', tagHi: 'CLASS 6 · AI ETHICS PRINCIPLES',
+              title: '5 Principles of Ethical AI', titleHi: '5 Principles of Ethical AI',
+              intro: 'These 5 principles guide how AI should be built to benefit all people equally!', introHi: 'These 5 principles guide how AI should be built to benefit all people equally!',
+              items: [
+                { em:'⚖️', l:'Fairness — No Discrimination', lHi:'Fairness — No Discrimination', d:'AI should treat all people equally regardless of gender, caste, religion, wealth. If AI training data has bias, the AI will have bias too. Fix the data, fix the AI!', dHi:'AI should treat all people equally regardless of gender, caste, religion, wealth. If AI training data has bias, the AI will have bias too. Fix the data, fix the AI!' },
+                { em:'🔒', l:'Privacy — Your Data is Yours', lHi:'Privacy — Your Data is Yours', d:'AI should not collect more data than needed. You should know what data is collected. You should have the right to delete your data. GDPR in Europe, DPDP in India protects this.', dHi:'AI should not collect more data than needed. You should know what data is collected. You should have the right to delete your data. GDPR in Europe, DPDP in India protects this.' },
+                { em:'🔍', l:'Transparency — Explain Decisions', lHi:'Transparency — Explain Decisions', d:'If AI rejects your loan or job application, you have the right to know WHY. Black-box AI that cannot explain itself is dangerous — especially in high-stakes decisions!', dHi:'If AI rejects your loan or job application, you have the right to know WHY. Black-box AI that cannot explain itself is dangerous — especially in high-stakes decisions!' },
+                { em:'🛡️', l:'Safety — No Harm', lHi:'Safety — No Harm', d:'AI in self-driving cars, medical devices, and weapons must be thoroughly tested. A mistake can kill people. Safety testing is non-negotiable.', dHi:'AI in self-driving cars, medical devices, and weapons must be thoroughly tested. A mistake can kill people. Safety testing is non-negotiable.' },
+                { em:'👤', l:'Accountability — Who is Responsible?', lHi:'Accountability — Who is Responsible?', d:'If AI causes harm, who is responsible — the developer, the company, or the user? India\'s AI policy and global laws are working to answer this critical question.', dHi:'If AI causes harm, who is responsible — the developer, the company, or the user? India\'s AI policy and global laws are working to answer this critical question.' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 6 · AI ETHICS QUIZ', tagHi: 'CLASS 6 · AI ETHICS QUIZ',
+              title: '🧩 AI Ethics Quiz!', titleHi: '🧩 AI Ethics Quiz!',
+              questions: [
+                { q: 'AI bias occurs when?', qHi: 'AI bias occurs when?',
+                  opts: ['AI runs too slowly', 'AI is trained on unfair or unrepresentative data and learns discrimination', 'AI has no internet', 'AI makes calculations wrong'], optsHi: ['AI runs too slowly', 'AI is trained on unfair or unrepresentative data and learns discrimination', 'AI has no internet', 'AI makes calculations wrong'],
+                  c: 1, ex: 'Biased training data = biased AI! Amazon\'s hiring AI was trained on historical data where most hires were male — so it learned to discriminate against women. Garbage data creates discriminatory AI.', exHi: 'Biased training data = biased AI! Amazon\'s hiring AI was trained on historical data where most hires were male — so it learned to discriminate against women. Garbage data creates discriminatory AI.' },
+                { q: 'Amazon shut down its hiring AI because?', qHi: 'Amazon shut down its hiring AI because?',
+                  opts: ['It was too expensive', 'It became biased against women due to biased training data', 'It was too slow', 'It could not read resumes'], optsHi: ['It was too expensive', 'It became biased against women due to biased training data', 'It was too slow', 'It could not read resumes'],
+                  c: 1, ex: 'Gender bias! Trained on 10 years of male-dominated hiring decisions, the AI learned to prefer male candidates. Amazon recognized this was deeply unfair and shut it down in 2018.', exHi: 'Gender bias! Trained on 10 years of male-dominated hiring decisions, the AI learned to prefer male candidates. Amazon recognized this was deeply unfair and shut it down in 2018.' },
+                { q: 'AI transparency means?', qHi: 'AI transparency means?',
+                  opts: ['Making AI screens brighter', 'AI decisions should be explainable — you can know WHY AI decided something', 'AI should be very fast', 'AI should be very accurate'], optsHi: ['Making AI screens brighter', 'AI decisions should be explainable — you can know WHY AI decided something', 'AI should be very fast', 'AI should be very accurate'],
+                  c: 1, ex: 'Explainability! If AI rejects your loan, job application, or medical claim, you have the right to know WHY. AI that cannot explain itself ("black box AI") is dangerous in high-stakes situations.', exHi: 'Explainability! If AI rejects your loan, job application, or medical claim, you have the right to know WHY. AI that cannot explain itself ("black box AI") is dangerous in high-stakes situations.' },
+                { q: 'Which Indian law protects your data privacy from AI?', qHi: 'Which Indian law protects your data privacy from AI?',
+                  opts: ['Income Tax Act', 'DPDP Act (Digital Personal Data Protection Act)', 'Traffic Rules', 'School Education Act'], optsHi: ['Income Tax Act', 'DPDP Act (Digital Personal Data Protection Act)', 'Traffic Rules', 'School Education Act'],
+                  c: 1, ex: 'DPDP Act 2023! India\'s Digital Personal Data Protection Act gives you rights over your data — what is collected, why it is collected, how long it is kept, and the right to delete it.', exHi: 'DPDP Act 2023! India\'s Digital Personal Data Protection Act gives you rights over your data — what is collected, why it is collected, how long it is kept, and the right to delete it.' },
+                { q: 'If an AI self-driving car causes an accident, who is responsible?', qHi: 'If an AI self-driving car causes an accident, who is responsible?',
+                  opts: ['No one — it was the car', 'Only the passenger', 'This is a complex question — developer, company, and user may all share responsibility', 'Only the road department'], optsHi: ['No one — it was the car', 'Only the passenger', 'This is a complex question — developer, company, and user may all share responsibility', 'Only the road department'],
+                  c: 2, ex: 'Complex and evolving question! Laws worldwide are being written to answer this. In most current thinking: developer (for software), manufacturer (for hardware), and potentially user (if they overrode safety) all share some responsibility.', exHi: 'Complex and evolving question! Laws worldwide are being written to answer this. In most current thinking: developer (for software), manufacturer (for hardware), and potentially user (if they overrode safety) all share some responsibility.' }
+              ]
+            }
+          ]
+        }
+      ]
+    }]
+  },
+  7: {
+    label: 'Class 7', labelHi: 'कक्षा 7', badge: '🚀 ML Explorer', badgeHi: '🚀 ML खोजकर्ता',
+    badgeStyle: 'background:rgba(239,68,68,.15);color:#EF4444;border:1px solid rgba(239,68,68,.3)',
+    emoji: '🚀',
+    subjects: [{
+      id: 's7_ml', icon: '🤖', name: 'Machine Learning & AI Applications', nameHi: 'मशीन लर्निंग और AI अनुप्रयोग',
+      chapters: [
+        {
+          id: 'c7_1', icon: '🤖', title: 'Machine Learning — Teaching Without Programming!', titleHi: 'Machine Learning — Teaching Without Programming!', xp: 28,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 7 · MACHINE LEARNING · CHAPTER 1', tagHi: 'CLASS 7 · MACHINE LEARNING · CHAPTER 1',
+              title: 'Machine Learning — When AI Teaches ITSELF!', titleHi: 'Machine Learning — When AI Teaches ITSELF!',
+              intro: 'Traditional programs follow rules you write. Machine Learning AI makes its own rules by learning from examples — like how you learned to recognize cats!', introHi: 'Traditional programs follow rules you write. Machine Learning AI makes its own rules by learning from examples — like how you learned to recognize cats!',
+              speech: '<span class="hi">Machine Learning (ML)</span> = AI that <span class="em">learns from data</span> without being explicitly programmed<br><br><strong>Traditional Programming vs ML:</strong><br>❌ <span class="em">Old way:</span> Programmer writes rule: "If has 4 legs + fur + meows → CAT"<br>✅ <span class="cool">ML way:</span> Show AI 10,000 cat photos → AI figures out what a cat looks like by itself!<br><br><strong>3 Types of ML:</strong><br>👨‍🏫 <span class="em">Supervised Learning</span> — Teacher provides correct answers<br>🔍 <span class="cool">Unsupervised Learning</span> — AI finds hidden patterns alone<br>🎮 <span class="hi">Reinforcement Learning</span> — AI learns by trial and error + rewards<br><br><span class="em">ChatGPT, AlphaGo, Tesla Autopilot — all use Machine Learning!</span>',
+              speechHi: '<span class="hi">Machine Learning (ML)</span> = AI that <span class="em">learns from data</span> without being explicitly programmed<br><br><strong>Traditional Programming vs ML:</strong><br>❌ <span class="em">Old way:</span> Programmer writes rule: "If has 4 legs + fur + meows → CAT"<br>✅ <span class="cool">ML way:</span> Show AI 10,000 cat photos → AI figures out what a cat looks like by itself!<br><br><strong>3 Types of ML:</strong><br>👨‍🏫 <span class="em">Supervised Learning</span> — Teacher provides correct answers<br>🔍 <span class="cool">Unsupervised Learning</span> — AI finds hidden patterns alone<br>🎮 <span class="hi">Reinforcement Learning</span> — AI learns by trial and error + rewards<br><br><span class="em">ChatGPT, AlphaGo, Tesla Autopilot — all use Machine Learning!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 7 · ML TYPES', tagHi: 'CLASS 7 · ML TYPES',
+              title: '3 Types of Machine Learning', titleHi: '3 Types of Machine Learning',
+              intro: 'Each type of ML is perfect for different problems. Real AI systems often use multiple types together!', introHi: 'Each type of ML is perfect for different problems. Real AI systems often use multiple types together!',
+              items: [
+                { em:'👨‍🏫', l:'Supervised Learning — Learning with a Teacher', lHi:'Supervised Learning — Learning with a Teacher', d:'AI gets labeled data: this photo = CAT, this photo = DOG. Learns from 100,000 examples. Then can identify new cats and dogs it has never seen! Used in: spam detection, medical diagnosis, weather forecasting.', dHi:'AI gets labeled data: this photo = CAT, this photo = DOG. Learns from 100,000 examples. Then can identify new cats and dogs it has never seen! Used in: spam detection, medical diagnosis, weather forecasting.' },
+                { em:'🔍', l:'Unsupervised Learning — Finding Hidden Groups', lHi:'Unsupervised Learning — Finding Hidden Groups', d:'AI gets unlabeled data: 1 million customer shopping records. Finds hidden groups: "budget shoppers", "luxury buyers", "impulse buyers" — without being told these groups exist! Used in: customer segmentation, anomaly detection.', dHi:'AI gets unlabeled data: 1 million customer shopping records. Finds hidden groups: "budget shoppers", "luxury buyers", "impulse buyers" — without being told these groups exist! Used in: customer segmentation, anomaly detection.' },
+                { em:'🎮', l:'Reinforcement Learning — Learning by Playing', lHi:'Reinforcement Learning — Learning by Playing', d:'AI tries an action. Gets reward if good, penalty if bad. Tries millions of times. Learns perfect strategy! AlphaGo learned to beat world chess champions this way. Tesla learns to drive this way.', dHi:'AI tries an action. Gets reward if good, penalty if bad. Tries millions of times. Learns perfect strategy! AlphaGo learned to beat world chess champions this way. Tesla learns to drive this way.' },
+                { em:'🌐', l:'Deep Learning — ML with Many Layers', lHi:'Deep Learning — ML with Many Layers', d:'Special ML using neural networks (inspired by human brain). Can understand images, language, and sound at superhuman levels. Powers ChatGPT, Google Translate, and face recognition.', dHi:'Special ML using neural networks (inspired by human brain). Can understand images, language, and sound at superhuman levels. Powers ChatGPT, Google Translate, and face recognition.' },
+                { em:'🇮🇳', l:'ML Made in India', lHi:'ML Made in India', d:'Niramai (breast cancer detection), Niki.ai (voice assistant for Hindi speakers), SigTuple (blood test analysis), Cropin (smart farming) — Indian companies building world-class ML solutions!', dHi:'Niramai (breast cancer detection), Niki.ai (voice assistant for Hindi speakers), SigTuple (blood test analysis), Cropin (smart farming) — Indian companies building world-class ML solutions!' },
+                { em:'📈', l:'ML Learning Curve', lHi:'ML Learning Curve', d:'More data + more training time + better algorithm = smarter AI. ChatGPT trained on trillions of words for months! Quality data and time are the most important ingredients.', dHi:'More data + more training time + better algorithm = smarter AI. ChatGPT trained on trillions of words for months! Quality data and time are the most important ingredients.' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 7 · ML QUIZ', tagHi: 'CLASS 7 · ML QUIZ',
+              title: '🧩 Machine Learning Quiz!', titleHi: '🧩 Machine Learning Quiz!',
+              questions: [
+                { q: 'Machine Learning is different from traditional programming because?', qHi: 'Machine Learning is different from traditional programming because?',
+                  opts: ['It uses more electricity', 'AI learns rules from data instead of following pre-written rules', 'It is faster only', 'It uses a different programming language'], optsHi: ['It uses more electricity', 'AI learns rules from data instead of following pre-written rules', 'It is faster only', 'It uses a different programming language'],
+                  c: 1, ex: 'Learns its own rules! Traditional programming: programmer writes every rule. ML: show AI thousands of examples, it figures out the rules. Much more powerful for complex problems like image recognition and language understanding!', exHi: 'Learns its own rules! Traditional programming: programmer writes every rule. ML: show AI thousands of examples, it figures out the rules. Much more powerful for complex problems like image recognition and language understanding!' },
+                { q: 'If AI is shown 10,000 labeled photos of cats and dogs to learn from, this is?', qHi: 'If AI is shown 10,000 labeled photos of cats and dogs to learn from, this is?',
+                  opts: ['Unsupervised Learning', 'Reinforcement Learning', 'Supervised Learning', 'Deep Learning only'], optsHi: ['Unsupervised Learning', 'Reinforcement Learning', 'Supervised Learning', 'Deep Learning only'],
+                  c: 2, ex: 'Supervised Learning! The labels (this = CAT, this = DOG) are like a teacher providing correct answers. AI learns from these labeled examples and can then identify new unseen photos correctly.', exHi: 'Supervised Learning! The labels (this = CAT, this = DOG) are like a teacher providing correct answers. AI learns from these labeled examples and can then identify new unseen photos correctly.' },
+                { q: 'AlphaGo (the chess AI) learned to beat world champions using?', qHi: 'AlphaGo (the chess AI) learned to beat world champions using?',
+                  opts: ['Supervised Learning only', 'Unsupervised Learning', 'Reinforcement Learning — trial and error with rewards', 'Deep Learning only'], optsHi: ['Supervised Learning only', 'Unsupervised Learning', 'Reinforcement Learning — trial and error with rewards', 'Deep Learning only'],
+                  c: 2, ex: 'Reinforcement Learning! AlphaGo played millions of games against itself. Good move = reward. Bad move = penalty. After millions of games, it learned strategies better than any human had ever conceived!', exHi: 'Reinforcement Learning! AlphaGo played millions of games against itself. Good move = reward. Bad move = penalty. After millions of games, it learned strategies better than any human had ever conceived!' },
+                { q: 'Unsupervised Learning is useful for?', qHi: 'Unsupervised Learning is useful for?',
+                  opts: ['Learning labeled data', 'Finding hidden patterns and groups in data without being told what to look for', 'Playing games', 'Understanding language'], optsHi: ['Learning labeled data', 'Finding hidden patterns and groups in data without being told what to look for', 'Playing games', 'Understanding language'],
+                  c: 1, ex: 'Finding hidden patterns! Give AI 1 million customer records with no labels. It finds natural groups: frequent buyers, budget shoppers, luxury seekers. Business can then target each group differently!', exHi: 'Finding hidden patterns! Give AI 1 million customer records with no labels. It finds natural groups: frequent buyers, budget shoppers, luxury seekers. Business can then target each group differently!' },
+                { q: 'What made ChatGPT so powerful?', qHi: 'What made ChatGPT so powerful?',
+                  opts: ['It was expensive to build', 'It was trained on trillions of words using Deep Learning for months', 'It has a very fast processor', 'It was built by one genius programmer'], optsHi: ['It was expensive to build', 'It was trained on trillions of words using Deep Learning for months', 'It has a very fast processor', 'It was built by one genius programmer'],
+                  c: 1, ex: 'Trillions of words + Deep Learning + months of training! GPT-4 read virtually the entire internet — Wikipedia, books, code, articles. Combined with advanced deep learning architecture, this creates human-like language ability.', exHi: 'Trillions of words + Deep Learning + months of training! GPT-4 read virtually the entire internet — Wikipedia, books, code, articles. Combined with advanced deep learning architecture, this creates human-like language ability.' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c7_2', icon: '👁️', title: 'Computer Vision — AI That Can See!', titleHi: 'Computer Vision — AI That Can See!', xp: 28,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 7 · COMPUTER VISION · CHAPTER 2', tagHi: 'CLASS 7 · COMPUTER VISION · CHAPTER 2',
+              title: 'Computer Vision — Teaching Machines to See the World!', titleHi: 'Computer Vision — Teaching Machines to See the World!',
+              intro: 'Your eyes and brain process vision automatically. Computer Vision teaches AI to do the same — and sometimes even better than humans!', introHi: 'Your eyes and brain process vision automatically. Computer Vision teaches AI to do the same — and sometimes even better than humans!',
+              speech: '<span class="hi">Computer Vision</span> = AI that can understand images and video<br><br><strong>How AI sees an image:</strong><br>📸 <span class="em">Photo</span> → Grid of pixels (tiny colored dots)<br>🔢 <span class="cool">Each pixel</span> = 3 numbers (Red, Green, Blue: 0-255)<br>🧠 <span class="hi">AI processes</span> millions of numbers → understands content<br><br><strong>Steps AI takes:</strong><br>1. Edge Detection — finds boundaries between objects<br>2. Shape Recognition — identifies basic shapes<br>3. Feature Matching — compares to learned patterns<br>4. Classification — "This is a dog with 97.3% confidence!"<br><br><span class="em">AI can process 1000 images per second — humans take 1-2 seconds each!</span>',
+              speechHi: '<span class="hi">Computer Vision</span> = AI that can understand images and video<br><br><strong>How AI sees an image:</strong><br>📸 <span class="em">Photo</span> → Grid of pixels (tiny colored dots)<br>🔢 <span class="cool">Each pixel</span> = 3 numbers (Red, Green, Blue: 0-255)<br>🧠 <span class="hi">AI processes</span> millions of numbers → understands content<br><br><strong>Steps AI takes:</strong><br>1. Edge Detection — finds boundaries between objects<br>2. Shape Recognition — identifies basic shapes<br>3. Feature Matching — compares to learned patterns<br>4. Classification — "This is a dog with 97.3% confidence!"<br><br><span class="em">AI can process 1000 images per second — humans take 1-2 seconds each!</span>'
+            },
+            { type: 'concepts', tag: 'CLASS 7 · CV APPLICATIONS', tagHi: 'CLASS 7 · CV APPLICATIONS',
+              title: 'Computer Vision Changing India', titleHi: 'Computer Vision Changing India',
+              intro: 'From Aadhaar to agriculture to healthcare — Computer Vision is transforming India!', introHi: 'From Aadhaar to agriculture to healthcare — Computer Vision is transforming India!',
+              items: [
+                { em:'🆔', l:'Aadhaar Face Recognition', lHi:'Aadhaar Face Recognition', d:'1.3 billion Indian faces recognized by AI in 0.1 seconds! Aadhaar uses face + fingerprint + iris — three Computer Vision systems working together. World record biometric database!', dHi:'1.3 billion Indian faces recognized by AI in 0.1 seconds! Aadhaar uses face + fingerprint + iris — three Computer Vision systems working together. World record biometric database!' },
+                { em:'🚗', l:'FASTag on Highways', lHi:'FASTag on Highways', d:'Camera reads your car number plate at 100km/h! AI recognizes plate in 0.5 seconds, charges your account automatically. No stopping at toll booths!', dHi:'Camera reads your car number plate at 100km/h! AI recognizes plate in 0.5 seconds, charges your account automatically. No stopping at toll booths!' },
+                { em:'🌾', l:'Crop Disease Detection', lHi:'Crop Disease Detection', d:'Farmer photographs diseased crop on phone. AI examines pixels: "Yellow spots in this pattern = wheat rust disease. Spray Propiconazole fungicide." Saves lakhs in crop losses!', dHi:'Farmer photographs diseased crop on phone. AI examines pixels: "Yellow spots in this pattern = wheat rust disease. Spray Propiconazole fungicide." Saves lakhs in crop losses!' },
+                { em:'🏥', l:'Cancer Detection', lHi:'Cancer Detection', d:'AI trained on 1 million X-rays can detect breast cancer, tuberculosis, and bone fractures with accuracy matching specialist doctors. Available 24/7 at low cost!', dHi:'AI trained on 1 million X-rays can detect breast cancer, tuberculosis, and bone fractures with accuracy matching specialist doctors. Available 24/7 at low cost!' },
+                { em:'📦', l:'Amazon-Flipkart Warehouses', lHi:'Amazon-Flipkart Warehouses', d:'Robot cameras scan and sort 1 million packages daily. AI reads barcodes, detects damage, routes packages — 10x faster than human workers with near-zero errors.', dHi:'Robot cameras scan and sort 1 million packages daily. AI reads barcodes, detects damage, routes packages — 10x faster than human workers with near-zero errors.' },
+                { em:'🚦', l:'Traffic Violation Detection', lHi:'Traffic Violation Detection', d:'Smart cameras in Delhi, Mumbai, Jaipur catch: red light jumping, wrong lane driving, no helmet, no seatbelt — and automatically generate challan! Reduces road accidents.', dHi:'Smart cameras in Delhi, Mumbai, Jaipur catch: red light jumping, wrong lane driving, no helmet, no seatbelt — and automatically generate challan! Reduces road accidents.' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 7 · CV QUIZ', tagHi: 'CLASS 7 · CV QUIZ',
+              title: '🧩 Computer Vision Quiz!', titleHi: '🧩 Computer Vision Quiz!',
+              questions: [
+                { q: 'How does AI "see" a photograph?', qHi: 'How does AI "see" a photograph?',
+                  opts: ['As a painting', 'As a grid of colored pixels, each represented by 3 numbers (RGB)', 'As text', 'As a 3D model'], optsHi: ['As a painting', 'As a grid of colored pixels, each represented by 3 numbers (RGB)', 'As text', 'As a 3D model'],
+                  c: 1, ex: 'Grid of numbers! Every photo is a grid of pixels. Each pixel has 3 numbers: Red (0-255), Green (0-255), Blue (0-255). AI processes these millions of numbers to understand what is in the image!', exHi: 'Grid of numbers! Every photo is a grid of pixels. Each pixel has 3 numbers: Red (0-255), Green (0-255), Blue (0-255). AI processes these millions of numbers to understand what is in the image!' },
+                { q: 'FASTag uses Computer Vision to?', qHi: 'FASTag uses Computer Vision to?',
+                  opts: ['Check if car is clean', 'Read car number plates at high speed for automatic toll payment', 'Count passengers', 'Measure car speed only'], optsHi: ['Check if car is clean', 'Read car number plates at high speed for automatic toll payment', 'Count passengers', 'Measure car speed only'],
+                  c: 1, ex: 'Automatic toll payment! Camera reads your plate number at high speed. AI recognizes it, checks the linked account, deducts money automatically. No stopping, no cash needed — faster and more efficient!', exHi: 'Automatic toll payment! Camera reads your plate number at high speed. AI recognizes it, checks the linked account, deducts money automatically. No stopping, no cash needed — faster and more efficient!' },
+                { q: 'AI processes images how much faster than humans?', qHi: 'AI processes images how much faster than humans?',
+                  opts: ['Same speed', '5x faster', '50x faster', '1000 images per second vs 1-2 seconds for humans'], optsHi: ['Same speed', '5x faster', '50x faster', '1000 images per second vs 1-2 seconds for humans'],
+                  c: 3, ex: '1000x faster! AI can classify 1000 images per second. Humans take 1-2 seconds per image. This speed advantage makes AI invaluable for tasks like scanning millions of medical images or monitoring thousands of CCTV cameras simultaneously.', exHi: '1000x faster! AI can classify 1000 images per second. Humans take 1-2 seconds per image. This speed advantage makes AI invaluable for tasks like scanning millions of medical images or monitoring thousands of CCTV cameras simultaneously.' },
+                { q: 'Computer Vision helps detect crop diseases by?', qHi: 'Computer Vision helps detect crop diseases by?',
+                  opts: ['Tasting the crop', 'Analyzing pixel patterns in crop photos that match known disease patterns', 'Measuring soil temperature', 'Counting leaves'], optsHi: ['Tasting the crop', 'Analyzing pixel patterns in crop photos that match known disease patterns', 'Measuring soil temperature', 'Counting leaves'],
+                  c: 1, ex: 'Pixel pattern analysis! AI has learned what healthy crops look like vs diseased ones. When a farmer uploads a photo, AI compares pixel patterns to its disease database and identifies the specific disease with high accuracy.', exHi: 'Pixel pattern analysis! AI has learned what healthy crops look like vs diseased ones. When a farmer uploads a photo, AI compares pixel patterns to its disease database and identifies the specific disease with high accuracy.' },
+                { q: 'Aadhaar uses which Computer Vision technologies?', qHi: 'Aadhaar uses which Computer Vision technologies?',
+                  opts: ['Only face recognition', 'Only fingerprint scanning', 'Face recognition + fingerprint scanning + iris scanning — three CV systems', 'Only iris scanning'], optsHi: ['Only face recognition', 'Only fingerprint scanning', 'Face recognition + fingerprint scanning + iris scanning — three CV systems', 'Only iris scanning'],
+                  c: 2, ex: 'All three! Face recognition + fingerprint + iris scanning. Three separate Computer Vision AI systems verify your identity. Even if one is unclear (dirty finger, sunglasses), the others provide backup verification.', exHi: 'All three! Face recognition + fingerprint + iris scanning. Three separate Computer Vision AI systems verify your identity. Even if one is unclear (dirty finger, sunglasses), the others provide backup verification.' }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'c7_3', icon: '🛡️', title: 'Responsible AI — Bias, Privacy and the Future!', titleHi: 'Responsible AI — Bias, Privacy and the Future!', xp: 28,
+          slides: [
+            { type: 'teach', bot: 'a', botName: 'AIBot 🤖', botNameHi: 'AIBot 🤖',
+              tag: 'CLASS 7 · RESPONSIBLE AI · CHAPTER 3', tagHi: 'CLASS 7 · RESPONSIBLE AI · CHAPTER 3',
+              title: 'With Great AI Power Comes Great Responsibility!', titleHi: 'With Great AI Power Comes Great Responsibility!',
+              intro: 'AI is changing everything. But if we build it carelessly, AI can harm people. Responsible AI means building AI that is fair, safe, and beneficial for all of humanity!', introHi: 'AI is changing everything. But if we build it carelessly, AI can harm people. Responsible AI means building AI that is fair, safe, and beneficial for all of humanity!',
+              speech: '<span class="hi">Responsible AI</span> = Building AI that is <span class="em">beneficial to everyone</span>, not harmful<br><br><strong>Key Challenges:</strong><br>🎭 <span class="em">Deepfakes</span> — AI creates fake videos of real people<br>💼 <span class="cool">Job Displacement</span> — AI automates many human jobs<br>🔍 <span class="hi">Surveillance</span> — AI tracks people without consent<br>⚔️ <span class="em">AI Weapons</span> — autonomous killer drones<br>🤥 <span class="cool">Misinformation</span> — AI generates fake news at scale<br><br><strong>But also solutions:</strong><br>🌡️ <span class="em">Climate AI</span> → predicts and fights climate change<br>💊 <span class="cool">Drug Discovery AI</span> → finds cures faster<br>♿ <span class="hi">Accessibility AI</span> → helps disabled people<br>🎓 <span class="em">Education AI</span> → like STU-BRAIN, making quality learning accessible to all!',
+              speechHi: '<span class="hi">Responsible AI</span> = Building AI that is <span class="em">beneficial to everyone</span>, not harmful<br><br><strong>Key Challenges:</strong><br>🎭 <span class="em">Deepfakes</span> — AI creates fake videos of real people<br>💼 <span class="cool">Job Displacement</span> — AI automates many human jobs<br>🔍 <span class="hi">Surveillance</span> — AI tracks people without consent<br>⚔️ <span class="em">AI Weapons</span> — autonomous killer drones<br>🤥 <span class="cool">Misinformation</span> — AI generates fake news at scale<br><br><strong>But also solutions:</strong><br>🌡️ <span class="em">Climate AI</span> → predicts and fights climate change<br>💊 <span class="cool">Drug Discovery AI</span> → finds cures faster<br>♿ <span class="hi">Accessibility AI</span> → helps disabled people<br>🎓 <span class="em">Education AI</span> → like STU-BRAIN, making quality learning accessible to all!'
+            },
+            { type: 'concepts', tag: 'CLASS 7 · RESPONSIBLE AI', tagHi: 'CLASS 7 · RESPONSIBLE AI',
+              title: '6 Pillars of Responsible AI', titleHi: '6 Pillars of Responsible AI',
+              intro: 'India, EU, US and UN are all working on responsible AI frameworks. Here are the key principles!', introHi: 'India, EU, US and UN are all working on responsible AI frameworks. Here are the key principles!',
+              items: [
+                { em:'⚖️', l:'Fairness — Equal Treatment for All', lHi:'Fairness — Equal Treatment for All', d:'AI must not discriminate based on gender, caste, religion, or wealth. India\'s draft AI policy emphasizes fairness especially for marginalized communities.', dHi:'AI must not discriminate based on gender, caste, religion, or wealth. India\'s draft AI policy emphasizes fairness especially for marginalized communities.' },
+                { em:'🔒', l:'Privacy — Control Over Your Data', lHi:'Privacy — Control Over Your Data', d:'You have the right to know what data AI collects about you, why, and how long it keeps it. India\'s DPDP Act 2023 gives you these rights.', dHi:'You have the right to know what data AI collects about you, why, and how long it keeps it. India\'s DPDP Act 2023 gives you these rights.' },
+                { em:'🔍', l:'Explainability — Why Did AI Decide This?', lHi:'Explainability — Why Did AI Decide This?', d:'High-stakes AI decisions (loans, medical, legal) must be explainable. You deserve to know WHY AI rejected you or approved you.', dHi:'High-stakes AI decisions (loans, medical, legal) must be explainable. You deserve to know WHY AI rejected you or approved you.' },
+                { em:'🛡️', l:'Safety Testing — Test Before Deploying', lHi:'Safety Testing — Test Before Deploying', d:'AI in medical devices, self-driving cars, and weapons must be tested millions of times before real use. One mistake can cost lives.', dHi:'AI in medical devices, self-driving cars, and weapons must be tested millions of times before real use. One mistake can cost lives.' },
+                { em:'👥', l:'Human Oversight — Humans Stay in Charge', lHi:'Human Oversight — Humans Stay in Charge', d:'Critical decisions — should involve human review. AI should assist humans, not replace human judgment entirely in life-or-death situations.', dHi:'Critical decisions — should involve human review. AI should assist humans, not replace human judgment entirely in life-or-death situations.' },
+                { em:'🌍', l:'Beneficial to All — Not Just the Wealthy', lHi:'Beneficial to All — Not Just the Wealthy', d:'AI should help developing countries, rural communities, and marginalized groups — not just tech companies and wealthy nations. STU-BRAIN is part of this mission!', dHi:'AI should help developing countries, rural communities, and marginalized groups — not just tech companies and wealthy nations. STU-BRAIN is part of this mission!' }
+              ]
+            },
+            { type: 'quiz', tag: 'CLASS 7 · RESPONSIBLE AI QUIZ', tagHi: 'CLASS 7 · RESPONSIBLE AI QUIZ',
+              title: '🧩 Responsible AI Quiz!', titleHi: '🧩 Responsible AI Quiz!',
+              questions: [
+                { q: 'A deepfake is?', qHi: 'A deepfake is?',
+                  opts: ['A deep ocean camera', 'AI-generated fake video that makes someone appear to say or do things they never did', 'A type of neural network', 'A privacy setting'], optsHi: ['A deep ocean camera', 'AI-generated fake video that makes someone appear to say or do things they never did', 'A type of neural network', 'A privacy setting'],
+                  c: 1, ex: 'AI-generated fake video! Deepfakes use AI to manipulate faces and voices, making it appear that real people said or did things they never did. Used for misinformation and fraud — a serious Responsible AI concern!', exHi: 'AI-generated fake video! Deepfakes use AI to manipulate faces and voices, making it appear that real people said or did things they never did. Used for misinformation and fraud — a serious Responsible AI concern!' },
+                { q: 'India\'s law that protects your data from AI is?', qHi: 'India\'s law that protects your data from AI is?',
+                  opts: ['RTI Act', 'DPDP Act 2023 (Digital Personal Data Protection Act)', 'Indian Penal Code', 'Companies Act'], optsHi: ['RTI Act', 'DPDP Act 2023 (Digital Personal Data Protection Act)', 'Indian Penal Code', 'Companies Act'],
+                  c: 1, ex: 'DPDP Act 2023! India\'s Digital Personal Data Protection Act gives every Indian the right to know what personal data is collected, the right to correct it, and the right to delete it from company databases.', exHi: 'DPDP Act 2023! India\'s Digital Personal Data Protection Act gives every Indian the right to know what personal data is collected, the right to correct it, and the right to delete it from company databases.' },
+                { q: 'Why should high-stakes AI decisions be explainable?', qHi: 'Why should high-stakes AI decisions be explainable?',
+                  opts: ['To make AI look smarter', 'Because people deserve to know why they were rejected or approved and be able to appeal unfair decisions', 'To make AI faster', 'To reduce costs'], optsHi: ['To make AI look smarter', 'Because people deserve to know why they were rejected or approved and be able to appeal unfair decisions', 'To make AI faster', 'To reduce costs'],
+                  c: 1, ex: 'Fairness and accountability! If AI rejects your loan, job, or medical insurance, you have the right to know the exact reason and challenge it if unfair. Black-box AI in high-stakes decisions violates fundamental rights.', exHi: 'Fairness and accountability! If AI rejects your loan, job, or medical insurance, you have the right to know the exact reason and challenge it if unfair. Black-box AI in high-stakes decisions violates fundamental rights.' },
+                { q: 'AI can be beneficial for society by?', qHi: 'AI can be beneficial for society by?',
+                  opts: ['Only making companies profitable', 'Helping fight climate change, discover drugs, assist disabled people, and make quality education accessible', 'Only making smartphones faster', 'Only reducing jobs'], optsHi: ['Only making companies profitable', 'Helping fight climate change, discover drugs, assist disabled people, and make quality education accessible', 'Only making smartphones faster', 'Only reducing jobs'],
+                  c: 1, ex: 'Many beneficial uses! Climate prediction AI, drug discovery AI, accessibility tools for disabled people, and AI education platforms like STU-BRAIN — all use AI to benefit society, not just profit.', exHi: 'Many beneficial uses! Climate prediction AI, drug discovery AI, accessibility tools for disabled people, and AI education platforms like STU-BRAIN — all use AI to benefit society, not just profit.' },
+                { q: 'Human oversight in AI means?', qHi: 'Human oversight in AI means?',
+                  opts: ['Humans do all the work instead of AI', 'Humans should maintain control and review critical AI decisions, not leave life-or-death choices entirely to AI', 'AI should watch humans', 'Humans should repair AI computers'], optsHi: ['Humans do all the work instead of AI', 'Humans should maintain control and review critical AI decisions, not leave life-or-death choices entirely to AI', 'AI should watch humans', 'Humans should repair AI computers'],
+                  c: 1, ex: 'Humans stay in control! AI should assist and augment human decision-making, not replace it entirely in critical situations. A doctor should review AI\'s cancer diagnosis. A judge should review AI\'s sentencing suggestion. Humans accountable.', exHi: 'Humans stay in control! AI should assist and augment human decision-making, not replace it entirely in critical situations. A doctor should review AI\'s cancer diagnosis. A judge should review AI\'s sentencing suggestion. Humans accountable.' }
+              ]
+            }
+          ]
+        }
+      ]
+    }]
+  },
+
   8: {
     label: 'Class 8', labelHi: 'कक्षा 8', badge: '🌱 Foundation', badgeHi: '🌱 आधार',
     badgeStyle: 'background:rgba(67,233,123,.15);color:#43E97B;border:1px solid rgba(67,233,123,.3)',

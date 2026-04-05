@@ -824,7 +824,7 @@ export default function App() {
         <div style={{...S.fredoka,fontSize:18,marginBottom:12}}>▶ {T.continueLearning}</div>
         <div style={{display:'flex',flexDirection:'column',gap:9}}>
           {[...(()=>{
-              const cls=user?.class_level||8;
+              const cls=user?.class_level||3;
               const d=CURRICULUM[cls];
               if(!d) return [];
               const allC=d.subjects.flatMap(s=>s.chapters.filter(Boolean) as import('@/lib/curriculum').Chapter[]);
@@ -1069,7 +1069,7 @@ export default function App() {
               {/* Class filter pills */}
               <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
                 <button onClick={()=>{setStudentClassFilter(null);loadAllStudents(undefined,studentSearch);}} style={{padding:'6px 14px',borderRadius:50,fontSize:12,fontWeight:800,border:`1px solid ${!studentClassFilter?C.p:C.br}`,background:!studentClassFilter?C.p:'transparent',color:!studentClassFilter?'#fff':C.mu,cursor:'pointer',fontFamily:"'Nunito',sans-serif"}}>All</button>
-                {[8,9,10,11,12].map(cls=>(
+                {[3,4,5,6,7,8,9,10,11,12].map(cls=>(
                   <button key={cls} onClick={()=>{setStudentClassFilter(cls);loadAllStudents(cls,studentSearch);}} style={{padding:'6px 14px',borderRadius:50,fontSize:12,fontWeight:800,border:`1px solid ${studentClassFilter===cls?C.p:C.br}`,background:studentClassFilter===cls?C.p:'transparent',color:studentClassFilter===cls?'#fff':C.mu,cursor:'pointer',fontFamily:"'Nunito',sans-serif"}}>
                     Class {cls}
                   </button>
@@ -1221,7 +1221,7 @@ export default function App() {
                 <div>
                   <label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>{lang==='hi'?'कक्षा':'Class'}</label>
                   <select style={{...S.inp,padding:'9px 12px'}} value={hwForm.class_level} onChange={e=>setHwForm(f=>({...f,class_level:parseInt(e.target.value)}))}>
-                    {[8,9,10,11,12].map(c=><option key={c} value={c}>Class {c}</option>)}
+                    {[3,4,5,6,7,8,9,10,11,12].map(c=><option key={c} value={c}>Class {c}</option>)}
                   </select>
                 </div>
                 <div>
@@ -1256,7 +1256,7 @@ export default function App() {
             <div style={{...S.fredoka,fontSize:16,marginBottom:14}}>🧩 {T.createQuiz}</div>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
               <div><label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Quiz Title</label><input style={S.inp} placeholder="ML Revision Test"/></div>
-              <div><label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Class</label><select style={{...S.inp,padding:'9px 12px'}}>{[8,9,10,11,12].map(c=><option key={c}>Class {c}</option>)}</select></div>
+              <div><label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Class</label><select style={{...S.inp,padding:'9px 12px'}}>{[3,4,5,6,7,8,9,10,11,12].map(c=><option key={c}>Class {c}</option>)}</select></div>
             </div>
             <div style={{marginBottom:12}}><label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Question 1</label>
               <input style={{...S.inp,marginBottom:8}} placeholder="Write question..."/>
@@ -1852,7 +1852,7 @@ export default function App() {
               <div>
                 <label style={{fontSize:10,fontWeight:800,color:C.mu,textTransform:'uppercase',letterSpacing:1,display:'block',marginBottom:4}}>Class</label>
                 <select style={{...S.inp,padding:'9px 12px'} as React.CSSProperties} value={String(editStudent.class_level||9)} onChange={e=>setEditStudent(s=>({...s,class_level:parseInt(e.target.value)}))}>
-                  {[8,9,10,11,12].map(c=><option key={c} value={c}>Class {c}</option>)}
+                  {[3,4,5,6,7,8,9,10,11,12].map(c=><option key={c} value={c}>Class {c}</option>)}
                 </select>
               </div>
             </div>
