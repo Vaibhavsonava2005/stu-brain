@@ -56,7 +56,7 @@ export default function App() {
   const [loginErr,setLoginErr] = useState('');
   const [prog,setProg] = useState<ProgMap>({});
   const [totalXP,setTotalXP] = useState(0);
-  const [curClass,setCurClass] = useState(9);
+  const [curClass,setCurClass] = useState(8);
   const [curChap,setCurChap] = useState<Chapter|null>(null);
   const [curSlide,setCurSlide] = useState(0);
   const [qDone,setQDone] = useState<Record<string,{answered:boolean;correct:boolean}>>({});
@@ -802,7 +802,7 @@ export default function App() {
         </div>
         <div style={{...S.fredoka,fontSize:18,marginBottom:12}}>📖 {T.myClasses}</div>
         <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(170px,1fr))',gap:12,marginBottom:22}}>
-          {[{cls:8,em:'🌱'},{cls:9,em:'🚀'},{cls:10,em:'⚡'},{cls:11,em:'🏆'},{cls:12,em:'🌟'}].map(({cls,em})=>{
+          {[{cls:3,em:'🌟'},{cls:4,em:'🌈'},{cls:5,em:'🔭'},{cls:6,em:'💡'},{cls:7,em:'🎯'},{cls:8,em:'🌱'},{cls:9,em:'🚀'},{cls:10,em:'⚡'},{cls:11,em:'🏆'},{cls:12,em:'🎓'}].map(({cls,em})=>{
             const d=CURRICULUM[cls]; const{done,total,pct}=classProg(cls); const mine=cls===(user?.class_level||9);
             return(
               <div key={cls} style={{...S.card,padding:18,cursor:'pointer',position:'relative',borderColor:mine?C.p:C.br,transition:'transform .2s'}}
@@ -1663,7 +1663,7 @@ export default function App() {
         <div style={{...S.fredoka,fontSize:16,marginBottom:10}}>🎓 {lang==='hi'?'Students':'Students'}</div>
         <div style={{display:'flex',gap:8,marginBottom:12,flexWrap:'wrap',alignItems:'center'}}>
           <button onClick={()=>{setStudentClassFilter(null);setSectionFilter('');loadAllStudents(undefined,undefined,studentSearch||undefined);}} style={{padding:'6px 14px',borderRadius:50,fontSize:12,fontWeight:800,border:`1px solid ${!studentClassFilter?C.p:C.br}`,background:!studentClassFilter?C.p:'transparent',color:!studentClassFilter?'#fff':C.mu,cursor:'pointer',fontFamily:"'Nunito',sans-serif"}}>All</button>
-          {[8,9,10,11,12].map(cls=>(
+          {[3,4,5,6,7,8,9,10,11,12].map(cls=>(
             <button key={cls} onClick={()=>{setStudentClassFilter(cls);setSectionFilter('');loadAllStudents(cls,undefined,studentSearch||undefined);}} style={{padding:'6px 14px',borderRadius:50,fontSize:12,fontWeight:800,border:`1px solid ${studentClassFilter===cls?C.p:C.br}`,background:studentClassFilter===cls?C.p:'transparent',color:studentClassFilter===cls?'#fff':C.mu,cursor:'pointer',fontFamily:"'Nunito',sans-serif"}}>Class {cls}</button>
           ))}
           {/* Section filter — only show sections that exist for selected class */}
