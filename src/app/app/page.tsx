@@ -50,7 +50,7 @@ export default function App() {
   const [user,setUser] = useState<User|null>(null);
   const [navStack,setNavStack] = useState<string[]>([]);
   const [token,setToken] = useState('');
-  const [loginRole,setLoginRole] = useState<'student'|'teacher'|'admin'>('student');
+  const [loginRole,setLoginRole] = useState<'student'|'teacher'|'admin'|'owner'>('student');
   const [loginId,setLoginId] = useState('');
   const [loginPass,setLoginPass] = useState('');
   const [loginErr,setLoginErr] = useState('');
@@ -103,6 +103,7 @@ export default function App() {
   const [claimingCert,setClaimingCert] = useState(false);
   const [certResult,setCertResult] = useState<{cert_id:string;student_name:string;school_name:string;class_level:number;issued_at:string}|null>(null);
   const [showPwd,setShowPwd] = useState<Record<string,boolean>>({});
+  const [enquiries,setEnquiries] = useState<{id:number;name:string;phone:string;email:string;school:string;city:string;message:string;students:number;status:string;created_at:string}[]>([]);
   const [hwForm,setHwForm] = useState({class_level:9,title:'',due_date:'',instructions:''});
   const scrollRef = useRef<HTMLDivElement>(null);
   const T = t[lang];
@@ -192,7 +193,11 @@ export default function App() {
     try{const r=await fetch('/api/assignments',{headers:{authorization:`Bearer ${tok}`}});const d=await r.json();setAssignments(d.assignments||[]);}catch{}
     try{const r=await fetch('/api/admin/teachers',{headers:{authorization:`Bearer ${tok}`}});const d=await r.json();setTeachers(d.teachers||[]);}catch{}
   }
+  async function loadEnquiries(tok:string){
+    try{const r=await fetch('/api/enquiry',{headers:{authorization:`Bearer ${tok}`}});const d=await r.json();setEnquiries(d.enquiries||[]);}catch{}
+  }
   async function loadSuperAdmin(tok:string){
+    loadEnquiries(tok);
     try{const r=await fetch('/api/superadmin/schools',{headers:{authorization:`Bearer ${tok}`}});const d=await r.json();setAllSchools(d.schools||[]);setSaStats(d.stats||null);}catch{}
   }
   async function addTeacher(){
@@ -746,16 +751,26 @@ export default function App() {
           <div style={{...S.fredoka,...S.grad,fontSize:26}}>STU-BRAIN</div>
           <div style={{color:C.mu,fontSize:13,fontWeight:600,marginTop:3}}>{T.tagline}</div>
         </div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:20}}>
-          {(['student','teacher','admin'] as const).map(r=>(
-            <button key={r} onClick={()=>setLoginRole(r)} style={{padding:'9px 4px',borderRadius:12,fontSize:12,fontWeight:800,border:loginRole===r?`2px solid ${C.p}`:`2px solid ${C.br}`,background:loginRole===r?'rgba(108,99,255,.15)':'transparent',color:loginRole===r?C.p:C.mu,cursor:'pointer',fontFamily:"'Nunito',sans-serif"}}>
-              {r==='student'?T.studentRole:r==='teacher'?T.teacherRole:T.adminRole}
+        {/* Role selector - clean cards */}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:8,marginBottom:18}}>
+          {([
+            ['student','🎓',T.studentRole,lang==='hi'?'Student ID से login करें':'Login with your Student ID'],
+            ['teacher','👨‍🏫',T.teacherRole,lang==='hi'?'Teacher email से login करें':'Login with your teacher email'],
+            ['admin','🏫',T.adminRole,lang==='hi'?'School admin login':'School admin login'],
+            ['owner','👑',lang==='hi'?'Owner':'Owner',lang==='hi'?'STU-BRAIN owner login':'STU-BRAIN owner login'],
+          ] as const).map(([r,ic,label,desc])=>(
+            <button key={r} onClick={()=>setLoginRole(r as typeof loginRole)} style={{padding:'10px 8px',borderRadius:12,fontSize:11,fontWeight:800,border:loginRole===r?`2px solid ${C.p}`:`1px solid ${C.br}`,background:loginRole===r?'rgba(108,99,255,.15)':'rgba(255,255,255,.03)',color:loginRole===r?C.p:C.mu,cursor:'pointer',fontFamily:"'Nunito',sans-serif",textAlign:'left',lineHeight:1.4}}>
+              <div style={{fontSize:18,marginBottom:2}}>{ic}</div>
+              <div style={{fontWeight:900,fontSize:12,color:loginRole===r?C.p:C.text}}>{label}</div>
+              <div style={{fontSize:9,color:C.mu,fontWeight:600,marginTop:1}}>{desc}</div>
             </button>
           ))}
         </div>
         <div style={{marginBottom:12}}>
-          <label style={{fontSize:11,fontWeight:800,color:C.mu,letterSpacing:1,textTransform:'uppercase',display:'block',marginBottom:5}}>{T.schoolId}</label>
-          <input style={S.inp} value={loginId} onChange={e=>setLoginId(e.target.value)} placeholder={loginRole==='student'?'student@demo.com':loginRole==='teacher'?'teacher@demo.com':'admin@demo.com'} onKeyDown={e=>e.key==='Enter'&&doLogin()}/>
+          <label style={{fontSize:11,fontWeight:800,color:C.mu,letterSpacing:1,textTransform:'uppercase',display:'block',marginBottom:5}}>
+            {loginRole==='student'?'Student ID / Email':loginRole==='owner'?'Owner ID':'Email'}
+          </label>
+          <input style={S.inp} value={loginId} onChange={e=>setLoginId(e.target.value)} placeholder={loginRole==='student'?'Your Student ID or email':loginRole==='owner'?'vaibhav2005':loginRole==='teacher'?'Your teacher email':'admin@yourschool.com'} onKeyDown={e=>e.key==='Enter'&&doLogin()}/>
         </div>
         <div style={{marginBottom:12}}>
           <label style={{fontSize:11,fontWeight:800,color:C.mu,letterSpacing:1,textTransform:'uppercase',display:'block',marginBottom:5}}>{T.password}</label>
@@ -766,13 +781,8 @@ export default function App() {
         </div>
         {loginErr&&<div style={{color:C.s,fontSize:12,fontWeight:700,marginBottom:12,padding:'9px 12px',background:'rgba(255,101,132,.1)',borderRadius:10}}>{loginErr}</div>}
         <button onClick={()=>doLogin()} style={{...S.btnP,width:'100%',padding:'13px',fontSize:15}}>{T.loginBtn}</button>
-        <div style={{textAlign:'center',color:C.mu,fontSize:11,marginTop:12,fontWeight:600}}>{lang==='hi'?'या Demo try करें:':'Or try a demo:'}</div>
-        <div style={{display:'flex',gap:8,marginTop:8}}>
-          {(['student','teacher','admin'] as const).map(r=>(
-            <button key={r} onClick={()=>quickLogin(r)} style={{flex:1,padding:'7px 4px',borderRadius:10,fontSize:11,fontWeight:700,background:'rgba(255,255,255,.05)',border:`1px solid ${C.br}`,color:C.mu,cursor:'pointer',fontFamily:"'Nunito',sans-serif"}}>
-              {r==='student'?`🎓 ${T.studentRole}`:r==='teacher'?`👨‍🏫 ${T.teacherRole}`:`🏫 ${T.adminRole}`}
-            </button>
-          ))}
+        <div style={{textAlign:'center',marginTop:10}}>
+          <a href="/" style={{fontSize:11,color:C.p,fontWeight:700,textDecoration:'none'}}>← {lang==='hi'?'STU-BRAIN Homepage देखें':'View STU-BRAIN Website'}</a>
         </div>
         <div style={{...S.card,background:C.card2,padding:14,marginTop:14}}>
           <div style={{fontSize:10,fontWeight:800,textTransform:'uppercase',letterSpacing:1,color:C.mu,marginBottom:8}}>{lang==='hi'?'लॉगिन कैसे करें:':'How to Login:'}</div>
