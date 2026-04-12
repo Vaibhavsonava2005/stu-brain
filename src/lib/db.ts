@@ -111,9 +111,9 @@ export async function initDB() {
   const adminPwd = process.env.SUPERADMIN_PASSWORD || 'changeme-set-SUPERADMIN_PASSWORD-in-vercel';
   const sh = await bcrypt.default.hash(adminPwd, 10);
 
-  await db`INSERT INTO users (school_id,name,email,student_id,password_hash,role,class_level) SELECT s.id,'Vaibhav Sonava','student@demo.com','STU2025001',${h},'student',9 FROM schools s WHERE s.code='DEMO2025' ON CONFLICT (email) DO NOTHING`;
-  await db`INSERT INTO users (school_id,name,email,student_id,password_hash,role) SELECT s.id,'Ms. Priya Sharma','teacher@demo.com','TCH2025001',${h},'teacher' FROM schools s WHERE s.code='DEMO2025' ON CONFLICT (email) DO NOTHING`;
-  await db`INSERT INTO users (school_id,name,email,student_id,password_hash,role) SELECT s.id,'School Admin','admin@demo.com','ADM2025001',${h},'admin' FROM schools s WHERE s.code='DEMO2025' ON CONFLICT (email) DO NOTHING`;
+  await db`INSERT INTO users (school_id,name,email,student_id,password_hash,role,class_level) SELECT s.id,'Demo Student','student@demo.com','STU2025001',${h},'student',9 FROM schools s WHERE s.code='DEMO2025' ON CONFLICT (email) DO NOTHING`;
+  await db`INSERT INTO users (school_id,name,email,student_id,password_hash,role) SELECT s.id,'Demo Teacher','teacher@demo.com','TCH2025001',${h},'teacher' FROM schools s WHERE s.code='DEMO2025' ON CONFLICT (email) DO NOTHING`;
+  await db`INSERT INTO users (school_id,name,email,student_id,password_hash,role) SELECT s.id,'Demo Admin','admin@demo.com','ADM2025001',${h},'admin' FROM schools s WHERE s.code='DEMO2025' ON CONFLICT (email) DO NOTHING`;
   // Update or insert superadmin with new credentials
   const adminId = process.env.SUPERADMIN_ID || 'vaibhav2005';
   try { await db`UPDATE users SET email=${adminId}, student_id=${adminId}, password_hash=${sh} WHERE role='superadmin'`; } catch {}

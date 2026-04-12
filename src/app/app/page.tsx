@@ -60,6 +60,7 @@ export default function App() {
   const [curChap,setCurChap] = useState<Chapter|null>(null);
   const [curSlide,setCurSlide] = useState(0);
   const [qDone,setQDone] = useState<Record<string,{answered:boolean;correct:boolean}>>({});
+  const [quizShuffle,setQuizShuffle] = useState<Record<string,number[]>>({});
   const [xpPop,setXpPop] = useState<number|null>(null);
   const [doubtOpen,setDoubtOpen] = useState(false);
   const [doubtMsgs,setDoubtMsgs] = useState<{role:'bot'|'user';text:string}[]>([{role:'bot',text:"👋 Hi! I'm your AI Doubt Bot. Ask me anything about your chapters! 🧠"}]);
@@ -101,6 +102,7 @@ export default function App() {
   const [logoUploading,setLogoUploading] = useState(false);
   const [certificates,setCertificates] = useState<{cert_id:string;class_level:number;issued_at:string}[]>([]);
   const [claimingCert,setClaimingCert] = useState(false);
+  const [chapUnlockDates,setChapUnlockDates] = useState<Record<string,string>>({});
   const [certResult,setCertResult] = useState<{cert_id:string;student_name:string;school_name:string;class_level:number;issued_at:string}|null>(null);
   const [showPwd,setShowPwd] = useState<Record<string,boolean>>({});
   const [enquiries,setEnquiries] = useState<{id:number;name:string;phone:string;email:string;school:string;city:string;message:string;students:number;status:string;created_at:string}[]>([]);
@@ -316,12 +318,35 @@ export default function App() {
     setCurClass(cls);setCurChap(null);setCurSlide(0);
     setScreen('learn');
   }
+  function shuffleArr(arr:number[]):number[]{const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
   function openChap(ch:Chapter,chapIdx?:number){
     const allC=allChaps(); const idx=chapIdx??allC.findIndex(c=>c.id===ch.id);
     if(user?.plan==='trial'&&idx>=2){
-      alert('🔒 Chapter Locked\n\nTrial account only unlocks the first 2 chapters of each class.\n\nAsk your school admin to activate full access!');
+      alert('🔒 Chapter Locked! Trial: first 2 chapters only. Ask school admin to activate!');
       return;
-    }setCurChap(ch);setCurSlide(0);setQDone({});scrollRef.current?.scrollTo(0,0);}
+    }
+    // Time-lock: 1 new chapter per day
+    const startKey=`sb_start_${user?.id}_${curClass}`;
+    let startDate=localStorage.getItem(startKey);
+    if(!startDate){startDate=new Date().toISOString();localStorage.setItem(startKey,startDate);}
+    const daysSince=Math.floor((Date.now()-new Date(startDate).getTime())/(86400000));
+    if(idx>daysSince&&!prog[ch.id]?.completed){
+      const unlock=new Date(new Date(startDate).getTime()+idx*86400000);
+      alert('🔒 Unlocks on '+unlock.toLocaleDateString('en-IN',{day:'numeric',month:'short'})+'!\nStudy 1 chapter/day to unlock the next. This keeps learning strong all year! 📚');
+      return;
+    }
+    // Shuffle quiz options
+    const ns:Record<string,number[]>={};
+    ch.slides.forEach((sl,si)=>{
+      if(sl.type==='quiz'&&sl.questions){
+        sl.questions.forEach((_:unknown,qi:number)=>{
+          const k=`${ch.id}_${si}_${qi}`;
+          ns[k]=shuffleArr([...Array(sl.questions![qi].opts?.length||4).keys()]);
+        });
+      }
+    });
+    setQuizShuffle(prev=>({...prev,...ns}));
+    setCurChap(ch);setCurSlide(0);setQDone({});scrollRef.current?.scrollTo(0,0);}
   function goBack(){if(curChap){setCurChap(null);}else setScreen(user?.role==='student'?'student':user?.role==='teacher'?'teacher':'admin');}
   function nextSlide(){if(curChap&&curSlide<curChap.slides.length-1){setCurSlide(s=>s+1);scrollRef.current?.scrollTo(0,0);}}
   function prevSlide(){if(curSlide>0){setCurSlide(s=>s-1);scrollRef.current?.scrollTo(0,0);}}
@@ -367,7 +392,10 @@ export default function App() {
   function answerQ(qi:number,oi:number){
     const slide=curChap?.slides[curSlide]; if(!slide?.questions||!curChap) return;
     const key=`${curChap.id}_${curSlide}_${qi}`; if(qDone[key]) return;
-    const isCorrect=oi===slide.questions[qi].c;
+    const shuffleKey2=`${curChap.id}_${curSlide}_${qi}`;
+    const shuffleOrd=quizShuffle[shuffleKey2]||(slide.questions[qi].opts?.map((_:unknown,i:number)=>i)||[]);
+    const realIdx=shuffleOrd[oi]??oi;
+    const isCorrect=realIdx===slide.questions[qi].c;
     const newQDone={...qDone,[key]:{answered:true,correct:isCorrect}};
     setQDone(newQDone);
     // Auto-save quiz score when all questions answered
@@ -540,6 +568,7 @@ export default function App() {
             <div style={{width:52,height:52,minWidth:52,borderRadius:'50%',background:bot.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0,animation:'botBob 2.5s ease-in-out infinite'}}>{bot.em}</div>
             <div style={{flex:1,minWidth:0}}>
               <div style={{fontSize:9,fontWeight:800,letterSpacing:1.5,textTransform:'uppercase',color:C.p,marginBottom:6}}>{lang==='hi'?(s.botNameHi||s.botName):s.botName}</div>
+              {lang==='hi'&&!hasHindi(s.speechHi)&&<div style={{background:'rgba(255,209,102,.1)',border:'1px solid rgba(255,209,102,.3)',borderRadius:8,padding:'6px 10px',fontSize:11,fontWeight:700,color:'#FFD166',marginBottom:6}}>📚 हिंदी अनुवाद जल्द आएगा</div>}
               <div className="bot-txt" style={{fontSize:13,fontWeight:600,lineHeight:1.85}} dangerouslySetInnerHTML={{__html:speech||''}}/>
             </div>
           </div>
@@ -652,13 +681,18 @@ export default function App() {
             {s.questions?.map((q,qi)=>{
               const key=`${curChap?.id}_${curSlide}_${qi}`;
               const answered=qDone[key]?.answered;
-              const opts=lang==='hi'?(q.optsHi||q.opts):q.opts;
+              const rawOpts=lang==='hi'?(q.optsHi||q.opts):q.opts;
+              const shuffleKey=`${curChap?.id}_${curSlide}_${qi}`;
+              const shuffleOrder=quizShuffle[shuffleKey]||(rawOpts?.map((_:unknown,i:number)=>i)||[]);
+              const opts=shuffleOrder.map((i:number)=>rawOpts?.[i]||'');
+              // Map correct answer through shuffle
+              const correctInShuffle=shuffleOrder.indexOf(q.c);
               return(
                 <div key={qi} style={{marginBottom:qi<(s.questions?.length||1)-1?18:0}}>
                   <div style={{fontSize:13,fontWeight:700,lineHeight:1.6,marginBottom:10}}>Q{qi+1}. {lang==='hi'?(q.qHi||q.q):q.q}</div>
                   <div style={{display:'flex',flexDirection:'column',gap:7}}>
                     {opts.map((o:string,oi:number)=>{
-                      const isCorrect=oi===q.c, isSelected=answered;
+                      const isCorrect=oi===correctInShuffle, isSelected=answered;
                       let bg='rgba(255,255,255,.05)', border='1.5px solid rgba(255,255,255,.1)', color=C.text;
                       if(answered){
                         if(isCorrect){bg='rgba(67,233,123,.15)';border=`1.5px solid ${C.a}`;color=C.a;}
@@ -970,7 +1004,7 @@ export default function App() {
           <div style={{marginTop:16,marginBottom:4}}>
             <div style={{...S.fredoka,fontSize:16,marginBottom:10}}>🎓 My Certificates</div>
             <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-              {certificates.map((c,i)=>(
+              {certificates.filter(c=>Number(c.class_level)===(user?.class_level||curClass)).map((c,i)=>(
                 <div key={i} onClick={()=>claimCertificate(Number(c.class_level))} style={{...S.card,padding:'12px 18px',display:'flex',alignItems:'center',gap:12,border:`1px solid rgba(255,209,102,.4)`,cursor:'pointer',transition:'all .2s'}}
                   onMouseEnter={e=>{(e.currentTarget as HTMLDivElement).style.borderColor='#FFD166';(e.currentTarget as HTMLDivElement).style.background='rgba(255,209,102,.08)';}}
                   onMouseLeave={e=>{(e.currentTarget as HTMLDivElement).style.borderColor='rgba(255,209,102,.4)';(e.currentTarget as HTMLDivElement).style.background=C.card;}}>
@@ -1706,7 +1740,7 @@ export default function App() {
                     <td style={{padding:'8px 10px',fontFamily:'monospace',fontSize:11,color:C.y,fontWeight:700}}>{s.student_id as string}</td>
                     <td style={{padding:'8px 10px'}}>
                       <div style={{display:'flex',alignItems:'center',gap:4}}>
-                        <span style={{fontFamily:'monospace',fontSize:10,color:C.mu}}>{showPwd[`s${s.id}`]?'Student@123':'••••••••'}</span>
+                        <span style={{fontFamily:'monospace',fontSize:10,color:C.mu}}>{showPwd[`s${s.id}`]?'demo123':'••••••'}</span>
                         <button onClick={()=>setShowPwd(p=>({...p,[`s${s.id}`]:!p[`s${s.id}`]}))} style={{background:'none',border:'none',cursor:'pointer',fontSize:11,padding:'0 2px',color:C.mu}}>{showPwd[`s${s.id}`]?'🙈':'👁️'}</button>
                       </div>
                     </td>
@@ -2030,9 +2064,10 @@ export default function App() {
               const hasCert=certificates.find(c=>Number(c.class_level)===cls);
               // Only show certificate button on the LAST chapter of the class
               const isLastChap=!allChapsList[allChapsList.findIndex(c=>c&&c.id===curChap?.id)+1];
-              // All chapters done = total matches done
               const allDone=cp.done>=cp.total&&cp.total>0;
-              if((allDone||hasCert)&&isLastChap) return(
+              // Only show cert for student's OWN class
+              const isOwnClass=cls===(user?.class_level||curClass);
+              if((allDone||hasCert)&&isLastChap&&isOwnClass) return(
                 <button style={{...S.btnG,padding:'11px 24px',fontSize:13,marginBottom:9,width:'100%',background:hasCert?'linear-gradient(135deg,#FFD166,#FF9F43)':'linear-gradient(135deg,#43E97B,#38F9D7)'}} onClick={()=>claimCertificate(cls)} disabled={claimingCert}>
                   {claimingCert?'⏳ Generating...':(hasCert?`🎓 View Class ${cls} Certificate`:`🏆 Claim Full Class ${cls} Certificate!`)}
                 </button>
