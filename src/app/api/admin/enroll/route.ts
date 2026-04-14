@@ -26,6 +26,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
+  // Plan enrollment limit
+  if (user.role === 'admin') {
+    const [school] = await sql`SELECT plan, tier FROM schools WHERE id = ${user.school_id}`;
+    const plan = school?.plan || school?.tier || 'trial';
+    const maxS = plan==='unlimited'?99999:plan==='medium'?600:plan==='starter'?250:50;
+    const [cr] = await sql`SELECT COUNT(*) as cnt FROM users WHERE school_id = ${user.school_id} AND role='student'`;
+    if (Number(cr?.cnt||0) >= maxS) {
+      return NextResponse.json({error:`Plan limit reached (max ${maxS} students). Contact STU-BRAIN to upgrade!`,limit_reached:true},{status:403});
+    }
+  }
+
   const { students } = await req.json();
   if (!students?.length) return NextResponse.json({ error: 'No students provided' }, { status: 400 });
 
