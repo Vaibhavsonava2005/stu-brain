@@ -88,6 +88,64 @@ export async function initDB() {
   
   try { await db.unsafe('ALTER TABLE schools ADD COLUMN IF NOT EXISTS logo_url TEXT'); } catch {}
 
+  // Plan tiers for schools
+  try { await db.unsafe("ALTER TABLE schools ADD COLUMN IF NOT EXISTS tier VARCHAR(20) DEFAULT 'trial'"); } catch {}
+  try { await db.unsafe("ALTER TABLE schools ADD COLUMN IF NOT EXISTS trial_start DATE DEFAULT CURRENT_DATE"); } catch {}
+  try { await db.unsafe("ALTER TABLE schools ADD COLUMN IF NOT EXISTS max_students INTEGER DEFAULT 50"); } catch {}
+
+  // Leaderboard - class-specific XP tracking
+  // XP is already in chapter_progress per class_level - leaderboard reads from there
+
+  // Challenges table
+  await db`CREATE TABLE IF NOT EXISTS challenges (
+    id SERIAL PRIMARY KEY,
+    school_id INTEGER REFERENCES schools(id) ON DELETE CASCADE,
+    teacher_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    title VARCHAR(200) NOT NULL,
+    description TEXT,
+    class_level INTEGER,
+    xp_reward INTEGER DEFAULT 50,
+    due_date DATE,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+  )`;
+
+  await db`CREATE TABLE IF NOT EXISTS challenge_submissions (
+    id SERIAL PRIMARY KEY,
+    challenge_id INTEGER REFERENCES challenges(id) ON DELETE CASCADE,
+    student_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    answer TEXT,
+    xp_awarded INTEGER DEFAULT 0,
+    submitted_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(challenge_id, student_id)
+  )`;
+  try { await db.unsafe("ALTER TABLE schools ADD COLUMN IF NOT EXISTS plan_tier VARCHAR(20) DEFAULT 'trial'"); } catch {}
+  try { await db.unsafe("ALTER TABLE schools ADD COLUMN IF NOT EXISTS trial_start DATE DEFAULT CURRENT_DATE"); } catch {}
+  try { await db.unsafe("ALTER TABLE schools ADD COLUMN IF NOT EXISTS max_students INTEGER DEFAULT 50"); } catch {}
+
+  // Challenges table
+  await db`CREATE TABLE IF NOT EXISTS challenges (
+    id SERIAL PRIMARY KEY,
+    school_id INTEGER REFERENCES schools(id) ON DELETE CASCADE,
+    teacher_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    title VARCHAR(200) NOT NULL,
+    description TEXT NOT NULL,
+    class_level INTEGER,
+    xp_reward INTEGER DEFAULT 50,
+    due_date DATE,
+    created_at TIMESTAMP DEFAULT NOW()
+  )`;
+
+  await db`CREATE TABLE IF NOT EXISTS challenge_submissions (
+    id SERIAL PRIMARY KEY,
+    challenge_id INTEGER REFERENCES challenges(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    answer TEXT,
+    submitted_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(challenge_id, user_id)
+  )`;
+
   // Safe migrations
   const cols = [
     [`schools`, `admin_email VARCHAR(200)`], [`schools`, `state VARCHAR(100)`],
@@ -98,6 +156,9 @@ export async function initDB() {
     [`schools`, `payment_amount NUMERIC(10,2)`], [`schools`, `payment_date DATE`],
     [`schools`, `payment_notes TEXT`], [`schools`, `unlocked_at TIMESTAMP`],
     [`schools`, `unlocked_by VARCHAR(100)`], [`users`, `phone VARCHAR(20)`],
+    [`schools`, `plan_tier VARCHAR(20) DEFAULT 'trial'`],
+    [`schools`, `trial_start DATE DEFAULT CURRENT_DATE`],
+    [`challenges`, `edited_at TIMESTAMP`],
   ];
   for (const [tbl, col] of cols) {
     try { await db.unsafe(`ALTER TABLE ${tbl} ADD COLUMN IF NOT EXISTS ${col}`); } catch {}

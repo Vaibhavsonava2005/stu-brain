@@ -56,7 +56,7 @@ export default function App() {
   const [loginErr,setLoginErr] = useState('');
   const [prog,setProg] = useState<ProgMap>({});
   const [totalXP,setTotalXP] = useState(0);
-  const [curClass,setCurClass] = useState(8);
+  const [curClass,setCurClass] = useState(8); // Will be set to user's class on login
   const [curChap,setCurChap] = useState<Chapter|null>(null);
   const [curSlide,setCurSlide] = useState(0);
   const [qDone,setQDone] = useState<Record<string,{answered:boolean;correct:boolean}>>({});
@@ -101,6 +101,15 @@ export default function App() {
   const [schoolLogo,setSchoolLogo] = useState<string|null>(null);
   const [logoUploading,setLogoUploading] = useState(false);
   const [certificates,setCertificates] = useState<{cert_id:string;class_level:number;issued_at:string}[]>([]);
+  const [leaderboard,setLeaderboard] = useState<Record<string,unknown>[]>([]);
+  const [lbClass,setLbClass] = useState<number|null>(null);
+  const [showLB,setShowLB] = useState(false);
+  const [challenges,setChallenges] = useState<Record<string,unknown>[]>([]);
+  const [showChallenges,setShowChallenges] = useState(false);
+  const [challengeAnswer,setChallengeAnswer] = useState('');
+  const [activeChallengeId,setActiveChallengeId] = useState<number|null>(null);
+  const [newChallenge,setNewChallenge] = useState({title:'',description:'',class_level:'',xp_reward:50,due_date:''});
+  const [editChallenge,setEditChallenge] = useState<Record<string,unknown>|null>(null);
   const [claimingCert,setClaimingCert] = useState(false);
   const [chapUnlockDates,setChapUnlockDates] = useState<Record<string,string>>({});
   const [certResult,setCertResult] = useState<{cert_id:string;student_name:string;school_name:string;class_level:number;issued_at:string}|null>(null);
@@ -116,13 +125,15 @@ export default function App() {
     const tok=localStorage.getItem('stb_tok'), usr=localStorage.getItem('stb_user');
     if(tok&&usr){
       const u=JSON.parse(usr); setToken(tok); setUser(u);
+      // Set class to user's class
+      if(u?.class_level) setCurClass(u.class_level);
       // Restore cached logo instantly (before API fetch)
       const cachedLogo=localStorage.getItem('sb_logo');
       if(cachedLogo) setSchoolLogo(cachedLogo);
       loadProg(tok);
       const role=u.role;
       if(role==='superadmin') setScreen('superadmin');
-      else if(role==='student'){setScreen('student');setTimeout(()=>loadCertificates(),800);}
+      else if(role==='student'){setScreen('student');setCurClass(u.class_level||8);setTimeout(()=>{loadCertificates();loadChallenges();loadLeaderboard();},800);}
       else if(role==='teacher'){setScreen('teacher');loadTeacher(tok);}
       else{setScreen('admin');loadAdmin(tok);}
     }
@@ -291,8 +302,8 @@ export default function App() {
       await loadProg(d.token);
       const role=d.user.role;
       if(role==='superadmin'){loadSuperAdmin(d.token);setScreen('superadmin');}
-      else if(role==='student'){setScreen('student');setTimeout(()=>loadCertificates(),800);}
-      else if(role==='teacher'){loadTeacher(d.token);setScreen('teacher');}
+      else if(role==='student'){setScreen('student');setCurClass(d.user.class_level||8);setTimeout(()=>{loadCertificates();loadChallenges();loadLeaderboard();},800);}
+      else if(role==='teacher'){loadTeacher(d.token);setScreen('teacher');setTimeout(()=>loadChallenges(),500);}
       else{loadAdmin(d.token);setScreen('admin');}
     }catch{setLoginErr('Connection error — try demo login below');}
   }
@@ -443,6 +454,54 @@ export default function App() {
   async function loadCertificates(){
     if(!token) return;
     try{const r=await fetch('/api/certificate',{headers:{authorization:`Bearer ${token}`}});const d=await r.json();setCertificates(d.certificates||[]);}catch{}
+  }
+  async function loadLeaderboard(cls?:number|null){
+    if(!token) return;
+    const url='/api/leaderboard?type=class'+(cls?`&class_level=${cls}`:'&class_level='+(user?.class_level||8));
+    try{const r=await fetch(url,{headers:{authorization:`Bearer ${token}`}});const d=await r.json();setLeaderboard(d.leaderboard||[]);setLbClass(cls||null);}catch{}
+  }
+  async function loadChallenges(){
+    if(!token) return;
+    try{const r=await fetch('/api/challenges',{headers:{authorization:`Bearer ${token}`}});const d=await r.json();setChallenges(d.challenges||[]);}catch{}
+  }
+  async function submitChallenge(challenge_id:number,answer:string){
+    if(!token||!answer.trim()) return;
+    try{
+      const r=await fetch('/api/challenges/submit',{method:'POST',headers:{'Content-Type':'application/json',authorization:`Bearer ${token}`},body:JSON.stringify({challenge_id,answer})});
+      const d=await r.json();
+      if(d.success){alert(`✅ Submitted! +${d.xp_earned} XP earned!`);loadChallenges();setActiveChallengeId(null);setChallengeAnswer('');}
+      else alert('❌ '+d.error);
+    }catch{}
+  }
+  async function updateChallenge(){
+    if(!token||!editChallenge) return;
+    try{
+      const r=await fetch('/api/challenges',{method:'PATCH',headers:{'Content-Type':'application/json',authorization:`Bearer ${token}`},body:JSON.stringify(editChallenge)});
+      const d=await r.json();
+      if(d.success){alert('✅ Challenge updated!');setEditChallenge(null);loadChallenges();}
+      else alert('❌ '+(d.error||'Error'));
+    }catch{alert('Error');}
+  }
+  async function createChallenge(){
+    if(!token||!newChallenge.title||!newChallenge.description) return;
+    try{
+      const r=await fetch('/api/challenges',{method:'POST',headers:{'Content-Type':'application/json',authorization:`Bearer ${token}`},body:JSON.stringify(newChallenge)});
+      const d=await r.json();
+      if(d.success){alert('✅ Challenge created!');setNewChallenge({title:'',description:'',class_level:'',xp_reward:50,due_date:''});loadChallenges();}
+      else alert('❌ '+d.error);
+    }catch{}
+  }
+  async function deleteChallenge(id:number){
+    if(!token||!confirm('Delete this challenge?')) return;
+    try{await fetch('/api/challenges',{method:'DELETE',headers:{'Content-Type':'application/json',authorization:`Bearer ${token}`},body:JSON.stringify({id})});loadChallenges();}catch{}
+  }
+  async function saveEditChallenge(){
+    if(!token||!editChallenge) return;
+    try{
+      const r=await fetch('/api/challenges',{method:'PATCH',headers:{'Content-Type':'application/json',authorization:`Bearer ${token}`},body:JSON.stringify(editChallenge)});
+      const d=await r.json();
+      if(d.success){setEditChallenge(null);loadChallenges();}
+    }catch{}
   }
   async function claimCertificate(class_level:number){
     if(!token) return;
@@ -844,23 +903,58 @@ export default function App() {
             </div>
           ))}
         </div>
-        <div style={{...S.fredoka,fontSize:18,marginBottom:12}}>📖 {T.myClasses}</div>
-        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(170px,1fr))',gap:12,marginBottom:22}}>
-          {[{cls:3,em:'🌟'},{cls:4,em:'🌈'},{cls:5,em:'🔭'},{cls:6,em:'💡'},{cls:7,em:'🎯'},{cls:8,em:'🌱'},{cls:9,em:'🚀'},{cls:10,em:'⚡'},{cls:11,em:'🏆'},{cls:12,em:'🎓'}].map(({cls,em})=>{
-            const d=CURRICULUM[cls]; const{done,total,pct}=classProg(cls); const mine=cls===(user?.class_level||9);
-            return(
-              <div key={cls} style={{...S.card,padding:18,cursor:'pointer',position:'relative',borderColor:mine?C.p:C.br,transition:'transform .2s'}}
-                onClick={()=>openClass(cls)}
-                onMouseEnter={e=>(e.currentTarget as HTMLDivElement).style.transform='translateY(-4px)'}
-                onMouseLeave={e=>(e.currentTarget as HTMLDivElement).style.transform='translateY(0)'}>
-                {mine&&<div style={{position:'absolute',top:8,right:8,fontSize:9,background:C.p,color:'#fff',padding:'2px 8px',borderRadius:20,fontWeight:800}}>{lang==='hi'?'आपकी':'Yours'}</div>}
-                <div style={{fontSize:32,marginBottom:8}}>{em}</div>
-                <div style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,marginBottom:2}}>{lang==='hi'?d?.labelHi:d?.label}</div>
-                <div style={{height:5,background:'rgba(255,255,255,.08)',borderRadius:3,overflow:'hidden',marginBottom:4}}>
-                  <div style={{height:'100%',background:`linear-gradient(90deg,${C.p},${C.a})`,borderRadius:3,width:`${pct}%`,transition:'width .5s'}}/>
+        {/* MY CLASS — PROMINENT AT TOP */}
+        {(()=>{const myCls=user?.class_level||8;const d=CURRICULUM[myCls];const{done,total,pct}=classProg(myCls);return d?(
+          <div style={{marginBottom:18}}>
+            <div style={{...S.fredoka,fontSize:16,marginBottom:8}}>📖 {lang==='hi'?'मेरी Class':'My Class'} <span style={{fontSize:12,color:C.p,fontWeight:700}}>Class {myCls}</span></div>
+            <div style={{...S.card,padding:20,border:`2px solid ${C.p}`,background:'linear-gradient(135deg,rgba(108,99,255,.12),rgba(67,233,123,.05))',cursor:'pointer',transition:'transform .2s'}}
+              onClick={()=>openClass(myCls)}
+              onMouseEnter={e=>(e.currentTarget as HTMLDivElement).style.transform='translateY(-2px)'}
+              onMouseLeave={e=>(e.currentTarget as HTMLDivElement).style.transform='translateY(0)'}>
+              <div style={{display:'flex',alignItems:'center',gap:14}}>
+                <div style={{fontSize:48}}>{myCls===8?'🌱':myCls===9?'🚀':myCls===10?'⚡':myCls===11?'🏆':'🎓'}</div>
+                <div style={{flex:1}}>
+                  <div style={{...S.fredoka,fontSize:20,marginBottom:4}}>{lang==='hi'?d.labelHi:d.label}</div>
+                  <div style={{height:8,background:'rgba(255,255,255,.1)',borderRadius:4,overflow:'hidden',marginBottom:6}}>
+                    <div style={{height:'100%',background:`linear-gradient(90deg,${C.p},${C.a})`,borderRadius:4,width:`${pct}%`,transition:'width .8s'}}/>
+                  </div>
+                  <div style={{display:'flex',justifyContent:'space-between',fontSize:11,color:C.mu,fontWeight:700}}>
+                    <span>{done}/{total} {lang==='hi'?'Chapters':'Chapters'}</span>
+                    <span style={{color:pct>=80?C.a:pct>=40?C.y:C.mu}}>{pct}% Complete</span>
+                  </div>
                 </div>
-                <div style={{fontSize:10,color:C.mu,fontWeight:700,marginBottom:10}}>{done}/{total} · {pct}%</div>
-                <button style={{...S.btnP,width:'100%',padding:'8px',fontSize:12}}>{done===0?(lang==='hi'?'🚀 शुरू करें':'🚀 Start'):(lang==='hi'?'▶ जारी':'▶ Continue')}</button>
+                <button style={{...S.btnP,padding:'12px 20px',fontSize:13,whiteSpace:'nowrap'}}>{done===0?(lang==='hi'?'🚀 शुरू':'🚀 Start'):(lang==='hi'?'▶ जारी':'▶ Go!')}</button>
+              </div>
+            </div>
+          </div>
+        ):null;})()}
+
+        {/* LEADERBOARD BUTTON */}
+        <div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
+          <button onClick={()=>{loadLeaderboard(user?.class_level);setShowLB(true);}} style={{...S.btnP,padding:'8px 16px',fontSize:12}}>🏆 Leaderboard</button>
+          <button onClick={()=>{loadChallenges();setShowChallenges(true);}} style={{...S.btnS,padding:'8px 16px',fontSize:12,position:'relative'}}>
+            ⚡ Challenges
+            {challenges.filter(c=>!c.submitted).length>0&&<span style={{position:'absolute',top:-4,right:-4,background:C.s,color:'#fff',borderRadius:'50%',width:16,height:16,fontSize:9,fontWeight:900,display:'flex',alignItems:'center',justifyContent:'center'}}>{challenges.filter(c=>!c.submitted).length}</span>}
+          </button>
+          <button onClick={()=>{loadChallenges();setShowChallenges(true);}} style={{...S.btnS,padding:'8px 18px',fontSize:12}}>⚡ {lang==='hi'?'Challenges':'Challenges'} {challenges.length>0&&<span style={{background:C.s,color:'#fff',borderRadius:50,padding:'0 6px',fontSize:10,marginLeft:4}}>{challenges.length}</span>}</button>
+        </div>
+
+        <div style={{...S.fredoka,fontSize:16,marginBottom:10}}>📚 {lang==='hi'?'सभी Classes':'All Classes'}</div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))',gap:10,marginBottom:22}}>
+          {([{cls:8,em:'🌱'},{cls:9,em:'🚀'},{cls:10,em:'⚡'},{cls:11,em:'🏆'},{cls:12,em:'🎓'}] as {cls:number;em:string}[]).map(({cls,em})=>{
+            const d=CURRICULUM[cls]; const{done,total,pct}=classProg(cls); const mine=cls===(user?.class_level||8);
+            if(mine) return null; // Already shown above
+            return(
+              <div key={cls} style={{...S.card,padding:14,cursor:'pointer',position:'relative',borderColor:mine?C.p:C.br,transition:'transform .2s',opacity:0.8}}
+                onClick={()=>openClass(cls)}
+                onMouseEnter={e=>(e.currentTarget as HTMLDivElement).style.transform='translateY(-3px)'}
+                onMouseLeave={e=>(e.currentTarget as HTMLDivElement).style.transform='translateY(0)'}>
+                <div style={{fontSize:28,marginBottom:6}}>{em}</div>
+                <div style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,marginBottom:2}}>{lang==='hi'?d?.labelHi:d?.label}</div>
+                <div style={{height:4,background:'rgba(255,255,255,.08)',borderRadius:2,overflow:'hidden',marginBottom:4}}>
+                  <div style={{height:'100%',background:`linear-gradient(90deg,${C.p},${C.a})`,borderRadius:2,width:`${pct}%`}}/>
+                </div>
+                <div style={{fontSize:10,color:C.mu,fontWeight:700}}>{done}/{total} · {pct}%</div>
               </div>
             );
           })}
@@ -1032,7 +1126,7 @@ export default function App() {
         <div style={{...S.fredoka,fontSize:24,marginBottom:2}}>{T.teacherDashboard} 👨‍🏫</div>
         <div style={{color:C.mu,fontSize:13,fontWeight:600,marginBottom:18}}>{user?.school_name}</div>
         <div style={{display:'flex',gap:8,marginBottom:20,flexWrap:'wrap'}}>
-          {[['overview','📊',T.overview],['students','👩‍🎓',T.students],['assign','📋',T.assignHW],['quiz','🧩',T.createQuiz],['reports','📄',T.reports]].map(([id,icon,lbl])=>(
+          {[['overview','📊',T.overview],['students','👩‍🎓',T.students],['challenges','⚡','Challenges'],['assign','📋',T.assignHW],['reports','📄',T.reports]].map(([id,icon,lbl])=>(
             <button key={id} onClick={()=>setTTab(id)} style={{padding:'7px 16px',borderRadius:50,fontSize:12,fontWeight:800,border:`1px solid ${tTab===id?C.p:C.br}`,background:tTab===id?C.p:'transparent',color:tTab===id?'#fff':C.mu,cursor:'pointer',fontFamily:"'Nunito',sans-serif",transition:'all .2s'}}>{icon} {lbl}</button>
           ))}
         </div>
@@ -1295,18 +1389,71 @@ export default function App() {
           </div>
         )}
 
-        {tTab==='quiz'&&(
-          <div style={{...S.card,padding:18}}>
-            <div style={{...S.fredoka,fontSize:16,marginBottom:14}}>🧩 {T.createQuiz}</div>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
-              <div><label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Quiz Title</label><input style={S.inp} placeholder="ML Revision Test"/></div>
-              <div><label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Class</label><select style={{...S.inp,padding:'9px 12px'}}>{[3,4,5,6,7,8,9,10,11,12].map(c=><option key={c}>Class {c}</option>)}</select></div>
+        {tTab==='challenges'&&(
+          <div>
+            {/* Create / Edit form */}
+            <div style={{...S.card,padding:18,marginBottom:14}}>
+              <div style={{...S.fredoka,fontSize:16,marginBottom:14}}>⚡ {editChallenge?'Edit Challenge':'Create Challenge'}</div>
+              <div style={{display:'grid',gridTemplateColumns:'1fr',gap:10}}>
+                <div>
+                  <label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Challenge Title *</label>
+                  <input style={S.inp} value={(editChallenge?.title||newChallenge.title) as string} placeholder="e.g. Design a chatbot for Jaipur schools"
+                    onChange={e=>editChallenge?setEditChallenge({...editChallenge,title:e.target.value}):setNewChallenge(n=>({...n,title:e.target.value}))}/>
+                </div>
+                <div>
+                  <label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Description *</label>
+                  <textarea style={{...S.inp,minHeight:70,resize:'vertical'}} value={(editChallenge?.description||newChallenge.description) as string} placeholder="Explain what students need to do..."
+                    onChange={e=>editChallenge?setEditChallenge({...editChallenge,description:e.target.value}):setNewChallenge(n=>({...n,description:e.target.value}))}/>
+                </div>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10}}>
+                  <div>
+                    <label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Class</label>
+                    <select style={{...S.inp,padding:'9px 12px'}} value={(editChallenge?.class_level||newChallenge.class_level) as string}
+                      onChange={e=>editChallenge?setEditChallenge({...editChallenge,class_level:e.target.value}):setNewChallenge(n=>({...n,class_level:e.target.value}))}>
+                      <option value="">All Classes</option>
+                      {[8,9,10,11,12].map(c=><option key={c} value={c}>Class {c}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>XP Reward ⭐</label>
+                    <input type="number" style={S.inp} value={(editChallenge?.xp_reward||newChallenge.xp_reward) as number} min={10} max={500}
+                      onChange={e=>editChallenge?setEditChallenge({...editChallenge,xp_reward:parseInt(e.target.value)}):setNewChallenge(n=>({...n,xp_reward:parseInt(e.target.value)}))}/>
+                  </div>
+                  <div>
+                    <label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Due Date</label>
+                    <input type="date" style={S.inp} value={(editChallenge?.due_date||newChallenge.due_date) as string}
+                      onChange={e=>editChallenge?setEditChallenge({...editChallenge,due_date:e.target.value}):setNewChallenge(n=>({...n,due_date:e.target.value}))}/>
+                  </div>
+                </div>
+                <div style={{display:'flex',gap:8}}>
+                  <button onClick={editChallenge?updateChallenge:createChallenge} style={{...S.btnP,padding:'9px 22px',fontSize:13,flex:1}}>{editChallenge?'💾 Save Changes':'🚀 Post Challenge'}</button>
+                  {editChallenge&&<button onClick={()=>setEditChallenge(null)} style={{...S.btnS,padding:'9px 16px',fontSize:13}}>Cancel</button>}
+                </div>
+              </div>
             </div>
-            <div style={{marginBottom:12}}><label style={{fontSize:10,textTransform:'uppercase',letterSpacing:1,fontWeight:800,color:C.mu,display:'block',marginBottom:5}}>Question 1</label>
-              <input style={{...S.inp,marginBottom:8}} placeholder="Write question..."/>
-              <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8}}>{['A','B','C','D (correct)'].map(l=><input key={l} style={S.inp} placeholder={`Option ${l}`}/>)}</div>
-            </div>
-            <button style={{...S.btnP,padding:'9px 22px',fontSize:13}} onClick={()=>alert(lang==='hi'?'✅ क्विज़ बनाया!':'✅ Quiz created!')}>{lang==='hi'?'🚀 बनाएं':'🚀 Create & Send'}</button>
+            {/* Existing challenges */}
+            <div style={{...S.fredoka,fontSize:14,marginBottom:10,color:C.mu}}>Active Challenges ({challenges.length})</div>
+            {challenges.length===0?(
+              <div style={{...S.card,padding:20,textAlign:'center',color:C.mu,fontSize:13}}>No challenges yet. Create one above! ⚡</div>
+            ):(
+              <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                {challenges.map(c=>(
+                  <div key={c.id as number} style={{...S.card,padding:14}}>
+                    <div style={{display:'flex',alignItems:'flex-start',gap:10}}>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:13,fontWeight:800}}>{c.title as string}</div>
+                        <div style={{fontSize:11,color:C.mu,marginTop:2}}>{c.class_level?`Class ${c.class_level}`:'All'} · ⭐ {c.xp_reward as number} XP{c.due_date?` · Due ${new Date(c.due_date as string).toLocaleDateString('en-IN')}`:''}</div>
+                        <div style={{fontSize:11,color:C.text,marginTop:4,lineHeight:1.5}}>{c.description as string}</div>
+                      </div>
+                      <div style={{display:'flex',gap:6,flexShrink:0}}>
+                        <button onClick={()=>setEditChallenge({...c})} style={{background:'rgba(108,99,255,.15)',color:C.p,border:`1px solid rgba(108,99,255,.3)`,borderRadius:6,padding:'4px 10px',fontSize:10,fontWeight:800,cursor:'pointer'}}>✏️ Edit</button>
+                        <button onClick={()=>{if(confirm('Delete this challenge?'))fetch('/api/challenges',{method:'DELETE',headers:{'Content-Type':'application/json',authorization:`Bearer ${token||''}`},body:JSON.stringify({id:c.id})}).then(()=>loadChallenges());}} style={{background:'rgba(255,101,132,.15)',color:C.s,border:`1px solid rgba(255,101,132,.3)`,borderRadius:6,padding:'4px 10px',fontSize:10,fontWeight:800,cursor:'pointer'}}>🗑️</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -1351,7 +1498,7 @@ export default function App() {
             {v:saStats?.unlocked_schools as number||0, l:'Active Schools', col:'#43E97B', em:'✅'},
             {v:(saStats?.total_schools as number||0)-(saStats?.unlocked_schools as number||0), l:'Pending Payment', col:'#FFD166', em:'⏳'},
             {v:saStats?.total_students as number||0, l:'Total Students', col:'#38BFFF', em:'🎓'},
-            {v:'₹'+(saStats?.total_revenue as number||0).toLocaleString(), l:'Total Revenue', col:'#FF6584', em:'💰'},
+            {v:(saStats?.active_schools as number||0), l:'Paying Schools', col:'#FF6584', em:'💳'},
           ].map((s,i)=>(
             <div key={i} style={{background:C2,border:`1px solid rgba(108,99,255,.25)`,borderRadius:16,padding:14,textAlign:'center'}}>
               <div style={{fontSize:24,marginBottom:4}}>{s.em}</div>
@@ -1445,9 +1592,10 @@ export default function App() {
               <div>
                 <label style={{fontSize:10,fontWeight:800,color:MU,textTransform:'uppercase',letterSpacing:1,display:'block',marginBottom:4}}>Plan</label>
                 <select style={{width:'100%',padding:'9px 12px',borderRadius:10,border:`1px solid rgba(108,99,255,.25)`,background:'#1E2050',color:'#F0F0FF',fontSize:13,fontWeight:600,outline:'none',fontFamily:"'Nunito',sans-serif"}} value={newSchool.plan} onChange={e=>setNewSchool(s=>({...s,plan:e.target.value}))}>
-                  <option value="trial">Trial (30 days, 50 students)</option>
-                  <option value="annual">Annual (₹3,00,000/yr, unlimited)</option>
-                  <option value="district">District (Custom quote)</option>
+                  <option value="trial">🕐 Free Trial — 3 days, up to 50 students</option>
+                  <option value="starter">🌱 Starter Plan — up to 250 students</option>
+                  <option value="medium">⚡ Medium Plan — up to 600 students + School Logo</option>
+                  <option value="unlimited">🚀 Unlimited Plan — Unlimited students + All features</option>
                 </select>
               </div>
             </div>
@@ -1488,7 +1636,10 @@ export default function App() {
               <div>
                 <label style={{fontSize:10,fontWeight:800,color:'#9090BB',textTransform:'uppercase',letterSpacing:1,display:'block',marginBottom:4}}>Plan</label>
                 <select style={{width:'100%',padding:'9px 12px',borderRadius:10,border:'1px solid rgba(108,99,255,.25)',background:'#1E2050',color:'#F0F0FF',fontSize:13,outline:'none'}} value={String(editSchool.plan||'trial')} onChange={e=>setEditSchool(s=>({...s,plan:e.target.value}))}>
-                  <option value="trial">Trial</option><option value="annual">Annual</option><option value="district">District</option>
+                  <option value="trial">🕐 Free Trial (3 days)</option>
+                  <option value="starter">🌱 Starter (max 250 students)</option>
+                  <option value="medium">⚡ Medium (max 600 + Logo)</option>
+                  <option value="unlimited">🚀 Unlimited (all features)</option>
                 </select>
               </div>
             </div>
@@ -2078,6 +2229,245 @@ export default function App() {
           </div>
         </div>
       )}
+
+      {/* ══════ LEADERBOARD MODAL ══════ */}
+      {showLB&&(
+        <div style={{position:'fixed',inset:0,background:'rgba(7,7,26,.92)',zIndex:2000,display:'flex',alignItems:'flex-start',justifyContent:'center',padding:'16px',overflowY:'auto'}} onClick={(e)=>{if(e.target===e.currentTarget)setShowLB(false);}}>
+          <div style={{width:'100%',maxWidth:480,marginTop:16}} onClick={e=>e.stopPropagation()}>
+            {/* Header */}
+            <div style={{...S.card,padding:'16px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:10}}>
+              <div style={{fontSize:28}}>🏆</div>
+              <div style={{flex:1}}>
+                <div style={{...S.fredoka,fontSize:18}}>{lang==='hi'?'लीडरबोर्ड':'Leaderboard'}</div>
+                <div style={{fontSize:11,color:C.mu,fontWeight:600}}>{lbClass?`Class ${lbClass} · Top 10`:`${user?.school_name} · All Classes`}</div>
+              </div>
+              <button onClick={()=>setShowLB(false)} style={{background:'none',border:'none',color:C.mu,fontSize:18,cursor:'pointer'}}>✕</button>
+            </div>
+            {/* Class selector */}
+            <div style={{display:'flex',gap:6,marginBottom:10,flexWrap:'wrap'}}>
+              {[null,8,9,10,11,12].map(cls=>(
+                <button key={cls??'all'} onClick={()=>loadLeaderboard(cls)} style={{padding:'5px 12px',borderRadius:50,fontSize:11,fontWeight:800,border:`1px solid ${(lbClass===cls)?C.p:C.br}`,background:(lbClass===cls)?C.p:'transparent',color:(lbClass===cls)?'#fff':C.mu,cursor:'pointer'}}>
+                  {cls?`Class ${cls}`:'🏫 Overall'}
+                </button>
+              ))}
+            </div>
+            {/* Leaderboard rows */}
+            {leaderboard.length===0?(
+              <div style={{...S.card,padding:24,textAlign:'center',color:C.mu,fontSize:13}}>No data yet. Students need to complete chapters! 📚</div>
+            ):(
+              <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                {leaderboard.map((s,i)=>{
+                  const isMe=s.id===user?.id;
+                  const rank=i+1;
+                  const medal=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':null;
+                  const isTop3=rank<=3;
+                  return(
+                    <div key={s.id as number} style={{
+                      ...S.card,padding:'14px 16px',
+                      display:'flex',alignItems:'center',gap:12,
+                      border:isMe?`2px solid ${C.p}`:isTop3?`1px solid rgba(255,209,102,.4)`:C.br,
+                      background:rank===1?'linear-gradient(135deg,rgba(255,209,102,.12),rgba(255,159,67,.06))':rank===2?'rgba(192,192,192,.08)':rank===3?'rgba(205,127,50,.08)':isMe?'rgba(108,99,255,.08)':C.card,
+                      animation:rank===1?'xpPop .4s ease':undefined,
+                      transform:rank===1?'scale(1.02)':undefined,
+                    }}>
+                      {/* Rank */}
+                      <div style={{width:32,textAlign:'center',flexShrink:0}}>
+                        {medal?<span style={{fontSize:24}}>{medal}</span>:<span style={{fontSize:13,fontWeight:900,color:C.mu}}>#{rank}</span>}
+                      </div>
+                      {/* Avatar */}
+                      <div style={{width:36,height:36,borderRadius:'50%',background:`linear-gradient(135deg,${rank===1?'#FFD166,#FF9F43':rank===2?'#C0C0C0,#A0A0A0':rank===3?'#CD7F32,#B8692A':C.p+','+C.s})`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:'#fff',flexShrink:0}}>
+                        {(s.name as string)[0]?.toUpperCase()}
+                      </div>
+                      {/* Name + details */}
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:13,fontWeight:800,color:rank===1?'#FFD166':isMe?C.p:C.text,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+                          {s.name as string}{isMe?' (You)':''}
+                        </div>
+                        <div style={{fontSize:10,color:C.mu,fontWeight:600}}>
+                          {lbClass?`Class ${s.class_level} · Sec ${s.section||'-'}`:`Class ${s.class_level}`} · {s.chapters_done as number} chapters · {s.avg_quiz as number}% quiz
+                        </div>
+                      </div>
+                      {/* XP */}
+                      <div style={{textAlign:'right',flexShrink:0}}>
+                        <div style={{fontSize:15,fontWeight:900,color:rank===1?'#FFD166':C.y}}>⭐ {s.class_xp as number}</div>
+                        <div style={{fontSize:9,color:C.mu,fontWeight:600}}>XP</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <div style={{height:20}}/>
+          </div>
+        </div>
+      )}
+
+      {/* ══════ CHALLENGES MODAL ══════ */}
+      {showChallenges&&(
+        <div style={{position:'fixed',inset:0,background:'rgba(7,7,26,.92)',zIndex:2000,display:'flex',alignItems:'flex-start',justifyContent:'center',padding:16,overflowY:'auto'}} onClick={(e)=>{if(e.target===e.currentTarget)setShowChallenges(false);}}>
+          <div style={{width:'100%',maxWidth:480,marginTop:16}} onClick={e=>e.stopPropagation()}>
+            <div style={{...S.card,padding:'16px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:10}}>
+              <div style={{fontSize:28}}>⚡</div>
+              <div style={{flex:1}}><div style={{...S.fredoka,fontSize:18}}>Challenges</div><div style={{fontSize:11,color:C.mu,fontWeight:600}}>Complete for bonus XP!</div></div>
+              <button onClick={()=>setShowChallenges(false)} style={{background:'none',border:'none',color:C.mu,fontSize:18,cursor:'pointer'}}>✕</button>
+            </div>
+            {challenges.filter(c=>!c.submitted).length===0&&challenges.length===0?(
+              <div style={{...S.card,padding:24,textAlign:'center'}}>
+                <div style={{fontSize:40,marginBottom:10}}>⚡</div>
+                <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>{lang==='hi'?'अभी कोई Challenge नहीं':'No Challenges Yet'}</div>
+                <div style={{fontSize:12,color:C.mu}}>Your teacher will post challenges soon! Check back later. 🎯</div>
+              </div>
+            ):(
+              <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                {challenges.map((c)=>(
+                  <div key={c.id as number} style={{...S.card,padding:16,border:(c.submitted)?`1px solid rgba(67,233,123,.3)`:C.br}}>
+                    <div style={{display:'flex',alignItems:'flex-start',gap:10,marginBottom:8}}>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:13,fontWeight:800}}>{c.title as string}</div>
+                        <div style={{fontSize:11,color:C.mu,marginTop:2}}>{c.class_level?`Class ${c.class_level}`:'All Classes'}{c.due_date?` · Due ${new Date(c.due_date as string).toLocaleDateString('en-IN')}`:''}  </div>
+                      </div>
+                      <div style={{background:'rgba(255,209,102,.15)',border:'1px solid rgba(255,209,102,.3)',borderRadius:50,padding:'3px 10px',fontSize:11,fontWeight:800,color:C.y,flexShrink:0}}>⭐ +{c.xp_reward as number} XP</div>
+                    </div>
+                    <div style={{fontSize:12,color:C.text,lineHeight:1.6,marginBottom:10}}>{c.description as string}</div>
+                    {c.submitted?(
+                      <div style={{color:C.a,fontSize:12,fontWeight:800}}>✅ Submitted!</div>
+                    ):(
+                      activeChallengeId===c.id?(
+                        <div>
+                          <textarea value={challengeAnswer} onChange={e=>setChallengeAnswer(e.target.value)} placeholder="Write your answer here..." style={{width:'100%',minHeight:80,padding:'8px 12px',borderRadius:10,border:`1px solid ${C.br}`,background:'rgba(255,255,255,.05)',color:C.text,fontSize:12,resize:'vertical',fontFamily:"'Nunito',sans-serif",boxSizing:'border-box'}}/>
+                          <div style={{display:'flex',gap:8,marginTop:8}}>
+                            <button onClick={()=>submitChallenge(c.id as number,challengeAnswer)} style={{...S.btnP,flex:1,padding:'8px',fontSize:12}}>Submit Answer ⭐</button>
+                            <button onClick={()=>setActiveChallengeId(null)} style={{...S.btnS,padding:'8px 14px',fontSize:12}}>Cancel</button>
+                          </div>
+                        </div>
+                      ):(
+                        <button onClick={()=>setActiveChallengeId(c.id as number)} style={{...S.btnP,width:'100%',padding:'8px',fontSize:12}}>⚡ Take Challenge</button>
+                      )
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            <div style={{height:20}}/>
+          </div>
+        </div>
+      )}
+
+
+        {/* ── LEADERBOARD SECTION ── */}
+        <div style={{marginTop:24,marginBottom:24}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14}}>
+            <div style={{...S.fredoka,fontSize:18}}>🏆 {lang==='hi'?'Leaderboard':'Leaderboard'}</div>
+            <button onClick={()=>{loadLeaderboard(user?.class_level||8);}} style={{...S.btnP,padding:'4px 12px',fontSize:11}}>Class {user?.class_level||8}</button>
+            <button onClick={()=>{const r=fetch('/api/leaderboard?type=school',{headers:{authorization:`Bearer ${token}`}}).then(r=>r.json()).then(d=>{setLeaderboard(d.leaderboard||[]);setLbClass(null);});}} style={{...S.btnS,padding:'4px 12px',fontSize:11}}>🏫 School</button>
+            <button onClick={()=>loadLeaderboard(user?.class_level||8)} style={{...S.btnS,padding:'4px 8px',fontSize:10}}>🔄</button>
+          </div>
+          {leaderboard.length===0&&(
+            <div style={{...S.card,padding:20,textAlign:'center',color:C.mu,fontSize:13}}>
+              <div style={{fontSize:32,marginBottom:6}}>🏆</div>
+              {lang==='hi'?'Leaderboard load हो रहा है...':'Loading leaderboard... Complete chapters to earn XP and rank up!'}
+            </div>
+          )}
+          {leaderboard.length>0&&(
+            <div>
+              {/* Top 3 Podium */}
+              {leaderboard.slice(0,3).length>0&&(
+                <div style={{display:'flex',justifyContent:'center',alignItems:'flex-end',gap:12,marginBottom:16,padding:'0 8px'}}>
+                  {/* 2nd place */}
+                  {leaderboard[1]&&(
+                    <div style={{textAlign:'center',flex:1,maxWidth:120}}>
+                      <div style={{fontSize:28,marginBottom:4}}>🥈</div>
+                      <div style={{...S.card,padding:'12px 8px',background:'linear-gradient(135deg,rgba(192,192,192,.2),rgba(192,192,192,.05))',border:'1px solid rgba(192,192,192,.4)',borderRadius:12}}>
+                        <div style={{fontSize:11,fontWeight:800,color:'#C0C0C0',marginBottom:2}}>{String(leaderboard[1]?.name||'').split(' ')[0]}</div>
+                        <div style={{fontSize:10,color:C.mu}}>{Number(leaderboard[1].class_xp||leaderboard[1].total_xp||0)} XP</div>
+                      </div>
+                    </div>
+                  )}
+                  {/* 1st place - TALLEST with animation */}
+                  {leaderboard[0]&&(
+                    <div style={{textAlign:'center',flex:1,maxWidth:140}}>
+                      <div style={{fontSize:40,marginBottom:4,animation:'orbPulse 1.5s ease-in-out infinite'}}>🥇</div>
+                      <div style={{...S.card,padding:'16px 10px',background:'linear-gradient(135deg,rgba(255,209,102,.25),rgba(255,159,67,.1))',border:'2px solid rgba(255,209,102,.6)',borderRadius:14,boxShadow:'0 0 20px rgba(255,209,102,.3)'}}>
+                        <div style={{...S.fredoka,fontSize:13,color:'#FFD166',marginBottom:3}}>{String(leaderboard[0]?.name||'').split(' ')[0]}</div>
+                        <div style={{fontSize:12,color:C.y,fontWeight:800}}>{Number((leaderboard[0] as Record<string,unknown>).class_xp||(leaderboard[0] as Record<string,unknown>).total_xp||0)} XP</div>
+                        {Boolean((leaderboard[0] as Record<string,unknown>).student_id)&&<div style={{fontSize:9,color:C.mu,marginTop:2}}>{String((leaderboard[0] as Record<string,unknown>).student_id||'')}</div>}
+                      </div>
+                    </div>
+                  )}
+                  {/* 3rd place */}
+                  {leaderboard[2]&&(
+                    <div style={{textAlign:'center',flex:1,maxWidth:120}}>
+                      <div style={{fontSize:24,marginBottom:4}}>🥉</div>
+                      <div style={{...S.card,padding:'12px 8px',background:'linear-gradient(135deg,rgba(205,127,50,.2),rgba(205,127,50,.05))',border:'1px solid rgba(205,127,50,.4)',borderRadius:12}}>
+                        <div style={{fontSize:11,fontWeight:800,color:'#CD7F32',marginBottom:2}}>{String(leaderboard[2]?.name||'').split(' ')[0]}</div>
+                        <div style={{fontSize:10,color:C.mu}}>{Number((leaderboard[2] as Record<string,unknown>).class_xp||(leaderboard[2] as Record<string,unknown>).total_xp||0)} XP</div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* Ranks 4-10 */}
+              {leaderboard.slice(3).map((s,i)=>(
+                <div key={i} style={{...S.card,padding:'10px 14px',marginBottom:6,display:'flex',alignItems:'center',gap:10,border:Number(s.id)===user?.id?`1px solid ${C.p}`:'',background:Number(s.id)===user?.id?'rgba(108,99,255,.08)':C.card}}>
+                  <div style={{...S.fredoka,fontSize:16,color:C.mu,width:24,textAlign:'center'}}>{i+4}</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontSize:12,fontWeight:800}}>{String(s.name||'')} {Number(s.id)===user?.id&&<span style={{color:C.p,fontSize:10}}>← You</span>}</div>
+                    <div style={{fontSize:10,color:C.mu}}>{String(s.student_id||"")}</div>
+                  </div>
+                  <div style={{color:C.y,fontWeight:800,fontSize:12}}>⭐ {Number(s.class_xp||s.total_xp||0)}</div>
+                </div>
+              ))}
+              {/* Show current student rank if not in top 10 */}
+              {!leaderboard.find(s=>Number(s.id)===user?.id)&&(
+                <div style={{...S.card,padding:'10px 14px',border:`1px solid ${C.p}`,background:'rgba(108,99,255,.08)'}}>
+                  <div style={{fontSize:11,color:C.p,fontWeight:700}}>You are not in top 10 yet — complete more chapters to climb the leaderboard! 🚀</div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* ── CHALLENGES SECTION ── */}
+        <div style={{marginTop:8,marginBottom:24}}>
+          <div style={{...S.fredoka,fontSize:18,marginBottom:14}}>🎯 {lang==='hi'?'Challenges':'Challenges'}</div>
+          {challenges.filter((c:Record<string,unknown>)=>!c.submission_id).length===0&&challenges.length===0&&(
+            <div style={{...S.card,padding:20,textAlign:'center',color:C.mu}}>
+              <div style={{fontSize:32,marginBottom:8}}>🎯</div>
+              <div style={{fontSize:13,fontWeight:700}}>{lang==='hi'?'अभी कोई Challenge available नहीं है':'No challenges available right now'}</div>
+              <div style={{fontSize:11,marginTop:4}}>{lang==='hi'?'Teacher जल्द नया challenge add करेंगे!':'Your teacher will post new challenges soon!'}</div>
+            </div>
+          )}
+          {challenges.map((c:Record<string,unknown>,i:number)=>(
+            <div key={i} style={{...S.card,padding:16,marginBottom:10,border:c.submission_id?`1px solid ${C.a}`:`1px solid ${C.br}`}}>
+              <div style={{display:'flex',alignItems:'flex-start',gap:10}}>
+                <div style={{fontSize:24}}>{(c as Record<string,unknown>).submission_id?'✅':'🎯'}</div>
+                <div style={{flex:1}}>
+                  <div style={{fontWeight:800,fontSize:14,marginBottom:3}}>{String(c.title||'')}</div>
+                  {Boolean(c.description)&&<div style={{fontSize:12,color:C.mu,marginBottom:6,lineHeight:1.5}}>{String(c.description||'')}</div>}
+                  <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:8}}>
+                    <span style={{background:'rgba(255,209,102,.15)',color:C.y,borderRadius:20,padding:'2px 10px',fontSize:10,fontWeight:800}}>⭐ +{Number(c.xp_reward as number||50)} XP</span>
+                    {Boolean(c.class_level)&&<span style={{background:'rgba(108,99,255,.15)',color:C.p,borderRadius:20,padding:'2px 10px',fontSize:10,fontWeight:700}}>Class {String(c.class_level)}</span>}
+                    {Boolean(c.due_date)&&<span style={{background:'rgba(255,101,132,.1)',color:C.s,borderRadius:20,padding:'2px 10px',fontSize:10,fontWeight:700}}>Due: {new Date(String(c.due_date)).toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</span>}
+                    <span style={{background:'rgba(255,255,255,.06)',color:C.mu,borderRadius:20,padding:'2px 8px',fontSize:10}}>By: {String(c.teacher_name||'Teacher')}</span>
+                  </div>
+                  {(c as Record<string,unknown>).submission_id?(
+                    <div style={{color:C.a,fontSize:12,fontWeight:700}}>✅ Completed! +{Number((c as Record<string,unknown>).xp_awarded as number||0)} XP earned</div>
+                  ):activeChallengeId===Number(c.id)?(
+                    <div>
+                      <textarea value={challengeAnswer} onChange={e=>setChallengeAnswer(e.target.value)} placeholder="Write your answer here... (or just click Submit to mark as complete)" style={{width:'100%',padding:10,borderRadius:8,border:`1px solid ${C.br}`,background:'rgba(255,255,255,.05)',color:C.text,fontSize:12,fontFamily:"'Nunito',sans-serif",minHeight:60,resize:'vertical',boxSizing:'border-box' as const,marginBottom:8}} />
+                      <div style={{display:'flex',gap:8}}>
+                        <button onClick={()=>submitChallenge(Number(c.id),challengeAnswer||'completed')} style={{...S.btnP,padding:'8px 18px',fontSize:12}}>✅ Submit</button>
+                        <button onClick={()=>{setActiveChallengeId(null);setChallengeAnswer('');}} style={{...S.btnS,padding:'8px 14px',fontSize:12}}>Cancel</button>
+                      </div>
+                    </div>
+                  ):(
+                    <button onClick={()=>setActiveChallengeId(Number(c.id))} style={{...S.btnP,padding:'8px 18px',fontSize:12}}>🚀 Accept Challenge</button>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
 
       <AiBot doubtOpen={doubtOpen} setDoubtOpen={setDoubtOpen} doubtMsgs={doubtMsgs} doubtQ={doubtQ} setDoubtQ={setDoubtQ} sendDoubt={sendDoubt} lang={lang} T={T}/>
       <Styles/>

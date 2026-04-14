@@ -13,6 +13,13 @@ export async function POST(req: NextRequest) {
   if (!logo_url || !logo_url.startsWith('data:image')) {
     return NextResponse.json({ error: 'Valid image required' }, { status: 400 });
   }
+
+  // Check plan allows logo
+  const [school] = await sql`SELECT plan, tier FROM schools WHERE id = ${sid}`;
+  const plan = school?.plan || school?.tier || 'trial';
+  if (!['medium','unlimited','annual'].includes(plan) && user.role !== 'superadmin') {
+    return NextResponse.json({ error: '🔒 School Logo is available on Medium Plan and above. Upgrade to unlock this feature!' }, { status: 403 });
+  }
   await sql`UPDATE schools SET logo_url = ${logo_url} WHERE id = ${sid}`;
   return NextResponse.json({ success: true });
 }
