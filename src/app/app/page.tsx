@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { CURRICULUM, type Chapter, type Slide } from '@/lib/curriculum';
 import { t, type Lang } from '@/lib/i18n';
+import AIBackground3D from '@/components/AIBackground3D';
 
 interface User { id:number; name:string; role:'student'|'teacher'|'admin'|'superadmin'; class_level?:number; school_name?:string; student_id?:string; total_xp?:number; streak_days?:number; plan?:string; }
 interface Prog { completed:boolean; xp_earned:number; quiz_score:number; }
@@ -183,7 +184,8 @@ export default function App() {
   }
   async function saveProg(chapId:string,cls:number,completed:boolean,xp:number,score?:number){
     if(!token) return;
-    try{await fetch('/api/progress',{method:'POST',headers:{'Content-Type':'application/json',authorization:`Bearer ${token}`},body:JSON.stringify({chapter_id:chapId,class_level:cls,completed,xp_earned:xp,quiz_score:score||0})});await loadProg(token);}catch{}
+    const ownClass=user?.class_level||cls;
+    try{await fetch('/api/progress',{method:'POST',headers:{'Content-Type':'application/json',authorization:`Bearer ${token}`},body:JSON.stringify({chapter_id:chapId,class_level:ownClass,completed,xp_earned:xp,quiz_score:score||0})});await loadProg(token);}catch{}
   }
   function installApp(){
     if(!installPrompt) return;
@@ -289,7 +291,7 @@ export default function App() {
     setLoginErr(''); const id=oid||loginId, pw=opw||loginPass;
     if(!id||!pw){setLoginErr('Enter ID and password');return;}
     try{
-      const r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({identifier:id,password:pw})});
+      const r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json','x-login-type':loginRole==='owner'?'owner':'user'},body:JSON.stringify({identifier:id,password:pw})});
       const d=await r.json();
       if(!r.ok){setLoginErr(d.error||'Login failed');return;}
       setUser(d.user);setToken(d.token);
@@ -823,6 +825,8 @@ export default function App() {
           <button onClick={()=>setLang(l=>l==='en'?'hi':'en')} style={{...S.btnS,padding:'5px 12px',fontSize:11}}>{lang==='en'?'🇮🇳 हिंदी':'🇬🇧 English'}</button>
           {user?.role==='student'&&<>
             <div style={{color:C.y,fontSize:11,fontWeight:800,background:'rgba(255,209,102,.15)',border:'1px solid rgba(255,209,102,.3)',padding:'4px 10px',borderRadius:50}}>⭐ {totalXP} XP</div>
+            <button onClick={()=>{loadLeaderboard(user?.class_level);setShowLB(true);}} title="Leaderboard" style={{background:'rgba(255,209,102,.12)',border:'1px solid rgba(255,209,102,.3)',color:'#FFD166',borderRadius:50,padding:'4px 11px',fontSize:15,cursor:'pointer',fontFamily:"'Nunito',sans-serif",lineHeight:1}}>🏆</button>
+            <button onClick={()=>{loadChallenges();setShowChallenges(true);}} title="Challenges" style={{position:'relative' as const,background:'rgba(108,99,255,.12)',border:'1px solid rgba(108,99,255,.3)',color:'#6C63FF',borderRadius:50,padding:'4px 11px',fontSize:15,cursor:'pointer',fontFamily:"'Nunito',sans-serif",lineHeight:1}}>🎯{challenges.filter((ch:Record<string,unknown>)=>!ch.submission_id).length>0&&<span style={{position:'absolute' as const,top:-3,right:-3,background:'#FF6584',color:'#fff',borderRadius:'50%',width:14,height:14,fontSize:8,fontWeight:900,display:'inline-flex',alignItems:'center',justifyContent:'center'}}>{challenges.filter((ch:Record<string,unknown>)=>!ch.submission_id).length}</span>}</button>
           </>}
           <button onClick={logout} style={{...S.btnS,padding:'5px 12px',fontSize:11}}>{T.logout}</button>
         </div>
@@ -832,7 +836,9 @@ export default function App() {
 
   // ─── LOGIN ───
   if(screen==='login') return (
-    <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',padding:20,background:`radial-gradient(ellipse 80% 60% at 50% 30%,rgba(108,99,255,.2),transparent 70%)`}}>
+    <div style={{minHeight:'100vh',position:'relative'}}>
+      <AIBackground3D intensity={0.85}/>
+      <div style={{minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',padding:20,background:`radial-gradient(ellipse 80% 60% at 50% 30%,rgba(108,99,255,.2),transparent 70%)`}}>
       <div style={{...S.card,padding:'36px 32px',width:'100%',maxWidth:420,boxShadow:'0 20px 60px rgba(108,99,255,.22)'}}>
         <div style={{display:'flex',justifyContent:'flex-end',marginBottom:12}}>
           <button onClick={()=>setLang(l=>l==='en'?'hi':'en')} style={{...S.btnS,padding:'5px 12px',fontSize:11}}>{lang==='en'?'🇮🇳 हिंदी':'🇬🇧 English'}</button>
@@ -885,12 +891,15 @@ export default function App() {
         </div>
       </div>
       <Styles/>
+      </div>
     </div>
   );
 
   // ─── STUDENT DASHBOARD ───
   if(screen==='student') return (
-    <div style={{minHeight:'100vh'}}>{topnav}
+    <div style={{minHeight:'100vh',position:'relative'}}>
+      <AIBackground3D intensity={0.55}/>
+      <div style={{position:'relative',zIndex:1}}>{topnav}
       <div style={{maxWidth:1080,margin:'0 auto',padding:20}}>
         <div style={{...S.fredoka,fontSize:24,marginBottom:2}}>{T.welcomeBack}, {user?.name}! 👋</div>
         <div style={{color:C.mu,fontSize:13,fontWeight:600,marginBottom:18}}>{user?.school_name} · Class {user?.class_level} · ID: {user?.student_id}</div>
@@ -1116,6 +1125,7 @@ export default function App() {
 
       <AiBot doubtOpen={doubtOpen} setDoubtOpen={setDoubtOpen} doubtMsgs={doubtMsgs} doubtQ={doubtQ} setDoubtQ={setDoubtQ} sendDoubt={sendDoubt} lang={lang} T={T}/>
       <Styles/>
+      </div>
     </div>
   );
 
@@ -2341,7 +2351,7 @@ export default function App() {
                           </div>
                         </div>
                       ):(
-                        <button onClick={()=>setActiveChallengeId(c.id as number)} style={{...S.btnP,width:'100%',padding:'8px',fontSize:12}}>⚡ Take Challenge</button>
+                        <button onClick={()=>setActiveChallengeId(Number(c.id))} style={{...S.btnP,width:'100%',padding:'8px',fontSize:12}}>⚡ Take Challenge</button>
                       )
                     )}
                   </div>
