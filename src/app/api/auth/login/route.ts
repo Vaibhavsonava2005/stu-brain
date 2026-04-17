@@ -104,6 +104,15 @@ export async function POST(req: NextRequest) {
     // ✅ Login success - clear rate limit
     clearAttempts(ip);
 
+    // Owner login type check - superadmin must use owner tab, others must NOT use owner tab
+    const loginType = req.headers.get('x-login-type') || 'user';
+    if (u.role === 'superadmin' && loginType !== 'owner') {
+      return NextResponse.json({ error: '👑 Please use the Owner tab to login as owner.' }, { status: 403 });
+    }
+    if (u.role !== 'superadmin' && loginType === 'owner') {
+      return NextResponse.json({ error: 'This account is not an owner account.' }, { status: 403 });
+    }
+
     // SuperAdmin bypass school checks
     if (u.role !== 'superadmin') {
       if (u.is_locked) {
