@@ -1,11 +1,44 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
+
+
+function NeuralBg() {
+  const ref = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const canvas = ref.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    let W = window.innerWidth, H = window.innerHeight;
+    canvas.width = W; canvas.height = H;
+    const resize = () => { W = window.innerWidth; H = window.innerHeight; canvas.width = W; canvas.height = H; };
+    window.addEventListener('resize', resize);
+    const COLS = ['#6C63FF','#43E97B','#38BFFF','#FFD166','#FF6584'];
+    const nodes: {x:number;y:number;z:number;vx:number;vy:number;vz:number;r:number;c:string;p:number;ps:number}[] = Array.from({length:50},(_,i)=>({x:Math.random()*W,y:Math.random()*H,z:Math.random()*400+50,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.3,vz:(Math.random()-.5)*.5,r:Math.random()*4+2,c:COLS[i%5],p:Math.random()*6.28,ps:.02+Math.random()*.025}));
+    const labels=['AI','ML','DL','∑','⚙','λ','∞','GPU','LLM'];
+    const lbls: {x:number;y:number;z:number;vx:number;vy:number;t:string;o:number}[] = Array.from({length:20},(_,i)=>({x:Math.random()*W,y:Math.random()*H,z:Math.random()*300+100,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.2,t:labels[i%9],o:Math.random()*.12+.04}));
+    const proj=(x:number,y:number,z:number)=>{const s=480/(480+z);return{px:W/2+(x-W/2)*s,py:H/2+(y-H/2)*s,s};};
+    const h=(n:number)=>Math.max(0,Math.min(255,Math.floor(n))).toString(16).padStart(2,'0');
+    let raf=0;
+    const draw=()=>{
+      ctx.clearRect(0,0,W,H);
+      for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){const dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<160){const a=(1-d/160)*0.08;const pi=proj(nodes[i].x,nodes[i].y,nodes[i].z);const pj=proj(nodes[j].x,nodes[j].y,nodes[j].z);ctx.beginPath();ctx.moveTo(pi.px,pi.py);ctx.lineTo(pj.px,pj.py);ctx.strokeStyle=nodes[i].c+h(a*255);ctx.lineWidth=pi.s*.6;ctx.stroke();}}
+      for(const n of nodes){n.x+=n.vx;n.y+=n.vy;n.z+=n.vz;n.p+=n.ps;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;if(n.z<20||n.z>500)n.vz*=-1;const{px,py,s}=proj(n.x,n.y,n.z);const r=n.r*s*(1+Math.sin(n.p)*.2);const a=Math.min(s*.4,.6);const g=ctx.createRadialGradient(px,py,0,px,py,r*4);g.addColorStop(0,n.c+h(a*130));g.addColorStop(1,n.c+'00');ctx.beginPath();ctx.arc(px,py,r*4,0,6.28);ctx.fillStyle=g;ctx.fill();ctx.beginPath();ctx.arc(px,py,r,0,6.28);ctx.fillStyle=n.c+h(a*255);ctx.fill();}
+      for(const l of lbls){l.x+=l.vx;l.y+=l.vy;if(l.x<0||l.x>W)l.vx*=-1;if(l.y<0||l.y>H)l.vy*=-1;const{px,py,s}=proj(l.x,l.y,l.z);ctx.font=`800 ${Math.max(8,Math.floor(13*s))}px 'Nunito',sans-serif`;ctx.fillStyle=`rgba(108,99,255,${l.o*s})`;ctx.fillText(l.t,px,py);}
+      raf=requestAnimationFrame(draw);
+    };
+    draw();
+    return()=>{cancelAnimationFrame(raf);window.removeEventListener('resize',resize);};
+  },[]);
+  return <canvas ref={ref} style={{position:'fixed',top:0,left:0,width:'100%',height:'100%',pointerEvents:'none',zIndex:0,opacity:.85}}/>;
+}
 
 export default function LandingPage() {
   const [form, setForm] = useState({ name:'', phone:'', email:'', school:'', city:'Jaipur', students:'', message:'' });
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState('');
+
 
   async function submit() {
     if (!form.name || !form.phone) { setErr('Name and phone are required'); return; }
@@ -41,9 +74,9 @@ export default function LandingPage() {
   ];
 
   const pricing = [
-    { plan:'Starter', price:'₹15,000', per:'per year', students:'Up to 100 students', features:['All chapters & quizzes','Student dashboard','Basic progress tracking','AI Doubt Bot'], color:'#38BFFF', popular:false },
-    { plan:'Standard', price:'₹35,000', per:'per year', students:'Up to 300 students', features:['Everything in Starter','Teacher dashboard','CSV bulk enrollment','Real-time analytics','Digital certificates'], color:'#6C63FF', popular:true },
-    { plan:'Premium', price:'₹75,000', per:'per year', students:'Unlimited students', features:['Everything in Standard','School logo branding','Priority support','Monthly progress reports','Early access to new features'], color:'#FF6584', popular:false },
+    { plan:'Starter', badge:'🌱', students:'Up to 250 students', features:['All chapters & quizzes','Student dashboard','Basic progress tracking','AI Doubt Bot','Chapter-wise progress'], color:'#38BFFF', popular:false },
+    { plan:'Standard', badge:'⚡', students:'Up to 600 students', features:['Everything in Starter','Teacher dashboard','Bulk enrollment','Real-time analytics','Digital certificates','School logo branding'], color:'#6C63FF', popular:true },
+    { plan:'Unlimited', badge:'🚀', students:'Unlimited students', features:['Everything in Standard','Priority support','Monthly progress reports','Early access to new features','Dedicated account manager'], color:'#FF6584', popular:false },
   ];
 
   const stats = [
@@ -75,7 +108,7 @@ export default function LandingPage() {
         <div style={{display:'flex',gap:12,alignItems:'center',flexWrap:'wrap'}}>
           <a href="#features" style={{color:'rgba(255,255,255,.7)',fontSize:13,fontWeight:700,textDecoration:'none'}}>Features</a>
           <a href="#curriculum" style={{color:'rgba(255,255,255,.7)',fontSize:13,fontWeight:700,textDecoration:'none'}}>Curriculum</a>
-          <a href="#pricing" style={{color:'rgba(255,255,255,.7)',fontSize:13,fontWeight:700,textDecoration:'none'}}>Pricing</a>
+          <a href="#plans" style={{color:'rgba(255,255,255,.7)',fontSize:13,fontWeight:700,textDecoration:'none'}}>Pricing</a>
           <a href="#enquiry" style={{color:'rgba(255,255,255,.7)',fontSize:13,fontWeight:700,textDecoration:'none'}}>Contact</a>
           <a href="/app" className="btn-p" style={{padding:'8px 20px',fontSize:13,textDecoration:'none',display:'inline-block'}}>Login →</a>
         </div>
@@ -173,7 +206,7 @@ export default function LandingPage() {
       </section>
 
       {/* PRICING */}
-      <section id="pricing" style={{padding:'80px 20px'}}>
+      <section id="plans" style={{padding:'80px 20px'}}>
         <div className="container">
           <div style={{textAlign:'center',marginBottom:48}}>
             <h2 className="fredoka" style={{fontSize:'clamp(28px,4vw,44px)',marginBottom:12}}>Simple, Transparent Pricing</h2>
@@ -184,8 +217,7 @@ export default function LandingPage() {
               <div key={i} className="card" style={{padding:28,position:'relative',border:p.popular?`2px solid ${p.color}`:'1px solid rgba(255,255,255,.08)',transform:p.popular?'scale(1.03)':'none'}}>
                 {p.popular&&<div style={{position:'absolute',top:-14,left:'50%',transform:'translateX(-50%)',background:`linear-gradient(135deg,#6C63FF,#FF6584)`,color:'#fff',borderRadius:50,padding:'4px 18px',fontSize:11,fontWeight:800,whiteSpace:'nowrap'}}>⭐ MOST POPULAR</div>}
                 <div style={{fontWeight:900,fontSize:18,marginBottom:4,color:p.color}}>{p.plan}</div>
-                <div className="fredoka" style={{fontSize:40,marginBottom:2}}>{p.price}</div>
-                <div style={{fontSize:12,color:'rgba(255,255,255,.4)',fontWeight:700,marginBottom:4}}>{p.per}</div>
+                <div className="fredoka" style={{fontSize:22,color:'#FFD166',marginBottom:4}}>Contact for Pricing</div>
                 <div style={{fontSize:12,color:p.color,fontWeight:800,marginBottom:20,background:`${p.color}15`,borderRadius:8,padding:'4px 10px',display:'inline-block'}}>{p.students}</div>
                 <div style={{borderTop:'1px solid rgba(255,255,255,.08)',paddingTop:16,marginBottom:20}}>
                   {p.features.map((f,j)=>(
@@ -217,7 +249,7 @@ export default function LandingPage() {
             <div style={{textAlign:'center',padding:40,background:'rgba(67,233,123,.1)',border:'2px solid rgba(67,233,123,.3)',borderRadius:20}}>
               <div style={{fontSize:60,marginBottom:16}}>🎉</div>
               <div className="fredoka" style={{fontSize:28,color:'#43E97B',marginBottom:8}}>Enquiry Submitted!</div>
-              <p style={{color:'rgba(255,255,255,.65)',fontSize:15,fontWeight:600}}>We have received your request. Vaibhav will contact you personally within 24 hours to schedule your free demo.</p>
+              <p style={{color:'rgba(255,255,255,.65)',fontSize:15,fontWeight:600}}>We have received your request. Our team will contact you within 24 hours to schedule your free demo.</p>
             </div>
           ) : (
             <div className="card" style={{padding:32}}>
@@ -272,7 +304,7 @@ export default function LandingPage() {
           <a href="#enquiry" style={{color:'#6C63FF',fontWeight:700,fontSize:13,textDecoration:'none'}}>Get Demo →</a>
           <a href="#features" style={{color:'#6C63FF',fontWeight:700,fontSize:13,textDecoration:'none'}}>Features →</a>
         </div>
-        <p style={{color:'rgba(255,255,255,.2)',fontSize:11,fontWeight:600}}>© 2025 STU-BRAIN · Built by Vaibhav Sonava · Jaipur, Rajasthan</p>
+        <p style={{color:'rgba(255,255,255,.2)',fontSize:11,fontWeight:600}}>© 2025 STU-BRAIN · AI Education Platform · Jaipur, Rajasthan</p>
       </footer>
     </div>
   );

@@ -1123,7 +1123,132 @@ export default function App() {
           </div>
         )}
 
-      <AiBot doubtOpen={doubtOpen} setDoubtOpen={setDoubtOpen} doubtMsgs={doubtMsgs} doubtQ={doubtQ} setDoubtQ={setDoubtQ} sendDoubt={sendDoubt} lang={lang} T={T}/>
+            {/* ══════ LEADERBOARD MODAL ══════ */}
+      {showLB&&(
+        <div style={{position:'fixed',inset:0,background:'rgba(7,7,26,.92)',zIndex:2000,display:'flex',alignItems:'flex-start',justifyContent:'center',padding:'16px',overflowY:'auto'}} onClick={(e)=>{if(e.target===e.currentTarget)setShowLB(false);}}>
+          <div style={{width:'100%',maxWidth:480,marginTop:16}} onClick={e=>e.stopPropagation()}>
+            {/* Header */}
+            <div style={{...S.card,padding:'16px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:10}}>
+              <div style={{fontSize:28}}>🏆</div>
+              <div style={{flex:1}}>
+                <div style={{...S.fredoka,fontSize:18}}>{lang==='hi'?'लीडरबोर्ड':'Leaderboard'}</div>
+                <div style={{fontSize:11,color:C.mu,fontWeight:600}}>{lbClass?`Class ${lbClass} · Top 10`:`${user?.school_name} · All Classes`}</div>
+              </div>
+              <button onClick={()=>setShowLB(false)} style={{background:'none',border:'none',color:C.mu,fontSize:18,cursor:'pointer'}}>✕</button>
+            </div>
+            {/* Class selector */}
+            <div style={{display:'flex',gap:6,marginBottom:10,flexWrap:'wrap'}}>
+              {[null,8,9,10,11,12].map(cls=>(
+                <button key={cls??'all'} onClick={()=>loadLeaderboard(cls)} style={{padding:'5px 12px',borderRadius:50,fontSize:11,fontWeight:800,border:`1px solid ${(lbClass===cls)?C.p:C.br}`,background:(lbClass===cls)?C.p:'transparent',color:(lbClass===cls)?'#fff':C.mu,cursor:'pointer'}}>
+                  {cls?`Class ${cls}`:'🏫 Overall'}
+                </button>
+              ))}
+            </div>
+            {/* Leaderboard rows */}
+            {leaderboard.length===0?(
+              <div style={{...S.card,padding:24,textAlign:'center',color:C.mu,fontSize:13}}>No data yet. Students need to complete chapters! 📚</div>
+            ):(
+              <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                {leaderboard.map((s,i)=>{
+                  const isMe=s.id===user?.id;
+                  const rank=i+1;
+                  const medal=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':null;
+                  const isTop3=rank<=3;
+                  return(
+                    <div key={s.id as number} style={{
+                      ...S.card,padding:'14px 16px',
+                      display:'flex',alignItems:'center',gap:12,
+                      border:isMe?`2px solid ${C.p}`:isTop3?`1px solid rgba(255,209,102,.4)`:C.br,
+                      background:rank===1?'linear-gradient(135deg,rgba(255,209,102,.12),rgba(255,159,67,.06))':rank===2?'rgba(192,192,192,.08)':rank===3?'rgba(205,127,50,.08)':isMe?'rgba(108,99,255,.08)':C.card,
+                      animation:rank===1?'xpPop .4s ease':undefined,
+                      transform:rank===1?'scale(1.02)':undefined,
+                    }}>
+                      {/* Rank */}
+                      <div style={{width:32,textAlign:'center',flexShrink:0}}>
+                        {medal?<span style={{fontSize:24}}>{medal}</span>:<span style={{fontSize:13,fontWeight:900,color:C.mu}}>#{rank}</span>}
+                      </div>
+                      {/* Avatar */}
+                      <div style={{width:36,height:36,borderRadius:'50%',background:`linear-gradient(135deg,${rank===1?'#FFD166,#FF9F43':rank===2?'#C0C0C0,#A0A0A0':rank===3?'#CD7F32,#B8692A':C.p+','+C.s})`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:'#fff',flexShrink:0}}>
+                        {(s.name as string)[0]?.toUpperCase()}
+                      </div>
+                      {/* Name + details */}
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontSize:13,fontWeight:800,color:rank===1?'#FFD166':isMe?C.p:C.text,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+                          {s.name as string}{isMe?' (You)':''}
+                        </div>
+                        <div style={{fontSize:10,color:C.mu,fontWeight:600}}>
+                          {lbClass?`Class ${s.class_level} · Sec ${s.section||'-'}`:`Class ${s.class_level}`} · {s.chapters_done as number} chapters · {s.avg_quiz as number}% quiz
+                        </div>
+                      </div>
+                      {/* XP */}
+                      <div style={{textAlign:'right',flexShrink:0}}>
+                        <div style={{fontSize:15,fontWeight:900,color:rank===1?'#FFD166':C.y}}>⭐ {s.class_xp as number}</div>
+                        <div style={{fontSize:9,color:C.mu,fontWeight:600}}>XP</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <div style={{height:20}}/>
+          </div>
+        </div>
+      )}
+
+      {/* ══════ CHALLENGES MODAL ══════ */}
+      {showChallenges&&(
+        <div style={{position:'fixed',inset:0,background:'rgba(7,7,26,.92)',zIndex:2000,display:'flex',alignItems:'flex-start',justifyContent:'center',padding:16,overflowY:'auto'}} onClick={(e)=>{if(e.target===e.currentTarget)setShowChallenges(false);}}>
+          <div style={{width:'100%',maxWidth:480,marginTop:16}} onClick={e=>e.stopPropagation()}>
+            <div style={{...S.card,padding:'16px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:10}}>
+              <div style={{fontSize:28}}>⚡</div>
+              <div style={{flex:1}}><div style={{...S.fredoka,fontSize:18}}>Challenges</div><div style={{fontSize:11,color:C.mu,fontWeight:600}}>Complete for bonus XP!</div></div>
+              <button onClick={()=>setShowChallenges(false)} style={{background:'none',border:'none',color:C.mu,fontSize:18,cursor:'pointer'}}>✕</button>
+            </div>
+            {challenges.length===0?(
+              <div style={{...S.card,padding:24,textAlign:'center'}}>
+                <div style={{fontSize:40,marginBottom:10}}>⚡</div>
+                <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>{lang==='hi'?'अभी कोई Challenge नहीं':'No Challenges Yet'}</div>
+                <div style={{fontSize:12,color:C.mu}}>Your teacher will post challenges soon! Check back later. 🎯</div>
+              </div>
+            ):(
+              <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                {challenges.map((c)=>(
+                  <div key={Number(c.id)} style={{...S.card,padding:16,border:(c as Record<string,unknown>).submission_id?`1px solid rgba(67,233,123,.3)`:C.br}}>
+                    <div style={{display:'flex',alignItems:'flex-start',gap:10,marginBottom:8}}>
+                      <div style={{flex:1}}>
+                        <div style={{fontSize:13,fontWeight:800}}>{c.title as string}</div>
+                        <div style={{fontSize:11,color:C.mu,marginTop:2}}>{c.class_level?`Class ${c.class_level}`:'All Classes'}{c.due_date?` · Due ${new Date(c.due_date as string).toLocaleDateString('en-IN')}`:''}  </div>
+                      </div>
+                      <div style={{background:'rgba(255,209,102,.15)',border:'1px solid rgba(255,209,102,.3)',borderRadius:50,padding:'3px 10px',fontSize:11,fontWeight:800,color:C.y,flexShrink:0}}>⭐ +{c.xp_reward as number} XP</div>
+                    </div>
+                    <div style={{fontSize:12,color:C.text,lineHeight:1.6,marginBottom:10}}>{c.description as string}</div>
+                    {(c as Record<string,unknown>).submission_id?(
+                      <div style={{color:C.a,fontSize:12,fontWeight:800}}>✅ Submitted! +{Number((c as Record<string,unknown>).xp_awarded||c.xp_reward||0)} XP</div>
+                    ):(
+                      activeChallengeId===Number(c.id)?(
+                        <div>
+                          <textarea value={challengeAnswer} onChange={e=>setChallengeAnswer(e.target.value)} placeholder="Write your answer here..." style={{width:'100%',minHeight:80,padding:'8px 12px',borderRadius:10,border:`1px solid ${C.br}`,background:'rgba(255,255,255,.05)',color:C.text,fontSize:12,resize:'vertical',fontFamily:"'Nunito',sans-serif",boxSizing:'border-box'}}/>
+                          <div style={{display:'flex',gap:8,marginTop:8}}>
+                            <button onClick={()=>submitChallenge(Number(c.id),challengeAnswer)} style={{...S.btnP,flex:1,padding:'8px',fontSize:12}}>Submit Answer ⭐</button>
+                            <button onClick={()=>setActiveChallengeId(null)} style={{...S.btnS,padding:'8px 14px',fontSize:12}}>Cancel</button>
+                          </div>
+                        </div>
+                      ):(
+                        <button onClick={()=>setActiveChallengeId(Number(c.id))} style={{...S.btnP,width:'100%',padding:'8px',fontSize:12}}>⚡ Take Challenge</button>
+                      )
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+            <div style={{height:20}}/>
+          </div>
+        </div>
+      )}
+
+
+      
+<AiBot doubtOpen={doubtOpen} setDoubtOpen={setDoubtOpen} doubtMsgs={doubtMsgs} doubtQ={doubtQ} setDoubtQ={setDoubtQ} sendDoubt={sendDoubt} lang={lang} T={T}/>
       <Styles/>
       </div>
     </div>
@@ -1496,7 +1621,7 @@ export default function App() {
           <div style={{fontSize:32}}>👑</div>
           <div>
             <div style={{fontFamily:"'Fredoka One',sans-serif",fontSize:26,background:`linear-gradient(90deg,${P},${S})`,WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>Super Admin Panel</div>
-            <div style={{fontSize:12,color:MU,fontWeight:600}}>STU-BRAIN Owner Dashboard — Vaibhav Sonava</div>
+            <div style={{fontSize:12,color:MU,fontWeight:600}}>STU-BRAIN Owner Dashboard</div>
           </div>
           <button onClick={()=>token&&loadSuperAdmin(token)} style={{marginLeft:'auto',...S.btnS,padding:'6px 14px',fontSize:11}}>🔄 Refresh</button>
         </div>
@@ -2240,131 +2365,7 @@ export default function App() {
         </div>
       )}
 
-      {/* ══════ LEADERBOARD MODAL ══════ */}
-      {showLB&&(
-        <div style={{position:'fixed',inset:0,background:'rgba(7,7,26,.92)',zIndex:2000,display:'flex',alignItems:'flex-start',justifyContent:'center',padding:'16px',overflowY:'auto'}} onClick={(e)=>{if(e.target===e.currentTarget)setShowLB(false);}}>
-          <div style={{width:'100%',maxWidth:480,marginTop:16}} onClick={e=>e.stopPropagation()}>
-            {/* Header */}
-            <div style={{...S.card,padding:'16px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:10}}>
-              <div style={{fontSize:28}}>🏆</div>
-              <div style={{flex:1}}>
-                <div style={{...S.fredoka,fontSize:18}}>{lang==='hi'?'लीडरबोर्ड':'Leaderboard'}</div>
-                <div style={{fontSize:11,color:C.mu,fontWeight:600}}>{lbClass?`Class ${lbClass} · Top 10`:`${user?.school_name} · All Classes`}</div>
-              </div>
-              <button onClick={()=>setShowLB(false)} style={{background:'none',border:'none',color:C.mu,fontSize:18,cursor:'pointer'}}>✕</button>
-            </div>
-            {/* Class selector */}
-            <div style={{display:'flex',gap:6,marginBottom:10,flexWrap:'wrap'}}>
-              {[null,8,9,10,11,12].map(cls=>(
-                <button key={cls??'all'} onClick={()=>loadLeaderboard(cls)} style={{padding:'5px 12px',borderRadius:50,fontSize:11,fontWeight:800,border:`1px solid ${(lbClass===cls)?C.p:C.br}`,background:(lbClass===cls)?C.p:'transparent',color:(lbClass===cls)?'#fff':C.mu,cursor:'pointer'}}>
-                  {cls?`Class ${cls}`:'🏫 Overall'}
-                </button>
-              ))}
-            </div>
-            {/* Leaderboard rows */}
-            {leaderboard.length===0?(
-              <div style={{...S.card,padding:24,textAlign:'center',color:C.mu,fontSize:13}}>No data yet. Students need to complete chapters! 📚</div>
-            ):(
-              <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                {leaderboard.map((s,i)=>{
-                  const isMe=s.id===user?.id;
-                  const rank=i+1;
-                  const medal=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':null;
-                  const isTop3=rank<=3;
-                  return(
-                    <div key={s.id as number} style={{
-                      ...S.card,padding:'14px 16px',
-                      display:'flex',alignItems:'center',gap:12,
-                      border:isMe?`2px solid ${C.p}`:isTop3?`1px solid rgba(255,209,102,.4)`:C.br,
-                      background:rank===1?'linear-gradient(135deg,rgba(255,209,102,.12),rgba(255,159,67,.06))':rank===2?'rgba(192,192,192,.08)':rank===3?'rgba(205,127,50,.08)':isMe?'rgba(108,99,255,.08)':C.card,
-                      animation:rank===1?'xpPop .4s ease':undefined,
-                      transform:rank===1?'scale(1.02)':undefined,
-                    }}>
-                      {/* Rank */}
-                      <div style={{width:32,textAlign:'center',flexShrink:0}}>
-                        {medal?<span style={{fontSize:24}}>{medal}</span>:<span style={{fontSize:13,fontWeight:900,color:C.mu}}>#{rank}</span>}
-                      </div>
-                      {/* Avatar */}
-                      <div style={{width:36,height:36,borderRadius:'50%',background:`linear-gradient(135deg,${rank===1?'#FFD166,#FF9F43':rank===2?'#C0C0C0,#A0A0A0':rank===3?'#CD7F32,#B8692A':C.p+','+C.s})`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:15,fontWeight:800,color:'#fff',flexShrink:0}}>
-                        {(s.name as string)[0]?.toUpperCase()}
-                      </div>
-                      {/* Name + details */}
-                      <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontSize:13,fontWeight:800,color:rank===1?'#FFD166':isMe?C.p:C.text,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
-                          {s.name as string}{isMe?' (You)':''}
-                        </div>
-                        <div style={{fontSize:10,color:C.mu,fontWeight:600}}>
-                          {lbClass?`Class ${s.class_level} · Sec ${s.section||'-'}`:`Class ${s.class_level}`} · {s.chapters_done as number} chapters · {s.avg_quiz as number}% quiz
-                        </div>
-                      </div>
-                      {/* XP */}
-                      <div style={{textAlign:'right',flexShrink:0}}>
-                        <div style={{fontSize:15,fontWeight:900,color:rank===1?'#FFD166':C.y}}>⭐ {s.class_xp as number}</div>
-                        <div style={{fontSize:9,color:C.mu,fontWeight:600}}>XP</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            <div style={{height:20}}/>
-          </div>
-        </div>
-      )}
-
-      {/* ══════ CHALLENGES MODAL ══════ */}
-      {showChallenges&&(
-        <div style={{position:'fixed',inset:0,background:'rgba(7,7,26,.92)',zIndex:2000,display:'flex',alignItems:'flex-start',justifyContent:'center',padding:16,overflowY:'auto'}} onClick={(e)=>{if(e.target===e.currentTarget)setShowChallenges(false);}}>
-          <div style={{width:'100%',maxWidth:480,marginTop:16}} onClick={e=>e.stopPropagation()}>
-            <div style={{...S.card,padding:'16px 20px',marginBottom:10,display:'flex',alignItems:'center',gap:10}}>
-              <div style={{fontSize:28}}>⚡</div>
-              <div style={{flex:1}}><div style={{...S.fredoka,fontSize:18}}>Challenges</div><div style={{fontSize:11,color:C.mu,fontWeight:600}}>Complete for bonus XP!</div></div>
-              <button onClick={()=>setShowChallenges(false)} style={{background:'none',border:'none',color:C.mu,fontSize:18,cursor:'pointer'}}>✕</button>
-            </div>
-            {challenges.length===0?(
-              <div style={{...S.card,padding:24,textAlign:'center'}}>
-                <div style={{fontSize:40,marginBottom:10}}>⚡</div>
-                <div style={{fontSize:14,fontWeight:700,marginBottom:6}}>{lang==='hi'?'अभी कोई Challenge नहीं':'No Challenges Yet'}</div>
-                <div style={{fontSize:12,color:C.mu}}>Your teacher will post challenges soon! Check back later. 🎯</div>
-              </div>
-            ):(
-              <div style={{display:'flex',flexDirection:'column',gap:10}}>
-                {challenges.map((c)=>(
-                  <div key={Number(c.id)} style={{...S.card,padding:16,border:(c as Record<string,unknown>).submission_id?`1px solid rgba(67,233,123,.3)`:C.br}}>
-                    <div style={{display:'flex',alignItems:'flex-start',gap:10,marginBottom:8}}>
-                      <div style={{flex:1}}>
-                        <div style={{fontSize:13,fontWeight:800}}>{c.title as string}</div>
-                        <div style={{fontSize:11,color:C.mu,marginTop:2}}>{c.class_level?`Class ${c.class_level}`:'All Classes'}{c.due_date?` · Due ${new Date(c.due_date as string).toLocaleDateString('en-IN')}`:''}  </div>
-                      </div>
-                      <div style={{background:'rgba(255,209,102,.15)',border:'1px solid rgba(255,209,102,.3)',borderRadius:50,padding:'3px 10px',fontSize:11,fontWeight:800,color:C.y,flexShrink:0}}>⭐ +{c.xp_reward as number} XP</div>
-                    </div>
-                    <div style={{fontSize:12,color:C.text,lineHeight:1.6,marginBottom:10}}>{c.description as string}</div>
-                    {(c as Record<string,unknown>).submission_id?(
-                      <div style={{color:C.a,fontSize:12,fontWeight:800}}>✅ Submitted! +{Number((c as Record<string,unknown>).xp_awarded||c.xp_reward||0)} XP</div>
-                    ):(
-                      activeChallengeId===Number(c.id)?(
-                        <div>
-                          <textarea value={challengeAnswer} onChange={e=>setChallengeAnswer(e.target.value)} placeholder="Write your answer here..." style={{width:'100%',minHeight:80,padding:'8px 12px',borderRadius:10,border:`1px solid ${C.br}`,background:'rgba(255,255,255,.05)',color:C.text,fontSize:12,resize:'vertical',fontFamily:"'Nunito',sans-serif",boxSizing:'border-box'}}/>
-                          <div style={{display:'flex',gap:8,marginTop:8}}>
-                            <button onClick={()=>submitChallenge(Number(c.id),challengeAnswer)} style={{...S.btnP,flex:1,padding:'8px',fontSize:12}}>Submit Answer ⭐</button>
-                            <button onClick={()=>setActiveChallengeId(null)} style={{...S.btnS,padding:'8px 14px',fontSize:12}}>Cancel</button>
-                          </div>
-                        </div>
-                      ):(
-                        <button onClick={()=>setActiveChallengeId(Number(c.id))} style={{...S.btnP,width:'100%',padding:'8px',fontSize:12}}>⚡ Take Challenge</button>
-                      )
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-            <div style={{height:20}}/>
-          </div>
-        </div>
-      )}
-
-
-      <AiBot doubtOpen={doubtOpen} setDoubtOpen={setDoubtOpen} doubtMsgs={doubtMsgs} doubtQ={doubtQ} setDoubtQ={setDoubtQ} sendDoubt={sendDoubt} lang={lang} T={T}/>
+<AiBot doubtOpen={doubtOpen} setDoubtOpen={setDoubtOpen} doubtMsgs={doubtMsgs} doubtQ={doubtQ} setDoubtQ={setDoubtQ} sendDoubt={sendDoubt} lang={lang} T={T}/>
       <Styles/>
     </div>
   );

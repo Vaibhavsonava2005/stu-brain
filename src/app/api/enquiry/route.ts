@@ -48,3 +48,4 @@ export async function PATCH(req: NextRequest) {
   await sql`UPDATE enquiries SET status=${status} WHERE id=${id}`;
   return NextResponse.json({ success: true });
 }
+
