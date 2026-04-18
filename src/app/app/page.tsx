@@ -1017,7 +1017,7 @@ export default function App() {
               <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20}}>
                 <div>
                   <div style={{fontSize:10,color:'rgba(255,255,255,.4)',letterSpacing:1,marginBottom:4}}>ISSUED BY</div>
-                  <div style={{fontSize:13,fontWeight:800,color:'#fff'}}>Vaibhav Sonava</div>
+                  <div style={{fontSize:13,fontWeight:800,color:'#fff'}}>STU-BRAIN Owner</div>
                   <div style={{fontSize:10,color:'rgba(255,255,255,.5)'}}>Founder, STU-BRAIN AI</div>
                 </div>
                 <div>
@@ -1072,7 +1072,7 @@ export default function App() {
   <div class="meta">
     <div>
       <div class="meta-label">Issued By</div>
-      <div class="meta-val">Vaibhav Sonava</div>
+      <div class="meta-val">STU-BRAIN Team</div>
       <div class="meta-sub">Founder, STU-BRAIN AI</div>
     </div>
     <div>
@@ -1645,7 +1645,7 @@ export default function App() {
 
         {/* Tabs */}
         <div style={{display:'flex',gap:8,marginBottom:20,flexWrap:'wrap'}}>
-          {[['schools','🏫','All Schools'],['add','➕','Add School']].map(([id,em,lbl])=>(
+          {[['schools','🏫','All Schools'],['add','➕','Add School'],['enquiries','📩','Enquiries']].map(([id,em,lbl])=>(
             <button key={id} onClick={()=>setSaTab(id)} style={{padding:'7px 16px',borderRadius:50,fontSize:12,fontWeight:800,border:`1px solid ${saTab===id?'#6C63FF':'rgba(108,99,255,.25)'}`,background:saTab===id?'#6C63FF':'transparent',color:saTab===id?'#fff':MU,cursor:'pointer',fontFamily:"'Nunito',sans-serif"}}>
               {em} {lbl}
             </button>
@@ -1786,6 +1786,47 @@ export default function App() {
           </div>
         </div>
       )}
+
+        {saTab==='enquiries'&&(
+          <div>
+            <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
+              <div style={{fontFamily:"'Fredoka One',sans-serif",fontSize:20,color:'#F0F0FF'}}>📩 Demo Enquiries <span style={{fontSize:13,color:MU}}>({enquiries.length})</span></div>
+              <button onClick={()=>token&&loadEnquiries(token)} style={{background:'rgba(108,99,255,.15)',border:'1px solid rgba(108,99,255,.3)',color:'#6C63FF',borderRadius:8,padding:'5px 12px',fontSize:11,fontWeight:800,cursor:'pointer',fontFamily:"'Nunito',sans-serif"}}>🔄 Refresh</button>
+            </div>
+            {enquiries.length===0?(
+              <div style={{background:C2,border:'1px solid rgba(108,99,255,.2)',borderRadius:16,padding:32,textAlign:'center'}}>
+                <div style={{fontSize:40,marginBottom:12}}>📩</div>
+                <div style={{fontSize:15,fontWeight:700,color:'#F0F0FF',marginBottom:6}}>No enquiries yet</div>
+                <div style={{fontSize:12,color:MU}}>Schools that fill your website contact form will appear here.</div>
+              </div>
+            ):(
+              <div style={{display:'flex',flexDirection:'column',gap:10}}>
+                {enquiries.map((e,i)=>(
+                  <div key={i} style={{background:C2,border:`1px solid ${e.status==='new'?'rgba(255,209,102,.4)':'rgba(108,99,255,.25)'}`,borderRadius:14,padding:16}}>
+                    <div style={{display:'flex',alignItems:'flex-start',gap:12}}>
+                      <div style={{width:42,height:42,borderRadius:'50%',background:'linear-gradient(135deg,#6C63FF,#FF6584)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,flexShrink:0}}>🏫</div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontWeight:900,fontSize:14,color:'#F0F0FF'}}>{e.name as string}</div>
+                        <div style={{fontSize:12,color:MU,marginBottom:4}}>{e.school as string}{e.city?` · ${e.city as string}`:''}</div>
+                        <div style={{fontSize:12,color:'#38BFFF'}}>📞 {e.phone as string}{e.email?` · ✉️ ${e.email as string}`:''}</div>
+                        {Boolean(e.message)&&<div style={{fontSize:11,color:MU,marginTop:6,fontStyle:'italic'}}>"{e.message as string}"</div>}
+                        <div style={{display:'flex',gap:8,marginTop:8,flexWrap:'wrap'}}>
+                          <span style={{background:'rgba(56,191,255,.12)',color:'#38BFFF',borderRadius:20,padding:'2px 10px',fontSize:10,fontWeight:800}}>👥 {Number(e.students||0)} students</span>
+                          <span style={{background:e.status==='new'?'rgba(255,209,102,.15)':'rgba(67,233,123,.1)',color:e.status==='new'?Y:A,borderRadius:20,padding:'2px 10px',fontSize:10,fontWeight:900}}>{e.status==='new'?'🆕 New':'✅ Contacted'}</span>
+                          <span style={{fontSize:10,color:MU}}>{new Date(e.created_at as string).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</span>
+                        </div>
+                      </div>
+                      {e.status==='new'&&(
+                        <button onClick={()=>{fetch('/api/enquiry',{method:'PATCH',headers:{'Content-Type':'application/json',authorization:`Bearer ${token||''}`},body:JSON.stringify({id:e.id,status:'contacted'})}).then(()=>{if(token)loadEnquiries(token);});}} style={{background:'rgba(67,233,123,.15)',border:'1px solid rgba(67,233,123,.4)',color:A,borderRadius:8,padding:'7px 14px',fontSize:11,fontWeight:800,cursor:'pointer',flexShrink:0,fontFamily:"'Nunito',sans-serif"}}>✅ Contacted</button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
       <Styles/>
     </div>
   );}
