@@ -2,6 +2,63 @@
 import { useState, useRef, useEffect } from 'react';
 
 
+function HeroSlider() {
+  const [slide, setSlide] = useState(0);
+  const [animating, setAnimating] = useState(false);
+  const slides = [
+    { emoji:'🧠', title:'AI Education', sub:'for India\'s Future', desc:'STU-BRAIN teaches AI, Machine Learning, Python, and Robotics to Class 3-12 students through animated lessons and an AI doubt bot.', color:'#6C63FF', accent:'#FF6584' },
+    { emoji:'🤖', title:'Real AI Lessons', sub:'Not Just Theory', desc:'Interactive slides, 10-question quizzes, XP rewards, and digital certificates. Students actually learn AI — not just read about it.', color:'#43E97B', accent:'#38BFFF' },
+    { emoji:'🏆', title:'Track Every Student', sub:'Real-Time Analytics', desc:'Admins and teachers see live progress — chapters done, quiz scores, XP leaderboards. Know exactly who needs help.', color:'#FFD166', accent:'#FF9F43' },
+    { emoji:'🌐', title:'Hindi + English', sub:'For Every Indian Student', desc:'Full bilingual support. Switch languages anytime. Works on mobile, tablet, desktop. Install as PWA app.', color:'#38BFFF', accent:'#6C63FF' },
+  ];
+  useEffect(() => {
+    const t = setInterval(() => {
+      setAnimating(true);
+      setTimeout(() => { setSlide(s => (s+1)%slides.length); setAnimating(false); }, 300);
+    }, 4000);
+    return () => clearInterval(t);
+  }, []);
+  const s = slides[slide];
+  return (
+    <section style={{padding:'80px 20px 60px',textAlign:'center',position:'relative',overflow:'hidden',background:'radial-gradient(ellipse 80% 50% at 50% 0%,rgba(108,99,255,.25),transparent)'}}>
+      <div style={{maxWidth:800,margin:'0 auto'}}>
+        {/* Slide indicator dots */}
+        <div style={{display:'flex',justifyContent:'center',gap:8,marginBottom:32}}>
+          {slides.map((_,i)=>(
+            <button key={i} onClick={()=>setSlide(i)} style={{width:i===slide?24:8,height:8,borderRadius:4,background:i===slide?s.color:'rgba(255,255,255,.2)',border:'none',cursor:'pointer',transition:'all .3s'}}/>
+          ))}
+        </div>
+        {/* 3D Floating emoji */}
+        <div style={{fontSize:80,marginBottom:16,transition:'all .3s',transform:animating?'scale(0.8) rotateY(90deg)':'scale(1) rotateY(0deg)',display:'inline-block',filter:`drop-shadow(0 0 30px ${s.color}80)`}}>
+          {s.emoji}
+        </div>
+        <div style={{display:'inline-block',background:`rgba(108,99,255,.2)`,border:`1px solid ${s.color}66`,borderRadius:50,padding:'6px 18px',fontSize:12,fontWeight:800,color:s.color,marginBottom:20,letterSpacing:1,transition:'all .3s'}}>🇮🇳 MADE IN INDIA · FOR INDIA</div>
+        <h1 className="fredoka" style={{fontSize:'clamp(36px,6vw,72px)',lineHeight:1.1,marginBottom:8,transition:'opacity .3s',opacity:animating?0:1}}>
+          <span style={{background:`linear-gradient(90deg,${s.color},${s.accent})`,WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>{s.title}</span><br/>
+          <span style={{color:'#F0F0FF',fontSize:'0.75em'}}>{s.sub}</span>
+        </h1>
+        <p style={{fontSize:'clamp(15px,2vw,18px)',color:'rgba(255,255,255,.65)',maxWidth:560,margin:'0 auto 32px',lineHeight:1.7,fontWeight:600,transition:'opacity .3s',opacity:animating?0:1}}>
+          {s.desc}
+        </p>
+        <div style={{display:'flex',gap:14,justifyContent:'center',flexWrap:'wrap',marginBottom:48}}>
+          <a href="#enquiry" className="btn-p" style={{padding:'14px 36px',fontSize:16,textDecoration:'none'}}>📞 Get Free Demo</a>
+          <a href="/app" className="btn-s" style={{padding:'14px 32px',fontSize:15,textDecoration:'none'}}>▶ Try Demo Login</a>
+        </div>
+        {/* Stats */}
+        <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,maxWidth:700,margin:'0 auto'}}>
+          {[{n:'68+',l:'AI Chapters'},{n:'3-12',l:'All Classes'},{n:'Hindi+',l:'Bilingual'},{n:'24/7',l:'AI Bot'}].map((st,i)=>(
+            <div key={i} className="card" style={{padding:'16px 8px',textAlign:'center'}}>
+              <div className="fredoka grad" style={{fontSize:28}}>{st.n}</div>
+              <div style={{fontSize:11,color:'rgba(255,255,255,.5)',fontWeight:700,marginTop:3}}>{st.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
 function NeuralBg() {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -115,30 +172,7 @@ export default function LandingPage() {
       </nav>
 
       {/* HERO */}
-      <section style={{padding:'80px 20px 60px',textAlign:'center',background:'radial-gradient(ellipse 80% 50% at 50% 0%,rgba(108,99,255,.25),transparent)'}}>
-        <div className="container">
-          <div style={{display:'inline-block',background:'rgba(108,99,255,.2)',border:'1px solid rgba(108,99,255,.4)',borderRadius:50,padding:'6px 18px',fontSize:12,fontWeight:800,color:'#6C63FF',marginBottom:20,letterSpacing:1}}>🇮🇳 MADE IN JAIPUR · FOR INDIA</div>
-          <h1 className="fredoka" style={{fontSize:'clamp(36px,6vw,72px)',lineHeight:1.1,marginBottom:16}}>
-            <span className="grad">AI Education</span><br/>for India's Future
-          </h1>
-          <p style={{fontSize:'clamp(16px,2vw,20px)',color:'rgba(255,255,255,.65)',maxWidth:580,margin:'0 auto 32px',lineHeight:1.7,fontWeight:600}}>
-            STU-BRAIN teaches AI, Machine Learning, Python, and Robotics to Class 3-12 students through animated lessons, live quizzes, and an AI doubt bot — in Hindi and English.
-          </p>
-          <div style={{display:'flex',gap:14,justifyContent:'center',flexWrap:'wrap',marginBottom:48}}>
-            <a href="#enquiry" className="btn-p" style={{padding:'14px 36px',fontSize:16,textDecoration:'none'}}>📞 Get Free Demo</a>
-            <a href="/app" className="btn-s" style={{padding:'14px 32px',fontSize:15,textDecoration:'none'}}>▶ Try Demo Login</a>
-          </div>
-          {/* Stats */}
-          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,maxWidth:700,margin:'0 auto'}}>
-            {stats.map((s,i)=>(
-              <div key={i} className="card" style={{padding:'16px 8px',textAlign:'center'}}>
-                <div className="fredoka grad" style={{fontSize:28}}>{s.n}</div>
-                <div style={{fontSize:11,color:'rgba(255,255,255,.5)',fontWeight:700,marginTop:3}}>{s.l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <HeroSlider/>
 
       {/* FEATURES */}
       <section id="features" style={{padding:'80px 20px',background:'rgba(255,255,255,.02)'}}>

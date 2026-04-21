@@ -51,7 +51,7 @@ export default function App() {
   const [user,setUser] = useState<User|null>(null);
   const [navStack,setNavStack] = useState<string[]>([]);
   const [token,setToken] = useState('');
-  const [loginRole,setLoginRole] = useState<'student'|'teacher'|'admin'|'owner'>('student');
+  const [loginRole,setLoginRole] = useState<'student'|'teacher'|'admin'>('student');
   const [loginId,setLoginId] = useState('');
   const [loginPass,setLoginPass] = useState('');
   const [loginErr,setLoginErr] = useState('');
@@ -291,7 +291,7 @@ export default function App() {
     setLoginErr(''); const id=oid||loginId, pw=opw||loginPass;
     if(!id||!pw){setLoginErr('Enter ID and password');return;}
     try{
-      const r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json','x-login-type':loginRole==='owner'?'owner':'user'},body:JSON.stringify({identifier:id,password:pw})});
+      const r=await fetch('/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json','x-login-type':'user'},body:JSON.stringify({identifier:id,password:pw})});
       const d=await r.json();
       if(!r.ok){setLoginErr(d.error||'Login failed');return;}
       setUser(d.user);setToken(d.token);
@@ -856,7 +856,6 @@ export default function App() {
             ['student','🎓',T.studentRole,lang==='hi'?'Student ID से login करें':'Login with your Student ID'],
             ['teacher','👨‍🏫',T.teacherRole,lang==='hi'?'Teacher email से login करें':'Login with your teacher email'],
             ['admin','🏫',T.adminRole,lang==='hi'?'School admin login':'School admin login'],
-            ['owner','👑',lang==='hi'?'Owner':'Owner',lang==='hi'?'STU-BRAIN owner login':'STU-BRAIN owner login'],
           ] as const).map(([r,ic,label,desc])=>(
             <button key={r} onClick={()=>setLoginRole(r as typeof loginRole)} style={{padding:'10px 8px',borderRadius:12,fontSize:11,fontWeight:800,border:loginRole===r?`2px solid ${C.p}`:`1px solid ${C.br}`,background:loginRole===r?'rgba(108,99,255,.15)':'rgba(255,255,255,.03)',color:loginRole===r?C.p:C.mu,cursor:'pointer',fontFamily:"'Nunito',sans-serif",textAlign:'left',lineHeight:1.4}}>
               <div style={{fontSize:18,marginBottom:2}}>{ic}</div>
@@ -867,9 +866,9 @@ export default function App() {
         </div>
         <div style={{marginBottom:12}}>
           <label style={{fontSize:11,fontWeight:800,color:C.mu,letterSpacing:1,textTransform:'uppercase',display:'block',marginBottom:5}}>
-            {loginRole==='student'?'Student ID / Email':loginRole==='owner'?'Owner ID':'Email'}
+            {loginRole==='student'?'Student ID / Email':'Email'}
           </label>
-          <input style={S.inp} value={loginId} onChange={e=>setLoginId(e.target.value)} placeholder={loginRole==='student'?'Your Student ID or email':loginRole==='owner'?'vaibhav2005':loginRole==='teacher'?'Your teacher email':'admin@yourschool.com'} onKeyDown={e=>e.key==='Enter'&&doLogin()}/>
+          <input style={S.inp} value={loginId} onChange={e=>setLoginId(e.target.value)} placeholder={loginRole==='student'?'Your Student ID or email':loginRole==='teacher'?'Your teacher email':'admin@yourschool.com'} onKeyDown={e=>e.key==='Enter'&&doLogin()}/>
         </div>
         <div style={{marginBottom:12}}>
           <label style={{fontSize:11,fontWeight:800,color:C.mu,letterSpacing:1,textTransform:'uppercase',display:'block',marginBottom:5}}>{T.password}</label>
@@ -880,6 +879,9 @@ export default function App() {
         </div>
         {loginErr&&<div style={{color:C.s,fontSize:12,fontWeight:700,marginBottom:12,padding:'9px 12px',background:'rgba(255,101,132,.1)',borderRadius:10}}>{loginErr}</div>}
         <button onClick={()=>doLogin()} style={{...S.btnP,width:'100%',padding:'13px',fontSize:15}}>{T.loginBtn}</button>
+        <div style={{textAlign:'center',marginTop:12}}>
+          <a href="/owner" style={{fontSize:11,color:C.mu,textDecoration:'none',fontWeight:700}}>👑 Owner Login →</a>
+        </div>
         <div style={{textAlign:'center',marginTop:10}}>
           <a href="/" style={{fontSize:11,color:C.p,fontWeight:700,textDecoration:'none'}}>← {lang==='hi'?'STU-BRAIN Homepage देखें':'View STU-BRAIN Website'}</a>
         </div>
@@ -1688,7 +1690,7 @@ export default function App() {
                       <td style={{padding:'9px 12px'}}>
                         <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
                           {sc.is_locked?(
-                            <button onClick={()=>{const amt=prompt('Payment received (₹):');if(amt)unlockSchool(sc.id,'unlock','annual',parseFloat(amt));}} style={{background:'#43E97B',color:'#0D0D2B',border:'none',borderRadius:6,padding:'3px 8px',fontSize:10,fontWeight:800,cursor:'pointer'}}>🔓 Unlock</button>
+                            <button onClick={()=>{const plan=prompt('Plan: trial / starter / medium / unlimited');if(plan)unlockSchool(sc.id,'unlock',plan,0);}} style={{background:'#43E97B',color:'#0D0D2B',border:'none',borderRadius:6,padding:'3px 8px',fontSize:10,fontWeight:800,cursor:'pointer'}}>🔓 Activate</button>
                           ):(
                             <button onClick={()=>{if(confirm('Lock this school?'))unlockSchool(sc.id,'lock');}} style={{background:'#FF6584',color:'#fff',border:'none',borderRadius:6,padding:'3px 8px',fontSize:10,fontWeight:800,cursor:'pointer'}}>🔒 Lock</button>
                           )}
@@ -2173,10 +2175,10 @@ export default function App() {
 
         {/* ── LICENSE INFO (from real school data) ── */}
         <div style={{...S.card,background:'linear-gradient(135deg,rgba(108,99,255,.08),rgba(67,233,123,.04))',padding:16}}>
-          <div style={{...S.fredoka,fontSize:14,marginBottom:10}}>📜 {T.annualLicense}</div>
+          <div style={{...S.fredoka,fontSize:14,marginBottom:10}}>📜 School Plan Details</div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(110px,1fr))',gap:10}}>
             {([
-              {l:'Plan', v:String(dashStats?.plan||'trial').toUpperCase(), c:C.a},
+              {l:'Plan', v:String(dashStats?.plan||'trial').toUpperCase(), c:dashStats?.plan==='unlimited'?C.a:dashStats?.plan==='medium'?C.sky:dashStats?.plan==='starter'?C.p:C.y},
               {l:'Max Students', v:String(dashStats?.max_students||50), c:C.text},
               {l:'Status', v:dashStats?.is_locked?'🔒 Locked':'✅ Active', c:dashStats?.is_locked?C.s:C.a},
             ] as {l:string,v:string,c:string}[]).map((r,i)=>(
