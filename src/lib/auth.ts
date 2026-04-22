@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 // 🔒 Strong secret required in production
 const SECRET = process.env.JWT_SECRET || 'dev-only-stubrain-secret-min-32-chars-placeholder!!';
 
-export function signToken(payload: { id: number; role: string; name: string; school_id: number; class_level?: number }) {
+export function signToken(payload: { id: number; role: string; name: string; school_id: number | null; class_level?: number }) {
   return jwt.sign(payload, SECRET, { 
     expiresIn: '24h',  // 🔒 Reduced from 7d to 24h
     algorithm: 'HS256',
@@ -12,7 +12,7 @@ export function signToken(payload: { id: number; role: string; name: string; sch
   });
 }
 
-export function verifyToken(token: string): { id: number; role: string; name: string; school_id: number; class_level?: number } | null {
+export function verifyToken(token: string): { id: number; role: string; name: string; school_id: number | null; class_level?: number } | null {
   if (!token || typeof token !== 'string' || token.length > 2000) return null;
   try {
     const payload = jwt.verify(token, SECRET, {

@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
       // Auto-generate student ID if not provided
       let studentId = (s.student_id || s.id || s.roll || s.StudentID || '').trim();
       if (!studentId) {
-        studentId = await genStudentId(user.school_id, cls, section);
+        studentId = await genStudentId(user.school_id||0, cls, section);
       }
 
       // Auto-generate email from student ID
