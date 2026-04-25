@@ -1,22 +1,16 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "STU-BRAIN – Future AI Learning Platform",
-  description: "AI, ML, Robotics & Deep Learning for Classes 8-12. The complete school platform.",
-  manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "STU-BRAIN",
-  },
+  title: 'STU-BRAIN — AI Education Platform',
+  description: 'India\'s #1 AI Education Platform for Class 3-12. Learn AI, ML, Python, Robotics.',
   icons: {
-    icon: [
-      { url: "/icon-16.png", sizes: "16x16", type: "image/png" },
-      { url: "/icon-32.png", sizes: "32x32", type: "image/png" },
-    ],
-    apple: [{ url: "/icon-180.png", sizes: "180x180" }],
-    other: [{ rel: "mask-icon", url: "/logo.svg" }],
+    icon: '/logo.png',
+    apple: '/logo.png',
+  },
+  openGraph: {
+    title: 'STU-BRAIN — AI Education Platform',
+    description: 'India\'s #1 AI Education Platform for Class 3-12.',
+    images: ['/logo.png'],
   },
 };
 
@@ -24,15 +18,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <meta name="theme-color" content="#6C63FF" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="STU-BRAIN" />
-        <link rel="apple-touch-icon" href="/icon-180.png" />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/logo.png" type="image/png"/>
+        <link rel="apple-touch-icon" href="/logo.png"/>
+        <meta name="theme-color" content="#0A0A1E"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
       </head>
-      <body>{children}</body>
+      <body style={{margin:0,padding:0,background:'#0A0A1E'}}>{children}</body>
     </html>
   );
 }

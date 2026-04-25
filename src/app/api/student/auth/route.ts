@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
       if (!valid) return NextResponse.json({ error:'Wrong password. Please try again.' },{status:401});
       await sql`UPDATE b2c_students SET last_active=CURRENT_DATE WHERE id=${student.id}`;
       const token = signToken({ id:student.id, role:'b2c_student', name:student.name, school_id:null, class_level:student.class_level });
-      return NextResponse.json({ success:true, token, user:{ id:student.id, name:student.name, email:student.email, role:'b2c_student', class_level:student.class_level, state_name:student.state_name, city:student.city, total_xp:student.total_xp, parent_email:student.parent_email } });
+      return NextResponse.json({ success:true, token, user:{ id:student.id, name:student.name, email:student.email, role:'b2c_student', class_level:student.class_level, state_name:student.state_name, city:student.city, total_xp:student.total_xp, parent_email:student.parent_email, is_paid:student.is_paid||false } });
     }
     return NextResponse.json({ error:'Invalid action' },{status:400});
   } catch(e:unknown) { return NextResponse.json({ error: e instanceof Error?e.message:'Server error' },{status:500}); }

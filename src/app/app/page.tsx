@@ -71,6 +71,7 @@ export default function App() {
   const [tTab,setTTab] = useState('overview');
   const [saTab,setSaTab] = useState('schools');
   const [allSchools,setAllSchools] = useState<Record<string,unknown>[]>([]);
+  const [b2cStudents,setB2cStudents] = useState<Record<string,unknown>[]>([]);
   const [saStats,setSaStats] = useState<Record<string,unknown>|null>(null);
   const [teachers,setTeachers] = useState<Record<string,unknown>[]>([]);
   const [newTeacher,setNewTeacher] = useState({name:'',email:'',phone:''});
@@ -211,8 +212,11 @@ export default function App() {
   async function loadEnquiries(tok:string){
     try{const r=await fetch('/api/enquiry',{headers:{authorization:`Bearer ${tok}`}});const d=await r.json();setEnquiries(d.enquiries||[]);}catch{}
   }
+  async function loadB2cStudents(tok:string){
+    try{const r=await fetch('/api/superadmin/b2c-students',{headers:{authorization:`Bearer ${tok}`}});const d=await r.json();setB2cStudents(d.students||[]);}catch{}
+  }
   async function loadSuperAdmin(tok:string){
-    loadEnquiries(tok);
+    loadEnquiries(tok);loadB2cStudents(tok);
     try{const r=await fetch('/api/superadmin/schools',{headers:{authorization:`Bearer ${tok}`}});const d=await r.json();setAllSchools(d.schools||[]);setSaStats(d.stats||null);}catch{}
   }
   async function addTeacher(){
@@ -797,7 +801,7 @@ export default function App() {
       <div style={{display:'flex',alignItems:'center',gap:10,padding:'12px 20px',flexWrap:'wrap'}}>
         <div style={{display:'flex',alignItems:'center',gap:8,cursor:'pointer'}} onClick={()=>{setCurChap(null);setScreen(user?.role==='student'?'student':user?.role==='teacher'?'teacher':'admin');}}>
           <div style={{width:38,height:38,borderRadius:11,background:`linear-gradient(135deg,${C.p},${C.s})`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,animation:'orbPulse 2.5s ease-in-out infinite',flexShrink:0,overflow:'hidden'}}>
-            {schoolLogo?<img src={schoolLogo} alt="Logo" style={{width:'100%',height:'100%',objectFit:'contain'}}/>:<span>🧠</span>}
+            {schoolLogo?<img src={schoolLogo} alt="Logo" style={{width:'100%',height:'100%',objectFit:'contain'}}/>:<img src='/logo.png' alt='STU-BRAIN' style={{width:'100%',height:'100%',objectFit:'contain',borderRadius:8}}/>}
           </div>
           <span style={{...S.fredoka,...S.grad,fontSize:20}}>STU-BRAIN</span>
         </div>
@@ -845,7 +849,7 @@ export default function App() {
         </div>
         <div style={{textAlign:'center',marginBottom:22}}>
           <div style={{width:62,height:62,borderRadius:18,background:`linear-gradient(135deg,${C.p},${C.s})`,display:'inline-flex',alignItems:'center',justifyContent:'center',fontSize:28,marginBottom:8,animation:'orbPulse 2.5s ease-in-out infinite',overflow:'hidden'}}>
-                {schoolLogo?<img src={schoolLogo} alt="Logo" style={{width:'100%',height:'100%',objectFit:'contain'}}/>:<span>🧠</span>}
+                {schoolLogo?<img src={schoolLogo} alt="Logo" style={{width:'100%',height:'100%',objectFit:'contain'}}/>:<img src='/logo.png' alt='STU-BRAIN' style={{width:'100%',height:'100%',objectFit:'contain',borderRadius:8}}/>}
               </div>
           <div style={{...S.fredoka,...S.grad,fontSize:26}}>STU-BRAIN</div>
           <div style={{color:C.mu,fontSize:13,fontWeight:600,marginTop:3}}>{T.tagline}</div>
@@ -1176,7 +1180,7 @@ export default function App() {
                       {/* Name + details */}
                       <div style={{flex:1,minWidth:0}}>
                         <div style={{fontSize:13,fontWeight:800,color:rank===1?'#FFD166':isMe?C.p:C.text,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
-                          {s.name as string}{isMe?' (You)':''}
+                          {String(s.name||'')}{isMe?' (You)':''}
                         </div>
                         <div style={{fontSize:10,color:C.mu,fontWeight:600}}>
                           {lbClass?`Class ${s.class_level} · Sec ${s.section||'-'}`:`Class ${s.class_level}`} · {s.chapters_done as number} chapters · {s.avg_quiz as number}% quiz
@@ -1326,8 +1330,8 @@ export default function App() {
                   <div key={i} style={{display:'flex',alignItems:'center',gap:10,marginBottom:i<5?10:0,padding:'8px 10px',background:C.card2,borderRadius:10,border:`1px solid rgba(255,101,132,.2)`}}>
                     <div style={{fontSize:20}}>⚠️</div>
                     <div style={{flex:1}}>
-                      <div style={{fontSize:12,fontWeight:800}}>{s.name as string}</div>
-                      <div style={{fontSize:10,color:C.mu}}>Class {s.class_level as number} · Quiz avg: {s.avg_quiz as number}% · XP: {s.total_xp as number}</div>
+                      <div style={{fontSize:12,fontWeight:800}}>{String(s.name||'')}</div>
+                      <div style={{fontSize:10,color:C.mu}}>Class {Number(s.class_level||0)} · Quiz avg: {s.avg_quiz as number}% · XP: {Number(s.total_xp||0)}</div>
                     </div>
                     <span style={{fontSize:10,fontWeight:800,padding:'2px 8px',borderRadius:20,background:'rgba(255,101,132,.12)',color:C.s}}>Needs Help</span>
                   </div>
@@ -1374,9 +1378,9 @@ export default function App() {
                     const daysAgo=lastActive?Math.floor((Date.now()-lastActive.getTime())/86400000):99;
                     return(
                       <tr key={i} style={{borderTop:`1px solid rgba(108,99,255,.12)`}}>
-                        <td style={{padding:'9px 12px',fontWeight:800}}>{s.name as string}</td>
+                        <td style={{padding:'9px 12px',fontWeight:800}}>{String(s.name||'')}</td>
                         <td style={{padding:'9px 12px',fontFamily:'monospace',fontSize:11,color:C.y,fontWeight:700}}>{s.student_id as string}</td>
-                        <td style={{padding:'9px 12px',fontWeight:700}}>Class {s.class_level as number}</td>
+                        <td style={{padding:'9px 12px',fontWeight:700}}>Class {Number(s.class_level||0)}</td>
                         <td style={{padding:'9px 12px',color:C.mu}}>{s.section as string||'-'}</td>
                         <td style={{padding:'9px 12px',color:chaps>0?C.a:C.mu,fontWeight:700}}>📚 {chaps}</td>
                         <td style={{padding:'9px 12px',color:C.y,fontWeight:700}}>⭐ {xp}</td>
@@ -1790,6 +1794,47 @@ export default function App() {
         </div>
       )}
 
+        {saTab==='b2c'&&(
+          <div>
+            <div style={{...S.fredoka,fontSize:18,marginBottom:16}}>🌍 Individual Students (B2C)</div>
+            <div style={{...S.card,padding:14,marginBottom:16,background:'rgba(67,233,123,.06)',border:'1px solid rgba(67,233,123,.2)'}}>
+              <div style={{fontSize:12,color:'#43E97B',fontWeight:700}}>Students who signed up individually at stubrain.online/student</div>
+            </div>
+            {b2cStudents.length===0?(
+              <div style={{...S.card,padding:28,textAlign:'center',color:'#9090BB'}}>
+                <div style={{fontSize:40,marginBottom:8}}>🌍</div>
+                <div>No individual students yet. Share stubrain.online/student to get signups!</div>
+              </div>
+            ):(
+              <div>
+                <div style={{...S.card,padding:10,marginBottom:12,display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8,textAlign:'center'}}>
+                  {[{l:'Total',v:b2cStudents.length},{l:'Paid',v:b2cStudents.filter((s:Record<string,unknown>)=>s.is_paid).length},{l:'Free',v:b2cStudents.filter((s:Record<string,unknown>)=>!s.is_paid).length},{l:'Revenue',v:'₹'+b2cStudents.filter((s:Record<string,unknown>)=>s.is_paid).length*299}].map((st,i)=>(
+                    <div key={i}><div style={{...S.fredoka,fontSize:20,color:i===3?'#43E97B':'#FFD166'}}>{st.v}</div><div style={{fontSize:10,color:'#9090BB'}}>{st.l}</div></div>
+                  ))}
+                </div>
+                <div style={{display:'flex',flexDirection:'column' as const,gap:8}}>
+                  {b2cStudents.map((s:Record<string,unknown>,i)=>(
+                    <div key={i} style={{...S.card,padding:14,display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+                      <div style={{width:36,height:36,borderRadius:'50%',background:'linear-gradient(135deg,#6C63FF,#FF6584)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:14,fontWeight:900,color:'#fff',flexShrink:0}}>{(s.name as string)[0]?.toUpperCase()}</div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontWeight:800,fontSize:13,color:'#F0F0FF'}}>{String(s.name||'')}</div>
+                        <div style={{fontSize:11,color:'#9090BB'}}>{String(s.email||'')} · Class {Number(s.class_level||0)} · {String(s.state_name||'')}</div>
+                        <div style={{fontSize:10,color:'#9090BB',marginTop:2}}>XP: {Number(s.total_xp||0)} · Joined: {new Date(s.created_at as string).toLocaleDateString('en-IN')}</div>
+                      </div>
+                      <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                        <span style={{background:Boolean(s.is_paid)?'rgba(67,233,123,.2)':'rgba(255,101,132,.15)',color:Boolean(s.is_paid)?'#43E97B':'#FF6584',borderRadius:20,padding:'3px 10px',fontSize:10,fontWeight:800}}>{Boolean(s.is_paid)?'✅ Paid':'🔒 Free'}</span>
+                        {!Boolean(s.is_paid)&&<button onClick={()=>{fetch('/api/superadmin/b2c-students',{method:'PATCH',headers:{'Content-Type':'application/json',authorization:`Bearer ${token}`},body:JSON.stringify({id:s.id,is_paid:true})}).then(async()=>{if(token)await loadB2cStudents(token);alert('✅ Student unlocked!');});}} style={{background:'rgba(67,233,123,.2)',color:'#43E97B',border:'1px solid rgba(67,233,123,.4)',borderRadius:6,padding:'3px 8px',fontSize:10,fontWeight:800,cursor:'pointer'}}>🔓 Unlock</button>}
+                        {Boolean(s.is_paid)&&<button onClick={()=>{fetch('/api/superadmin/b2c-students',{method:'PATCH',headers:{'Content-Type':'application/json',authorization:`Bearer ${token}`},body:JSON.stringify({id:s.id,is_paid:false})}).then(async()=>{if(token)await loadB2cStudents(token);});}} style={{background:'rgba(255,101,132,.15)',color:'#FF6584',border:'1px solid rgba(255,101,132,.3)',borderRadius:6,padding:'3px 8px',fontSize:10,fontWeight:800,cursor:'pointer'}}>🔒 Lock</button>}
+                        <button onClick={()=>{if(confirm('Delete '+s.name+'? This is permanent!'))fetch('/api/superadmin/b2c-students',{method:'DELETE',headers:{'Content-Type':'application/json',authorization:`Bearer ${token}`},body:JSON.stringify({id:s.id})}).then(async()=>{if(token)await loadB2cStudents(token);});}} style={{background:'rgba(255,50,50,.15)',color:'#FF4444',border:'1px solid rgba(255,50,50,.3)',borderRadius:6,padding:'3px 8px',fontSize:10,fontWeight:800,cursor:'pointer'}}>🗑️</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
         {saTab==='enquiries'&&(
           <div>
             <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16}}>
@@ -2066,7 +2111,7 @@ export default function App() {
                 const days=la?Math.floor((Date.now()-la.getTime())/86400000):99;
                 return(
                   <tr key={i} style={{borderTop:`1px solid rgba(108,99,255,.12)`}}>
-                    <td style={{padding:'8px 10px',fontWeight:800}}>{s.name as string}</td>
+                    <td style={{padding:'8px 10px',fontWeight:800}}>{String(s.name||'')}</td>
                     <td style={{padding:'8px 10px',fontFamily:'monospace',fontSize:11,color:C.y,fontWeight:700}}>{s.student_id as string}</td>
                     <td style={{padding:'8px 10px'}}>
                       <div style={{display:'flex',alignItems:'center',gap:4}}>
@@ -2074,7 +2119,7 @@ export default function App() {
                         <button onClick={()=>setShowPwd(p=>({...p,[`s${s.id}`]:!p[`s${s.id}`]}))} style={{background:'none',border:'none',cursor:'pointer',fontSize:11,padding:'0 2px',color:C.mu}}>{showPwd[`s${s.id}`]?'🙈':'👁️'}</button>
                       </div>
                     </td>
-                    <td style={{padding:'8px 10px',fontWeight:600}}>{s.class_level as number}</td>
+                    <td style={{padding:'8px 10px',fontWeight:600}}>{Number(s.class_level||0)}</td>
                     <td style={{padding:'8px 10px'}}><span style={{background:'rgba(108,99,255,.15)',color:C.p,borderRadius:4,padding:'1px 6px',fontSize:10,fontWeight:800}}>{s.section as string}</span></td>
                     <td style={{padding:'8px 10px',color:chaps>0?C.a:C.mu,fontWeight:700}}>{chaps}</td>
                     <td style={{padding:'8px 10px',color:C.y,fontWeight:700}}>{xp}</td>

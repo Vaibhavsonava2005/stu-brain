@@ -43,6 +43,7 @@ function HeroSlider() {
         <div style={{display:'flex',gap:14,justifyContent:'center',flexWrap:'wrap',marginBottom:48}}>
           <a href="#enquiry" className="btn-p" style={{padding:'14px 36px',fontSize:16,textDecoration:'none'}}>📞 Get Free Demo</a>
           <a href="/app" className="btn-s" style={{padding:'14px 32px',fontSize:15,textDecoration:'none'}}>▶ Try Demo Login</a>
+          <a href="/student" style={{padding:'14px 28px',fontSize:14,fontWeight:800,background:'rgba(67,233,123,.12)',border:'1px solid rgba(67,233,123,.4)',color:'#43E97B',borderRadius:50,textDecoration:'none',display:'inline-block'}}>🌍 Individual Student? Register Here</a>
         </div>
         {/* Stats */}
         <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16,maxWidth:700,margin:'0 auto'}}>
